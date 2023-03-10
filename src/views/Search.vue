@@ -1,13 +1,13 @@
 <template>
-  <div class="search-div" :style="{ 'background-image': `url(${image})` }">
-    <h1 class="text-light">Search</h1>
+  <div>
+    <h1 class="text-light title">Search</h1>
     <input
       v-model="searchWord"
       placeholder="Search"
       type="text"
-      class="mt-4 p-1 rounded rounded-2 top"
+      class="p-1 rounded rounded-2 top input-search"
     />
-    <ItemCard class="item-card" :products="filteredProducts" />
+    <ItemCard :products="filteredProducts" :image="image" />
   </div>
 </template>
 
@@ -21,12 +21,8 @@ export default {
   data() {
     return {
       searchWord: "",
-      image: require("@/assets/black-image.jpg"),
+      image: "black-image.jpg",
     };
-  },
-  mounted() {
-    document.body.style.backgroundImage =
-      "url('https://w0.peakpx.com/wallpaper/20/604/HD-wallpaper-black-screen-solid-dark-plain-all-phone-pure-noir-colors.jpg')";
   },
   computed: {
     filteredProducts() {
@@ -43,27 +39,13 @@ export default {
         });
     },
   },
-  methods: {},
 };
 </script>
 
 <style scoped>
-body {
-  background-image: url("@/assets/black-image.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-}
-.search-div {
-  margin-top: 100px;
-}
-.item-card {
-  margin-top: 100px;
-}
 input {
   width: 100%;
   max-width: 280px;
-  padding: 10px 15px;
   border: none;
   outline: none;
   background-color: rgba(137, 137, 133, 0.4);
@@ -71,15 +53,26 @@ input {
   border-bottom: 2px solid #c2c2c2;
   font-size: 20px;
   transition: 0.2s ease-out;
+  position: absolute;
+  display: grid;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+.title {
+  position: absolute;
+  display: grid;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  letter-spacing: 0.1em;
+  font-size: 50px;
+  text-transform: uppercase;
 }
 
 input:focus {
   background-color: rgba(169, 164, 164, 0.5);
-}
-h1 {
-  font-weight: 100;
-  letter-spacing: 10px;
-  text-transform: uppercase;
-  font-family: "Magisho", sans-serif;
 }
 </style>

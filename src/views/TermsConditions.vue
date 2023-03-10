@@ -121,12 +121,6 @@
 <script>
 export default {
   name: "TermsConditions",
-  // mounted() {
-  //   document.body.style.backgroundImage =
-  //     "url('https://t3.ftcdn.net/jpg/01/91/95/30/360_F_191953033_gehQATeDoh5z6PyRDbeKyBZuS83CjMEF.jpg')";
-  //   document.body.style.backgroundSize = "cover";
-  //   document.body.style.backgroundPosition = "center";
-  // },
 };
 </script>
 

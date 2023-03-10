@@ -1,24 +1,24 @@
 <template>
   <div id="app">
-    <NavBar @toggle="toggleCart" />
-    <router-view :class="{ opacity: openThisCart }" />
+    <Navbar />
+    <router-view />
   </div>
 </template>
 
 <script>
-import NavBar from "@/components/NavBar";
+import Navbar from "@/components/Navbar";
 
 export default {
-  components: { NavBar },
+  components: { Navbar },
   data() {
     return {
       openThisCart: false,
     };
   },
   methods: {
-    toggleCart() {
-      this.openThisCart = !this.openThisCart;
-    },
+    // toggleCart() {
+    //   this.openThisCart = !this.openThisCart;
+    // },
   },
 };
 </script>
@@ -31,5 +31,11 @@ export default {
   text-align: center;
   color: #2c3e50;
   display: grid;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+body {
+  overflow-x: hidden;
 }
 </style>

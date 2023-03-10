@@ -443,9 +443,28 @@ export default new Vuex.Store({
         id: 37,
       },
     ],
+    cart: [],
   },
-  getters: {},
-  mutations: {},
-  actions: {},
+  getters: {
+    cartTotalPrice: (state) => {
+      let total = 0;
+      state.cart.forEach((item) => {
+        total += item.quantityPrice;
+      });
+      return total.toFixed(2);
+    },
+    getCart: (state) => state.cart,
+    cartItemCount: (state) => state.cart.length,
+  },
+  mutations: {
+    ADD_TO_CART(state, product, size) {
+      state.cart.push(product, size);
+    },
+  },
+  actions: {
+    addToCart(context, product, size) {
+      context.commit("ADD_TO_CART", product, size);
+    },
+  },
   modules: {},
 });

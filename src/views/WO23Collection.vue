@@ -1,10 +1,12 @@
 <template>
   <div>
-    <h4 class="fst-italic text-light text shadow">
+    <h4 class="fst-italic text-light text-wo23">
       Experience the perfect blend of comfort and style with our new women's
       ready-to-wear collection,designed for modern, confident women.
     </h4>
-    <ItemCard class="item-card" :products="womenCollection" />
+    <h1 class="title shadow text-light fw-bold">WO23 Collection</h1>
+    <ItemCard :products="womenCollection" :image="image" />
+    <img :src="image" />
   </div>
 </template>
 
@@ -14,6 +16,11 @@ import ItemCard from "@/components/ItemCard";
 export default {
   name: "WCollection",
   components: { ItemCard },
+  data() {
+    return {
+      image: "wo23.avif",
+    };
+  },
   computed: {
     womenCollection() {
       return this.$store.state.women.filter(
@@ -21,22 +28,24 @@ export default {
       );
     },
   },
-  // mounted() {
-  //   (document.body.style.backgroundImage =
-  //     "url('https://www.dior.com/couture/var/dior/storage/images/pushs-editos/folder-permanent-femme/folder-summer-2023/327r12a2793x9000/39427812-1-eng-GB/327r12a2793x9000_1440_1200.jpg?imwidth=720')"),
-  //     (document.body.style.backgroundSize = "cover");
-  //   document.body.style.backgroundPosition = "top";
-  // },
 };
 </script>
 
 <style scoped>
-.text {
-  margin-top: 300px;
-  margin-left: 550px;
-  margin-right: 550px;
+.title,
+.text-wo23 {
+  position: absolute;
+  display: grid;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 }
-.item-card {
-  margin-top: 300px;
+.title {
+  letter-spacing: 0.1em;
+  font-size: 50px;
+  display: grid;
+  top: 50%;
+  text-transform: uppercase;
 }
 </style>

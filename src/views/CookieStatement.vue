@@ -52,21 +52,14 @@
 <script>
 export default {
   name: "CookieStatement",
-  // mounted() {
-  //   document.body.style.backgroundImage =
-  //     "url('https://t3.ftcdn.net/jpg/01/91/95/30/360_F_191953033_gehQATeDoh5z6PyRDbeKyBZuS83CjMEF.jpg')";
-  //   document.body.style.backgroundSize = "cover";
-  //   document.body.style.backgroundPosition = "center";
-  // },
 };
 </script>
 
 <style scoped>
 .text {
-  margin-top: 130px;
-  margin-right: 550px;
-  margin-left: 550px;
-  color: #000000;
+  margin-top: 100px;
+  margin-right: 300px;
+  margin-left: 300px;
   font-size: 17px;
 }
 .nav-link:hover {

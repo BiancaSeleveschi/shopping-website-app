@@ -50,9 +50,6 @@ export default {
   created() {
     this.productId = this.$route.params.id;
     this.productDetails = this.$route.params.details;
-    console.log(this.productId);
-    console.log(this.product);
-    console.log(this.productDetails);
   },
   // mounted() {
   //Muta in style aceasta stilizare
@@ -62,7 +59,7 @@ export default {
   methods: {
     addToCart() {
       if (this.size !== "Size") {
-        this.$store.dispatch("addProductToCart", {
+        this.$store.dispatch("addToCart", {
           product: this.product,
           quantity: 1,
           quantityPrice: this.product.price,

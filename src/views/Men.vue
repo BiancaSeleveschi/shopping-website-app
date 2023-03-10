@@ -1,6 +1,7 @@
 <template>
-  <div :style="{ 'background-image': `url(${image})` }">
-    <ItemCard class="item-card" :products="$store.state.men" />
+  <div>
+    <h1 class="title text-light fw-bold">Men</h1>
+    <ItemCard :products="this.$store.state.men" :image="iamge" />
   </div>
 </template>
 
@@ -12,17 +13,23 @@ export default {
   components: { ItemCard },
   data() {
     return {
-      image: require("@/assets/men.webp"),
+      iamge: "men.webp",
     };
   },
 };
 </script>
 
-<style scoped>
-body {
-  background-image: url("@/assets/men.webp");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
+<style>
+.title {
+  letter-spacing: 0.1em;
+  font-size: 50px;
+  display: grid;
+  z-index: 1;
+  left: 50%;
+  top: 35%;
+  text-transform: uppercase;
+  position: absolute;
+  display: grid;
+  transform: translate(-50%, -50%);
 }
 </style>
