@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4 class="fst-italic text-light text-wo23">
+    <h4 class="text-light text-wo23">
       Experience the perfect blend of comfort and style with our new women's
       ready-to-wear collection,designed for modern, confident women.
     </h4>
@@ -39,6 +39,7 @@ export default {
   top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
+  font-family: "JetBrains Mono Light";
   z-index: 1;
 }
 .title {

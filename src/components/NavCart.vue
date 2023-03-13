@@ -1,9 +1,9 @@
 <template>
-  <div class="outer-card">
-    <div class="cart border border-dark">
+  <div class="outer-card card-container" @click="toggleCartButton">
+    <div class="cart border border-dark" @click.stop>
       <div class="cart-header">
-        <div class="cart-close" @click="toggleCartButton">X</div>
         <div class="shopping-bag p-2">Shopping bag</div>
+        <div class="cart-close" @click="toggleCartButton">X</div>
       </div>
       <div class="cart-body">
         <CartItem />
@@ -79,12 +79,12 @@ export default {
 }
 .cart-close {
   display: grid;
-  font-size: 18px;
+  font-size: 20px;
   position: relative;
   cursor: pointer;
-  width: 1vw;
-  margin-left: 10px;
+  justify-content: end;
   align-self: center;
+  right: 5px;
 }
 .shopping-bag {
   position: relative;
@@ -116,6 +116,5 @@ export default {
   position: fixed;
   z-index: -1;
   cursor: pointer;
-  border-radius: 5px;
 }
 </style>

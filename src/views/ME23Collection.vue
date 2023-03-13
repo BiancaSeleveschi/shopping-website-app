@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4 class="fst-italic text-light text-me23">
+    <h4 class="text-light text-me23">
       The spirit of the collection can be felt throughout the Men’s
       Ready-to-Wear selection, with an array of styles channeling a similar
       aesthetic.
@@ -38,6 +38,7 @@ export default {
   top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
+  font-family: "JetBrains Mono Light";
   z-index: 1;
 }
 .title {

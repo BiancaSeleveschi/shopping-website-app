@@ -21,7 +21,7 @@ export default {
 
 <style scoped>
 .title {
-  letter-spacing: 0.1em;
+  letter-spacing: 0.2em;
   font-size: 50px;
   display: grid;
   z-index: 1;
@@ -31,5 +31,6 @@ export default {
   position: absolute;
   display: grid;
   transform: translate(-50%, -50%);
+  font-family: "JetBrains Mono Light";
 }
 </style>

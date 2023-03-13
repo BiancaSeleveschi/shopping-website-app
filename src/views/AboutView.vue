@@ -75,10 +75,10 @@ export default {
 .content {
   position: absolute;
   display: grid;
-  top: 65%;
+  top: 55%;
 }
 .about-text {
-  margin-bottom: 160px;
+  margin-bottom: 190px;
   margin-left: 300px;
   margin-right: 300px;
 }

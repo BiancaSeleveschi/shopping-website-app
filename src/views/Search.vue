@@ -5,6 +5,7 @@
       v-model="searchWord"
       placeholder="Search"
       type="text"
+      id="search"
       class="p-1 rounded rounded-2 top input-search"
     />
     <ItemCard :products="filteredProducts" :image="image" />
@@ -43,7 +44,7 @@ export default {
 </script>
 
 <style scoped>
-input {
+#search {
   width: 100%;
   max-width: 280px;
   border: none;
@@ -65,14 +66,14 @@ input {
   display: grid;
   top: 20%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
+  /*transform: translate(-50%, -50%);*/
+  /*z-index: 1;*/
   letter-spacing: 0.1em;
   font-size: 50px;
   text-transform: uppercase;
 }
 
-input:focus {
+#search:focus {
   background-color: rgba(169, 164, 164, 0.5);
 }
 </style>

@@ -11,6 +11,21 @@
             <router-link class="nav-link" to="/about">About</router-link>
           </div>
           <div class="right">
+            <div @click="showLoginBox" class="navbar-login">Login</div>
+            <router-link to="/favorites"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-heart text-light fw-bold mx-3"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+                />
+              </svg>
+            </router-link>
             <router-link to="/search" class="searchBox rounded-5 me-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -42,23 +57,28 @@
         </div>
       </div>
     </nav>
+    <div v-show="showLogin">
+      <Login @toggleLoginButton="showLogin = false" />
+    </div>
     <div v-show="showCartDetails">
-      <NavCart @toggleCart="showCart" />
+      <NavCart @toggleCart="showCartDetails = false" />
     </div>
   </div>
 </template>
 
 <script>
 import NavCart from "@/components/NavCart";
+import Login from "@/components/Login";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Navbar",
-  components: { NavCart },
+  components: { NavCart, Login },
   data() {
     return {
       scrollPosition: null,
       productName: "",
       showCartDetails: false,
+      showLogin: false,
       cart: this.$store.state.cart,
     };
   },
@@ -76,6 +96,11 @@ export default {
     },
     showCart() {
       this.showCartDetails = !this.showCartDetails;
+      this.showLogin = false;
+    },
+    showLoginBox() {
+      this.showLogin = !this.showLogin;
+      this.showCartDetails = false;
     },
   },
 };
@@ -141,6 +166,16 @@ export default {
   padding-right: 2em;
 }
 
+.navbar-login {
+  font-size: 13px;
+  cursor: pointer;
+  color: white;
+}
+
+.navbar-login:hover {
+  color: #b4b4b4;
+}
+
 .searchBox,
 .cart {
   float: right;
@@ -151,6 +186,7 @@ export default {
   background: #fff;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
+
 .notification-counter {
   float: right;
   position: absolute;

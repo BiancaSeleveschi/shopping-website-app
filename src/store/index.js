@@ -444,6 +444,7 @@ export default new Vuex.Store({
       },
     ],
     cart: [],
+    favoritesProducts: [],
   },
   getters: {
     cartTotalPrice: (state) => {
@@ -460,10 +461,16 @@ export default new Vuex.Store({
     ADD_TO_CART(state, product, size) {
       state.cart.push(product, size);
     },
+    ADD_TO_FAVORITES(state, product) {
+      state.favoritesProducts.push(product);
+    },
   },
   actions: {
     addToCart(context, product, size) {
       context.commit("ADD_TO_CART", product, size);
+    },
+    addToFavorites(context, product) {
+      context.commit("ADD_TO_FAVORITES", product);
     },
   },
   modules: {},

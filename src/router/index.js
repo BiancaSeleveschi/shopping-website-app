@@ -13,6 +13,9 @@ import TermsConditions from "@/views/TermsConditions";
 import CookieStatement from "@/views/CookieStatement";
 import ServicePage from "@/views/ServicePage";
 import CheckoutPage from "@/views/CheckoutPage";
+import AccountItem from "@/views/AccountItem";
+import SignInPage from "@/views/SignInPage";
+import FavoritesPage from "@/views/FavoritesPage";
 
 Vue.use(VueRouter);
 
@@ -59,6 +62,11 @@ const routes = [
     props: true,
   },
   {
+    path: "/favorites",
+    name: "FavoritesPage",
+    component: FavoritesPage,
+  },
+  {
     path: "/privacy/policy",
     name: "PrivacyPolicy",
     component: PrivacyPolicy,
@@ -82,6 +90,16 @@ const routes = [
     path: "/checkout",
     name: "CheckoutPage",
     component: CheckoutPage,
+  },
+  {
+    path: "/sign/in",
+    name: "SignInPage",
+    component: SignInPage,
+  },
+  {
+    path: "/new-account",
+    name: "AccountItem",
+    component: AccountItem,
   },
 ];
 
