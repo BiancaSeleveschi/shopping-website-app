@@ -1,53 +1,53 @@
 <template>
   <div>
-    <div v-for="item in cart" :key="item.product.id" class="outer-card">
-      <router-link
-        :to="{
-          name: 'ProductDetails',
-          params: { gender: item.product.gender, id: item.product.id },
-        }"
-        class="cart-item"
-      >
-        <img :src="item.product.src" />
-        <div class="detailsdetails">
-          <h3>{{ item.product.title }}</h3>
-          <div class="productDetails">
-            <p class="size">{{ item.size }}</p>
-            <span class="quantity">{{ item.quantity }}</span>
+    <div v-for="(item,index) in this.$store.state.user.cart" :key="index" class="cart-item">
+      <img :src="item.product.img"/>
+      <div class="details">
+        <router-link
+            :to="{
+                  name: 'ProductDetails',
+                  params: {
+                    product: item.product,
+                    id: item.product.id,
+                  },
+                }" class="item-title"
+        >
+          <h3 class="item-product-title px-2">{{ item.product.title }}</h3></router-link>
+        <div>
+          <p class="size text-uppercase mt-2 d-inline-block ">Size: <span id="size"> {{ item.size }}</span></p>
+          <div class="d-inline-block justify-content-end">
+            <button class="quantity-button m-2 " @click="decreaseQuantity(item)">-</button>
+            <span class="quantity " type="number">{{ item.quantity }}</span>
+            <button class="quantity-button m-2" @click="increaseQuantity(item)">+</button>
           </div>
-          <span class="price">${{ item.quantityPrice }}</span>
         </div>
-        <div class="cancel">
-          <i @click="removeProductFromCart(item.product)"></i>
-        </div>
-      </router-link>
+        <span class="price">${{ item.quantityPrice }}</span>
+      </div>
+      <div class="cancel px-2 ">
+        <span @click.prevent="removeProductFromCart(item)">X</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  computed: {
-    cart() {
-      return this.$store.state.cart;
-    },
-  },
+  name: "CartItem",
   methods: {
     removeProductFromCart(product) {
       this.$store.dispatch("removeProductFromCart", product);
     },
+    increaseQuantity(item) {
+      this.$store.dispatch('increaseQuantity', item)
+    },
+    decreaseQuantity(item) {
+      this.$store.dispatch('decreaseQuantity', item)
+    }
   },
 };
 </script>
 
 <style scoped>
-.outer-card {
-  width: 100%;
-  border-top: solid 1px #333;
-}
-.outer-card:first-child {
-  border-top: 0;
-}
 
 .cart-item {
   display: grid;
@@ -56,17 +56,17 @@ export default {
   overflow-x: hidden;
   text-decoration: none;
   color: black;
-  height: 50%;
   transition: 0.5s;
 }
+
 .cart-item:hover {
-  background-color: rgb(100, 100, 100);
+  background-color: grey;
 }
 
 .cart-item img {
   position: relative;
-  width: 4vw;
-  height: 10vh;
+  width: 80px;
+  height: 130px;
   display: block;
   left: 0;
   object-position: top;
@@ -76,23 +76,28 @@ export default {
   -webkit-user-select: none;
   -ms-user-select: none;
 }
-.cart-item h3 {
+
+.item-product-title {
   display: flex;
   position: relative;
-  letter-spacing: 0.05em;
-  width: auto;
-  margin: 0;
-  padding-left: 0.2em;
-  font-size: 0.9rem;
+  font-size: 16px;
+  text-align: start;
   color: black;
+  text-decoration: none;
   text-transform: uppercase;
   font-family: "Clab Personal Use", sans-serif;
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.034);
   transition: 0.5s;
 }
-.cart-item h3:hover {
+
+.item-product-title:hover {
   color: #dedede;
 }
+
+.item-title {
+  text-decoration: none;
+}
+
 .cart-item .price {
   display: flex;
   justify-content: right;
@@ -104,44 +109,48 @@ export default {
   font-weight: 100;
 }
 
-.cart-item .productDetails {
-  display: flex;
-  flex-direction: row;
+.quantity-button {
+  border: none;
+  background-color: white;
+  padding: unset;
+  width: 20px;
+  height: 30px;
+  font-size: 20px;
 }
-.cart-item .productDetails .size {
-  display: block;
+
+.quantity-button:hover {
+  background-color: #c0c0c0;
+}
+
+.size {
+  margin-right: 10px;
+  padding-left: 3px;
+}
+
+#size {
   text-transform: uppercase;
-  margin: 0.3em 0.3em;
-  padding: 0em 1.5em;
-  font-size: 0.9em;
-  border-radius: 2em;
+  font-size: 14px;
+  border-radius: 8px;
   border: 1px solid black;
+  padding: 4px;
   font-family: "ITC Cheltenham Std", sans-serif;
 }
-.cart-item .productDetails .quantity {
-  display: block;
-  text-transform: uppercase;
-  margin: 0.3em 0.3em;
-  padding: 0em 1.5em;
-  font-size: 0.9em;
-  border-radius: 2em;
-  border: 1px solid black;
-  font-family: "ITC Cheltenham Std", sans-serif;
+
+.quantity {
+  font-size: 20px;
 }
 
 .cancel {
   text-align: right;
+  margin-right: 3px;
   transform: translateY(-3%) translateX(30%);
   position: relative;
   font-size: 1.2em;
-}
-.cancel .uil {
-  display: flex;
-  position: fixed;
-  cursor: pointer;
   transition: 0.5s;
 }
-.cancel .uil:hover {
+
+.cancel:hover {
   color: #dedede;
+  cursor: pointer;
 }
 </style>

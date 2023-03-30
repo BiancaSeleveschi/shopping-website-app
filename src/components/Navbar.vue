@@ -4,64 +4,73 @@
       <div class="container-fluid">
         <h1 class="navbar-brand text-light">M.E.D.U.Z.Z.A</h1>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav fw-bold ms-auto">
+          <div class="navbar-nav fw-bold">
             <router-link class="nav-link" to="/">Home</router-link>
             <router-link class="nav-link" to="/women">Women</router-link>
             <router-link class="nav-link" to="/men">Men</router-link>
             <router-link class="nav-link" to="/about">About</router-link>
           </div>
           <div class="right">
+            <div @click="openProfile">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                   height="16" fill="currentColor" class="bi bi-person-lines-fill mx-3"
+                   viewBox="0 0 16 16">
+                <path
+                    d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
+              </svg>
+            </div>
             <div @click="showLoginBox" class="navbar-login">Login</div>
-            <router-link to="/favorites"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-heart text-light fw-bold mx-3"
-                viewBox="0 0 16 16"
+            <router-link to="/favorites">
+              <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-heart text-light fw-bold mx-3"
+                  viewBox="0 0 16 16"
               >
                 <path
-                  d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
                 />
               </svg>
             </router-link>
             <router-link to="/search" class="searchBox rounded-5 me-2">
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                class="bi bi-search text-dark"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  class="bi bi-search text-dark"
               >
                 <path
-                  d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
                 />
               </svg>
             </router-link>
             <div class="cart rounded-5" @click="showCart">
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                class="bi bi-bag text-dark"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  class="bi bi-bag text-dark"
               >
                 <path
-                  d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"
+                    d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"
                 />
               </svg>
-              <span class="notification-counter text-light fw-bold">{{
-                cartItemCount
-              }}</span>
+              <span class="notification-counter fw-bold">{{ this.$store.getters.cartItemCount }}</span>
             </div>
           </div>
         </div>
       </div>
     </nav>
     <div v-show="showLogin">
-      <Login @toggleLoginButton="showLogin = false" />
+      <Login @toggleLoginButton="showLogin = false"/>
     </div>
     <div v-show="showCartDetails">
-      <NavCart @toggleCart="showCartDetails = false" />
+      <NavCart @toggleCart="showCartDetails = false"/>
+    </div>
+    <div v-show="showProfile" class="profile">
+      <p class="mt-4 bg-secondary text-black">{{ personProfile }}</p>
     </div>
   </div>
 </template>
@@ -69,25 +78,54 @@
 <script>
 import NavCart from "@/components/NavCart";
 import Login from "@/components/Login";
+
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Navbar",
-  components: { NavCart, Login },
+  components: {NavCart, Login},
   data() {
     return {
       scrollPosition: null,
       productName: "",
       showCartDetails: false,
       showLogin: false,
-      cart: this.$store.state.cart,
+      showProfile: false,
+      profile: ''
     };
   },
   mounted() {
     window.addEventListener("scroll", this.updateScroll);
   },
   computed: {
-    cartItemCount() {
-      return this.$store.state.cart.length;
+    personProfile() {
+      if (this.$store.state.user.isLogged) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        return this.$store.state.user.email
+      } else {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        return "You're not logged"
+      }
+    },
+    // cartItemCount() {
+    //   return this.$store.state.user.cart.reduce((count, item) => {
+    //     if (item.size === this.size && item.product.id === this.product.id) {
+    //       return count + item.quantity;
+    //     } else {
+    //       return count;
+    //     }
+    //   }, 0);
+    // },
+    cartItemCount2() {
+      let uniqueItems = {};
+      let count = 0;
+      for (let item in this.$store.state.user.cart) {
+        let itemId = item.product.id + item.size;
+        if (!uniqueItems[itemId]) {
+          uniqueItems[itemId] = true;
+          count += 1;
+        }
+      }
+      return count;
     },
   },
   methods: {
@@ -97,11 +135,18 @@ export default {
     showCart() {
       this.showCartDetails = !this.showCartDetails;
       this.showLogin = false;
+      this.showProfile = false;
     },
     showLoginBox() {
       this.showLogin = !this.showLogin;
       this.showCartDetails = false;
+      this.showProfile = false;
     },
+    openProfile() {
+      this.showProfile = !this.showProfile
+      this.showCartDetails = false;
+      this.showLogin = false;
+    }
   },
 };
 </script>
@@ -174,6 +219,36 @@ export default {
 
 .navbar-login:hover {
   color: #b4b4b4;
+  text-decoration: underline;
+}
+
+.profile {
+  position: fixed;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: right;
+  border: 1px solid grey;
+  top: 70px;
+  right: 2%;
+  z-index: 1;
+  flex-direction: column;
+  width: 350px;
+  height: 100px;
+  background-color: #ffffff;
+}
+
+.profile:before {
+  content: "";
+  position: fixed;
+  height: 0;
+  width: 0;
+  right: 195px;
+  top: 40px;
+  border-width: 15px;
+  border-color: transparent white transparent transparent;
+  border-style: solid;
+  transform: rotate(90deg);
+  z-index: -6;
 }
 
 .searchBox,
@@ -190,6 +265,7 @@ export default {
 .notification-counter {
   float: right;
   position: absolute;
+  color: white;
   right: 25px;
   top: -8px;
   background-color: red;

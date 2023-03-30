@@ -8,22 +8,29 @@
       <div class="cart-body">
         <CartItem />
       </div>
-      <div class="subtotal p-3">Subtotal: ${{ cartTotalPrice }}</div>
-      <router-link class="cart-footer" to="/checkout">
-        <div class="checkout bg-black text-light p-2">Checkout</div>
+      <div class="subtotal p-3">Subtotal: $ {{ this.$store.getters.getCartTotalPrice }}</div>
+      <router-link class="cart-footer" to="/order/summary">
+        <div class="checkout text-uppercase bg-black text-light p-2">Proceed to checkout</div>
       </router-link>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import CartItem from "@/components/CartItem.vue";
+import CartItem from "@/components/CartItem";
+
 export default {
   name: "NavCart",
-  components: { CartItem },
+  components: {CartItem},
+  data() {
+    return {
+      cartTotalPrice: this.$store.getters.getCartTotalPrice,
+    };
+  },
   computed: {
-    ...mapGetters(["cartItemCount", "cartTotalPrice"]),
+    // cartTotalPrice() {
+    //   return this.$store.getters.getCartTotalPrice;
+    // },
   },
   methods: {
     toggleCartButton() {
@@ -44,15 +51,19 @@ export default {
   top: 70px;
   z-index: 1;
 }
-.cart {
+
+.outer-card .cart {
   display: flex;
   flex-direction: column;
   position: relative;
-  width: 300px;
+  width: 360px;
   height: 450px;
   background-color: #dedede;
   transform: translateX(-4%);
+  z-index: 1;
+
 }
+
 .cart-header {
   position: relative;
   display: flex;
@@ -77,6 +88,7 @@ export default {
   transform: rotate(90deg);
   z-index: -6;
 }
+
 .cart-close {
   display: grid;
   font-size: 20px;
@@ -85,7 +97,9 @@ export default {
   justify-content: end;
   align-self: center;
   right: 5px;
+  color: black;
 }
+
 .shopping-bag {
   position: relative;
   font-size: 16px;
@@ -93,9 +107,16 @@ export default {
   justify-content: center;
   width: 100%;
 }
+
 .cart-body {
   background: #ffffff;
-  height: 280px;
+  overflow: auto;
+  height: 285px;
+}
+
+.subtotal {
+  background-color: #e8e8e8;
+  top: 0;
 }
 
 .cart-footer {
@@ -108,11 +129,12 @@ export default {
   justify-content: center;
   background-color: #cccccc;
 }
+
 .checkout {
   margin-bottom: 10px;
   display: block;
   bottom: 0;
-  width: 180px;
+  width: 230px;
   position: fixed;
   z-index: -1;
   cursor: pointer;

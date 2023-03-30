@@ -1,14 +1,13 @@
 <template>
-  <div>
+  <div class="search-page">
     <h1 class="text-light title">Search</h1>
     <input
-      v-model="searchWord"
-      placeholder="Search"
-      type="text"
-      id="search"
-      class="p-1 rounded rounded-2 top input-search"
+        v-model="searchWord"
+        placeholder="Search"
+        type="text"
+        class="p-1 rounded rounded-2 top input"
     />
-    <ItemCard :products="filteredProducts" :image="image" />
+    <ItemCard :products="filteredProducts" :image="image"/>
   </div>
 </template>
 
@@ -18,33 +17,33 @@ import ItemCard from "@/components/ItemCard";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Search",
-  components: { ItemCard },
+  components: {ItemCard},
   data() {
     return {
       searchWord: "",
-      image: "black-image.jpg",
+      image: "Black_colour.jpg",
     };
   },
   computed: {
     filteredProducts() {
       return this.$store.state.women
-        .concat(this.$store.state.men)
-        .filter((product) => {
-          return (
-            product.title.toLowerCase().includes(this.searchWord) ||
-            product.brand.toLowerCase().includes(this.searchWord) ||
-            product.color.toLowerCase().includes(this.searchWord) ||
-            product.gender.toLowerCase().includes(this.searchWord) ||
-            product.type.toLowerCase().includes(this.searchWord)
-          );
-        });
+          .concat(this.$store.state.men)
+          .filter((product) => {
+            return (
+                product.title.toLowerCase().includes(this.searchWord) ||
+                product.brand.toLowerCase().includes(this.searchWord) ||
+                product.color.toLowerCase().includes(this.searchWord) ||
+                product.gender.toLowerCase().includes(this.searchWord) ||
+                product.type.toLowerCase().includes(this.searchWord)
+            );
+          });
     },
   },
 };
 </script>
 
 <style scoped>
-#search {
+.search-page .input {
   width: 100%;
   max-width: 280px;
   border: none;
@@ -61,19 +60,20 @@ export default {
   transform: translate(-50%, -50%);
   z-index: 1;
 }
-.title {
+
+.search-page .input:focus {
+  background-color: rgba(169, 164, 164, 0.5);
+}
+
+.search-page .title {
   position: absolute;
   display: grid;
   top: 20%;
   left: 50%;
-  /*transform: translate(-50%, -50%);*/
-  /*z-index: 1;*/
+  transform: translate(-50%, -50%);
+  z-index: 1;
   letter-spacing: 0.1em;
   font-size: 50px;
   text-transform: uppercase;
-}
-
-#search:focus {
-  background-color: rgba(169, 164, 164, 0.5);
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="text">
+  <div class="text-cookie">
     <p>This website uses cookies.</p>
     <p>
       We use cookies to personalise content and ads, provide social-media
@@ -56,10 +56,8 @@ export default {
 </script>
 
 <style scoped>
-.text {
-  margin-top: 100px;
-  margin-right: 300px;
-  margin-left: 300px;
+.text-cookie {
+  margin: 130px 300px 150px;
   font-size: 17px;
 }
 .nav-link:hover {

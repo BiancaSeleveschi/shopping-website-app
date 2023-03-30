@@ -1,5 +1,5 @@
 <template>
-  <div class="text">
+  <div class="text-terms">
     <h3 class="fw-bold mb-5">General terms and conditions M.E.D.U.Z.Z.A</h3>
     <p>
       You can shop without any risks - below you will find important information
@@ -125,10 +125,8 @@ export default {
 </script>
 
 <style scoped>
-.text {
-  margin-top: 100px;
-  margin-left: 25px;
-  margin-right: 150px;
+.text-terms {
+  margin: 100px 150px 60px 25px;
   text-align: start;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="text">
+  <div class="text-service-page">
     <div>
       <h4 class="fw-bold">1. Delivery</h4>
       <p>Delivery country - Germany</p>
@@ -116,10 +116,8 @@ export default {
 </script>
 
 <style scoped>
-.text {
-  margin-top: 100px;
-  margin-left: 25px;
-  margin-right: 250px;
+.text-service-page {
+  margin: 100px 250px 60px 25px;
   text-align: start;
 }
 </style>

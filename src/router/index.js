@@ -13,9 +13,13 @@ import TermsConditions from "@/views/TermsConditions";
 import CookieStatement from "@/views/CookieStatement";
 import ServicePage from "@/views/ServicePage";
 import CheckoutPage from "@/views/CheckoutPage";
-import AccountItem from "@/views/AccountItem";
+import Register from "@/views/Register";
 import SignInPage from "@/views/SignInPage";
 import FavoritesPage from "@/views/FavoritesPage";
+import OrderSummaryPage from "@/views/OrderSummaryPage";
+import PasswordReset from "@/views/PasswordReset";
+import Order from "@/views/Order";
+
 
 Vue.use(VueRouter);
 
@@ -56,15 +60,21 @@ const routes = [
     component: Women,
   },
   {
-    path: "/shop/:gender/:id",
+    path: "/shop//:id",
     name: "ProductDetails",
     component: ProductDetails,
     props: true,
   },
   {
+    path: "/order/summary",
+    name: "OrderSummaryPage",
+    component: OrderSummaryPage,
+  },
+  {
     path: "/favorites",
     name: "FavoritesPage",
     component: FavoritesPage,
+    props: true,
   },
   {
     path: "/privacy/policy",
@@ -90,16 +100,25 @@ const routes = [
     path: "/checkout",
     name: "CheckoutPage",
     component: CheckoutPage,
+    props: true,
   },
   {
     path: "/sign/in",
     name: "SignInPage",
     component: SignInPage,
+  },{
+    path: "/order",
+    name: "Order",
+    component: Order,
   },
   {
     path: "/new-account",
-    name: "AccountItem",
-    component: AccountItem,
+    name: "Register",
+    component: Register,
+  }, {
+    path: "/password",
+    name: "PasswordReset",
+    component: PasswordReset,
   },
 ];
 

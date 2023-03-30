@@ -161,9 +161,7 @@ export default {
 
 <style scoped>
 .text {
-  margin-top: 100px;
-  margin-left: 25px;
-  margin-right: 150px;
+  margin: 100px 150px 60px 25px;
   text-align: start;
 }
 </style>

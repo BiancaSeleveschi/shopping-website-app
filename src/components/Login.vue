@@ -30,7 +30,7 @@ export default {
 
 <style scoped>
 .outer-card-login {
-  position: absolute;
+  position: fixed;
   display: flex;
   flex-wrap: wrap;
   justify-content: right;
@@ -57,7 +57,7 @@ export default {
   position: fixed;
   height: 0px;
   width: 0px;
-  right: 110px;
+  right: 140px;
   top: -30px;
   border-width: 15px;
   border-color: transparent white transparent transparent;
@@ -78,7 +78,6 @@ export default {
   background-color: #006b6e;
   color: #ffffff;
 }
-
 #sign-in-div:hover {
   background-color: #939393;
   color: #000000;

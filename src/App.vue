@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Navbar />
-    <router-view />
+    <Navbar/>
+    <router-view/>
   </div>
 </template>
 
@@ -9,16 +9,16 @@
 import Navbar from "@/components/Navbar";
 
 export default {
-  components: { Navbar },
-  data() {
-    return {
-      openThisCart: false,
-    };
-  },
-  methods: {
-    // toggleCart() {
-    //   this.openThisCart = !this.openThisCart;
-    // },
+  components: {Navbar},
+  // created() {
+  //   const men = localStorage.getItem('men');
+  //   if (men) {
+  //     this.$store.commit('setMen', JSON.parse(men));
+  //   }
+  // },
+  created() {
+    this.$store.commit("INIT_STORE");
+    this.$store.commit("UPDATE_STORE");
   },
 };
 </script>
@@ -34,8 +34,5 @@ export default {
   width: 100%;
   top: 0;
   left: 0;
-}
-body {
-  overflow-x: hidden;
 }
 </style>

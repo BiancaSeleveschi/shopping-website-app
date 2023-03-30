@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="content">
+    <div class="content-about">
       <h1 class="p-5 fw-bolder about-title">About us</h1>
       <div class="about-text">
         <p class="mt-4 fs-5">
@@ -27,78 +27,32 @@
           information at an incomparable speed - 24/7.
         </p>
       </div>
-
-      <div class="border border-dark"></div>
-      <div class="mt-3 bottom-content">
-        <div class="contact-service">
-          <h5 class="fw-semibold">Contact us</h5>
-          <ul style="list-style: none">
-            <li>📧 service@meduzza.com</li>
-            <li>📞 +49 (0) 61 42 83 54 400</li>
-            <li>📞 +49 897 400 458 40</li>
-          </ul>
-        </div>
-        <div class="contact-service">
-          <h5 class="fw-semibold">Legale notice</h5>
-          <router-link to="/privacy/policy" class="nav-link link"
-            >Privacy Policy</router-link
-          >
-          <router-link to="/terms" class="nav-link link"
-            >Terms and Conditions</router-link
-          >
-          <router-link to="/cookie" class="nav-link link"
-            >Cookie Statement</router-link
-          >
-        </div>
-        <div class="contact-service">
-          <router-link to="/service" class="nav-link">
-            <h5 class="fw-semibold">Service</h5>
-          </router-link>
-          <ol>
-            <li>Delivery</li>
-            <li>Payment methods</li>
-            <li>Return</li>
-          </ol>
-        </div>
-      </div>
     </div>
+    <Service />
   </div>
 </template>
 
 <script>
+import Service from "@/components/Service";
 export default {
   name: "AboutView",
+  components: {Service},
 };
 </script>
 
 <style scoped>
-.content {
-  position: absolute;
+.content-about {
+  margin-top: 4%;
   display: grid;
-  top: 55%;
 }
+
 .about-text {
-  margin-bottom: 190px;
-  margin-left: 300px;
-  margin-right: 300px;
+  display: grid;
+  margin-bottom: 250px;
+  margin-left: 10%;
+  margin-right: 10%;
 }
-.border {
-  width: 700px;
-  margin-left: 500px;
-  margin-right: 500px;
-}
-.contact-service {
-  display: inline-block;
-  margin-left: 50px;
-  margin-right: 50px;
-  height: 200px;
-}
-.link {
-  text-align: start;
-}
-.nav-link:hover {
-  color: gray;
-}
+
 li {
   text-align: start;
 }
