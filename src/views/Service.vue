@@ -111,7 +111,8 @@
 
 <script>
 export default {
-  name: "ServicePage",
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: "Service",
 };
 </script>
 

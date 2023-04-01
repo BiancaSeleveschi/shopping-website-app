@@ -28,15 +28,16 @@
         </p>
       </div>
     </div>
-    <Service />
+    <Footer />
   </div>
 </template>
 
 <script>
-import Service from "@/components/Service";
+import Footer from "@/components/Footer";
 export default {
-  name: "AboutView",
-  components: {Service},
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: "About",
+  components: {Footer},
 };
 </script>
 

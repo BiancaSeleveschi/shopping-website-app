@@ -5,7 +5,7 @@
         <h2 class="create-account-title col-6 col-div d-inline-block">
           CREATE ACCOUNT
         </h2>
-        <router-link to="/sign/in" class="login col-4"
+        <router-link to="/login" class="login col-4"
         >I Already Have It
         </router-link
         >
@@ -83,15 +83,16 @@
         </button>
       </div>
     </div>
-    <Service class="service-in-account"/>
+    <Footer class="service-in-account"/>
   </div>
 </template>
 
 <script>
-import Service from "@/components/Service";
+import Footer from "@/components/Footer";
 export default {
-  name: "AccountItem",
-  components: {Service},
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: "Register",
+  components: {Footer},
   data() {
     return {
       titles: ["-", "MRS.", "MR."],

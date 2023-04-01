@@ -5,6 +5,16 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        user: {
+            genre: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            isLogged: false,
+            cart: [],
+            favorites: [],
+        },
         women: [
             {
                 title: "Ribbed jersey dress with cut-out detail",
@@ -444,16 +454,6 @@ export default new Vuex.Store({
                 id: 37,
             },
         ],
-        // cart: [],
-        // favorites: [],
-        user: {
-            email: '',
-            password: '',
-            isLogged: false,
-            cart: [],
-            favorites: [],
-        },
-        // cartTotalPrice: 0,
     },
     getters: {
         getCart: (state) => state.user.cart,
@@ -462,18 +462,21 @@ export default new Vuex.Store({
             state.user.cart.forEach((item) => {
                 total += item.product.price * item.quantity;
             });
-           return  total.toLocaleString('pt-BR', { maximumFractionDigits: 2})
+            return total.toLocaleString('pt-BR', {maximumFractionDigits: 2})
         },
         getIsLogged: (state) => {
             return state.user.isLogged
         },
-        cartItemCount: (state) => {
+        getCartItemCount: (state) => {
             let total = 0;
             state.user.cart.forEach((item) => {
                 total += item.quantity;
             });
             return total
         },
+        getUserEmail: (state) => {
+            return state.user
+        }
     },
     mutations: {
         INIT_STORE(state) {
@@ -517,7 +520,7 @@ export default new Vuex.Store({
             if (itemCart) {
                 itemCart.quantity++;
                 itemCart.quantityPrice = itemCart.quantity * item.product.price;
-                itemCart.quantityPrice = itemCart.quantityPrice.toFixed(3);
+                itemCart.quantityPrice = parseFloat(itemCart.quantityPrice).toLocaleString('pt-BR', {maximumFractionDigits: 2});
             }
         },
         DECREASE_QUANTITY(state, item) {
@@ -525,11 +528,10 @@ export default new Vuex.Store({
             if (itemCart.quantity > 1) {
                 itemCart.quantity--;
                 itemCart.quantityPrice = itemCart.quantity * item.product.price;
-                itemCart.quantityPrice = itemCart.quantityPrice.toFixed(3);
+                itemCart.quantityPrice = parseFloat(itemCart.quantityPrice).toLocaleString('pt-BR', {maximumFractionDigits: 2});
             }
         },
         SIGN_IN(state, email, password) {
-            // if (email === "test@yahoo.com" && password === "Test123.") {
             state.user = {
                 email: email,
                 password: password,
@@ -538,6 +540,20 @@ export default new Vuex.Store({
                 favorites: [],
             };
         },
+        UPDATE_USER_INFORMATION(state, newFirstname, newLastname, newEmail) {
+            state.user = {
+                firstName: newFirstname,
+                lastName: newLastname,
+                email: newEmail,
+                password: state.user.password,
+                isLogged: true,
+                cart: [],
+                favorites: [],
+            };
+        }  ,
+        CHANGE_PASSWORD(state, newPassword) {
+            state.user.password = newPassword
+        }
         // SET_CART_TOTAL_PRICE(state, couponCode, showCouponCodeAlert, cartTotalPrice) {
         //    let total = 0;
         //     if (couponCode === '') {
@@ -597,6 +613,14 @@ export default new Vuex.Store({
             context.commit("SIGN_IN", email, password);
             context.commit("SIGN_IN");
         },
+        updateUserInfomation(context, newFirstname, newLastname, newEmail) {
+            context.commit("UPDATE_USER_INFORMATION", {newFirstname, newLastname, newEmail});
+            context.commit("UPDATE_USER_INFORMATION");
+        },
+        changePassword(context, newPassword) {
+            context.commit("CHANGE_PASSWORD", newPassword);
+            context.commit("CHANGE_PASSWORD");
+        }
         // setCartTotalPrice(context, { couponCode, showCouponCodeAlert,cartTotalPrice}) {
         //     context.commit("SET_CART_TOTAL_PRICE", { couponCode, showCouponCodeAlert,cartTotalPrice});
         //     context.commit("SET_CART_TOTAL_PRICE");

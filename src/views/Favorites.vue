@@ -1,16 +1,17 @@
 <template>
   <div class="favorite-page">
     <h1 class="title text-light">Favorite products</h1>
-    <ItemCard :products="this.$store.state.user.favorites" :image="image"/>
+    <CardItem :products="this.$store.state.user.favorites" :image="image"/>
   </div>
 </template>
 
 <script>
-import ItemCard from "@/components/ItemCard";
+import CardItem from "@/components/CardItem";
 
 export default {
-  name: "FavoritesPage",
-  components: {ItemCard},
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: "Favorites",
+  components: {CardItem},
   data() {
     return {
       image: "black.jpg",

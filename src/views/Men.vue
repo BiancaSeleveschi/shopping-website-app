@@ -1,19 +1,19 @@
 <template>
   <div>
     <h1 class="title text-dark fw-bold">Men</h1>
-    <ItemCard :products="this.$store.state.men" :image="image"/>
-    <Service class="cls"/>
+    <CardItem :products="this.$store.state.men" :image="image"/>
+    <Footer class="cls"/>
   </div>
 </template>
 
 <script>
-import ItemCard from "@/components/ItemCard";
-import Service from "@/components/Service";
+import CardItem from "@/components/CardItem";
+import Footer from "@/components/Footer";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Men",
-  components: {Service, ItemCard},
+  components: {Footer, CardItem},
   data() {
     return {
       image: "menn.jpg",

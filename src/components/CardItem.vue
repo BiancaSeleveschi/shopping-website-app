@@ -69,7 +69,7 @@
 
 <script>
 export default {
-  name: "ItemCard",
+  name: "CardItem",
   props: ["products", 'image'],
   data() {
     return {

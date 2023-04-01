@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import Service from "@/components/Service";
+import Service from "@/components/Footer";
 
 export default {
-  name: "PasswordPage",
+  name: "PasswordReset",
   components: {Service},
   data() {
     return {

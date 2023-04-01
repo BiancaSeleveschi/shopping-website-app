@@ -1,13 +1,13 @@
 <template>
-  <div class="outer-card-login" @click="toggleLoginButton">
+  <div class="outer-card-login " @click="toggleLoginButton">
     <div class="card-login border border-dark" @click.stop>
       <div class="card-close" @click="toggleLoginButton">X</div>
-      <router-link to="/sign/in" class="card-body d-block m-auto">
+      <router-link to="/login" class="card-body d-block m-auto">
         <div class="p-2" id="sign-in-div" @click="toggleLoginButton">
           Sign In
         </div>
       </router-link>
-      <router-link to="/new-account" class="card-footer">
+      <router-link to="/register" class="card-footer">
         <div class="p-2" id="create-account" @click="toggleLoginButton">
           Create account
         </div>
@@ -19,7 +19,7 @@
 <script>
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
-  name: "Login",
+  name: "LoginForm",
   methods: {
     toggleLoginButton() {
       this.$emit("toggleLoginButton");
@@ -37,22 +37,25 @@ export default {
   width: 100%;
   height: 100%;
   top: 70px;
-  z-index: 1;
+  z-index: 2;
 }
+
 .card-login {
   display: flex;
   flex-direction: column;
   position: relative;
-  width: 17%;
-  height: 23%;
+  width:300px;
+  height: 200px;
   background: #ffffff;
   transform: translateX(-4%);
 }
+
 .card-body {
   text-decoration: none;
   border: none;
 }
-.outer-card-login .card-login:before {
+
+.card-login:before {
   content: "";
   position: fixed;
   height: 0px;
@@ -65,6 +68,7 @@ export default {
   transform: rotate(90deg);
   z-index: -6;
 }
+
 .card-close {
   display: grid;
   font-size: 22px;
@@ -73,15 +77,7 @@ export default {
   justify-content: end;
   right: 5px;
 }
-#sign-in-div {
-  width: 150px;
-  background-color: #006b6e;
-  color: #ffffff;
-}
-#sign-in-div:hover {
-  background-color: #939393;
-  color: #000000;
-}
+
 .card-footer {
   position: fixed;
   bottom: 0;
@@ -93,6 +89,7 @@ export default {
   background-color: #006b6e;
   color: black;
 }
+
 #create-account {
   display: block;
   bottom: 35px;
@@ -104,8 +101,21 @@ export default {
   background-color: #000000;
   color: #ffffff;
 }
+
 #create-account:hover {
   background-color: #939393;
   color: black;
+}
+
+#sign-in-div {
+  width: 150px;
+  margin-top:-7px;
+  background-color: #006b6e;
+  color: #ffffff;
+}
+
+#sign-in-div:hover {
+  background-color: #939393;
+  color: #000000;
 }
 </style>

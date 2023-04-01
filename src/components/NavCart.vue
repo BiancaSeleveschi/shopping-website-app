@@ -22,16 +22,6 @@ import CartItem from "@/components/CartItem";
 export default {
   name: "NavCart",
   components: {CartItem},
-  data() {
-    return {
-      cartTotalPrice: this.$store.getters.getCartTotalPrice,
-    };
-  },
-  computed: {
-    // cartTotalPrice() {
-    //   return this.$store.getters.getCartTotalPrice;
-    // },
-  },
   methods: {
     toggleCartButton() {
       this.$emit("toggleCart");
@@ -49,18 +39,18 @@ export default {
   width: 100%;
   height: 100%;
   top: 70px;
-  z-index: 1;
+  z-index: 2;
 }
 
 .outer-card .cart {
   display: flex;
   flex-direction: column;
-  position: relative;
+  position: absolute;
   width: 360px;
   height: 450px;
   background-color: #dedede;
   transform: translateX(-4%);
-  z-index: 1;
+  z-index: 2;
 
 }
 
@@ -75,7 +65,7 @@ export default {
   top: 0;
 }
 
-.outer-card .cart .cart-header:before {
+.cart-header:before {
   content: "";
   position: fixed;
   height: 0px;

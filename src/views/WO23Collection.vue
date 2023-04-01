@@ -5,18 +5,18 @@
       ready-to-wear collection,designed for modern, confident women.
     </h4>
     <h1 class="title-wo23 text-dark fw-bold">WO23 Collection</h1>
-    <ItemCard :products="womenCollection" :image="image"/>
-    <Service/>
+    <CardItem :products="womenCollection" :image="image"/>
+    <Footer/>
   </div>
 </template>
 
 <script>
-import ItemCard from "@/components/ItemCard";
-import Service from "@/components/Service";
+import CardItem from "@/components/CardItem";
+import Footer from "@/components/Footer";
 
 export default {
   name: "WCollection",
-  components: {Service, ItemCard},
+  components: {Footer, CardItem},
   data() {
     return {
       image: "woo23.webp",

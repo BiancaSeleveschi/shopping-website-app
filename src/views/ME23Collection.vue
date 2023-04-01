@@ -6,18 +6,18 @@
       aesthetic.
     </h4>
     <h1 class="title-me23  fw-bold">ME23 Collection</h1>
-    <ItemCard :products="menCollection" :image="image"/>
-    <Service/>
+    <CardItem :products="menCollection" :image="image"/>
+    <Footer/>
   </div>
 </template>
 
 <script>
-import ItemCard from "@/components/ItemCard";
-import Service from "@/components/Service";
+import CardItem from "@/components/CardItem";
+import Footer from "@/components/Footer";
 
 export default {
   name: "MenCollection",
-  components: {Service, ItemCard},
+  components: {Footer, CardItem},
   data() {
     return {
       image: "men23.webp",

@@ -10,7 +10,7 @@
         <h3 class="item-product-title">{{ item.product.title }}</h3>
         <p class="size mt-3 ">Size: <span id="size"> {{ item.size }}</span></p>
         <p class="quantity " type="number">Quantity: {{ item.quantity }}
-        <p class="price ">${{ item.quantityPrice }}</p>
+        <p class="price">${{ item.quantityPrice }}</p>
       </div>
       <div class="cancel px-3 ">
         <div @click.prevent="removeProductFromCart(item)">
@@ -38,21 +38,16 @@
         </svg>
         Back to shopping
       </router-link>
-      <button v-if="!this.$store.state.user.isLogged" class="btn checkout-btn" @click="continueToCheckout">Continue to
-        checkout
+      <button class="py-2 px-4 " id="checkout-btn" @click="continueToCheckout">
+        Continue to checkout
       </button>
-      <div v-else>
-        <router-link to="/checkout" class="footer-checkout">
-          <div class="btn checkout-btn">CHECKOUT</div>
-        </router-link>
-      </div>
     </div>
-    <div v-if="isContinueClicked" class="login-checkout mt-5 m-auto p-4">
+    <div v-show="!isLoggedIn && isContinueToCheckoutClicked" class="login-checkout mt-5 m-auto p-4">
       <div class="center">
-        <router-link to="/sign/in" class="text-decoration-none">
+        <router-link to="/login" class="text-decoration-none">
           <div class="login m-auto mb-4 mt-3 p-2 ">SIGN IN</div>
         </router-link>
-        <router-link to="/new-account" class="text-decoration-none">
+        <router-link to="/register" class="text-decoration-none">
           <div class="login m-auto mb-4 mt-3 p-2 ">CREATE ACCOUNT</div>
         </router-link>
         <router-link to="/order" class="text-decoration-none">
@@ -60,34 +55,40 @@
         </router-link>
       </div>
     </div>
-
-    <Service class="service-comp"/>
+    <Footer class="service-comp"/>
   </div>
 </template>
 
 <script>
-// import CartItem from "@/components/CartItem";
-import Service from "@/components/Service";
+import Footer from "@/components/Footer";
 
 export default {
-  // components: { CartItem },
-  name: "CheckoutPage",
-  components: {Service},
+  name: "OrderSummary",
+  components: {Footer},
   data() {
     return {
       cart: this.$store.state.user.cart,
-      cartTotalPrice: this.$store.getters.getCartTotalPrice,
-      isContinueClicked: false,
+      isContinueToCheckoutClicked: false,
+      isLoggedIn: this.$store.state.user.isLogged,
       // isUserLoggedIn: this.$store.state.user.isLogged,
     };
+  },
+  computed: {
+    cartTotalPrice() {
+      return this.$store.getters.getCartTotalPrice
+    }
   },
   methods: {
     removeProductFromCart(product) {
       this.$store.dispatch("removeProductFromCart", product);
     },
     continueToCheckout() {
-      this.isContinueClicked = true;
-    }
+      if (this.isLoggedIn) {
+        this.$router.push('/checkout')
+      } else {
+        this.isContinueToCheckoutClicked = true;
+      }
+    },
   },
 }
 ;
@@ -95,10 +96,12 @@ export default {
 
 <style scoped>
 .order-summary-page {
-  font-family: "Magisho", sans-serif;
+  font-family: "Malgun Gothic Semilight", sans-serif;
+  position: relative;
+  display: grid;
 }
 
-.order-summary-page .title {
+.title {
   margin-top: 120px;
   margin-bottom: 100px;
   letter-spacing: 0.1em;
@@ -106,7 +109,7 @@ export default {
 }
 
 
-.order-summary-page .cart-item {
+.cart-item {
   width: 60%;
   border-bottom: solid 1px #333;
   display: grid;
@@ -115,11 +118,11 @@ export default {
   background-color: #ffffff;
 }
 
-.order-summary-page .cart-item:hover {
+.cart-item:hover {
   background-color: #e3e3e3;
 }
 
-.order-summary-page .service-comp {
+.service-comp {
   margin-top: 30%;
 }
 
@@ -184,6 +187,7 @@ export default {
 }
 
 .summary-card {
+  display: grid;
   width: 60%;
   border-bottom: solid 1px #333;
   display: grid;
@@ -202,20 +206,19 @@ export default {
   color: #656565;
 }
 
-.checkout-btn {
+#checkout-btn {
   display: grid;
   background-color: black;
   color: white;
   border-radius: 0;
   margin-left: 81%;
-  width: 18%;
-  height: 100%;
+  width: max-content;
+  border: 1px solid black;
 }
 
-.checkout-btn:hover {
+#checkout-btn:hover {
   background-color: white;
   color: black;
-  border: 1px solid black;
 }
 
 .login-checkout {

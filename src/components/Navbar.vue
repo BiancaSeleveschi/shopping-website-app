@@ -11,15 +11,15 @@
             <router-link class="nav-link" to="/about">About</router-link>
           </div>
           <div class="right">
-            <div @click="openProfile">
+            <div v-if="!isNotLoggedIn" @click="showLoginBox" class="navbar-login">Login</div>
+            <div v-else @click="openProfile" id="profile-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                   height="16" fill="currentColor" class="bi bi-person-lines-fill mx-3"
+                   height="16" fill="currentColor" class="bi bi-person-lines-fill"
                    viewBox="0 0 16 16">
                 <path
                     d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
               </svg>
             </div>
-            <div @click="showLoginBox" class="navbar-login">Login</div>
             <router-link to="/favorites">
               <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -57,75 +57,66 @@
                     d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"
                 />
               </svg>
-              <span class="notification-counter fw-bold">{{ this.$store.getters.cartItemCount }}</span>
+              <span class="notification-counter fw-bold">{{ this.$store.getters.getCartItemCount }}</span>
             </div>
           </div>
         </div>
       </div>
     </nav>
     <div v-show="showLogin">
-      <Login @toggleLoginButton="showLogin = false"/>
+      <LoginForm @toggleLoginButton="showLogin = false"/>
     </div>
     <div v-show="showCartDetails">
       <NavCart @toggleCart="showCartDetails = false"/>
     </div>
-    <div v-show="showProfile" class="profile">
-      <p class="mt-4 bg-secondary text-black">{{ personProfile }}</p>
+    <div v-show="showProfile" id="profile-div">
+      <NavProfile/>
     </div>
   </div>
 </template>
 
 <script>
 import NavCart from "@/components/NavCart";
-import Login from "@/components/Login";
+import LoginForm from "@/components/LoginForm";
+import NavProfile from "@/components/NavProfile";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Navbar",
-  components: {NavCart, Login},
+  components: {NavProfile, NavCart, LoginForm},
   data() {
     return {
       scrollPosition: null,
       productName: "",
       showCartDetails: false,
+      isNotLoggedIn: true,
       showLogin: false,
       showProfile: false,
-      profile: ''
+      profile: '',
+      email: 'eee',
     };
   },
   mounted() {
     window.addEventListener("scroll", this.updateScroll);
+    console.log(this.$store.state.user.email)
+    // console.log(this.$store.state.user.email)
+  },
+  updated() {
+    console.log(this.userEmail)
   },
   computed: {
+    userEmail() {
+      return this.$store.state.user.email
+    },
+    isLoggedIn() {
+      return this.$store.state.user.isLogged
+    },
     personProfile() {
       if (this.$store.state.user.isLogged) {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         return this.$store.state.user.email
       } else {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         return "You're not logged"
       }
-    },
-    // cartItemCount() {
-    //   return this.$store.state.user.cart.reduce((count, item) => {
-    //     if (item.size === this.size && item.product.id === this.product.id) {
-    //       return count + item.quantity;
-    //     } else {
-    //       return count;
-    //     }
-    //   }, 0);
-    // },
-    cartItemCount2() {
-      let uniqueItems = {};
-      let count = 0;
-      for (let item in this.$store.state.user.cart) {
-        let itemId = item.product.id + item.size;
-        if (!uniqueItems[itemId]) {
-          uniqueItems[itemId] = true;
-          count += 1;
-        }
-      }
-      return count;
     },
   },
   methods: {
@@ -169,12 +160,16 @@ export default {
   margin: 0;
   padding: 0;
   transition: 0.3s all linear;
-  z-index: 1;
+  z-index: 2;
 }
 
 #navbar:hover {
   background: #000000;
   color: white;
+}
+
+#profile-icon {
+  cursor: pointer;
 }
 
 .navbar-brand {
@@ -222,27 +217,26 @@ export default {
   text-decoration: underline;
 }
 
-.profile {
+#profile-div {
   position: fixed;
   display: flex;
   flex-wrap: wrap;
-  justify-content: right;
   border: 1px solid grey;
-  top: 70px;
-  right: 2%;
-  z-index: 1;
+  top: 68px;
+  right: 30px;
+  z-index: 2;
   flex-direction: column;
-  width: 350px;
-  height: 100px;
+  width: 300px;
+  height: 280px;
   background-color: #ffffff;
 }
 
-.profile:before {
+#profile-div:before {
   content: "";
   position: fixed;
   height: 0;
   width: 0;
-  right: 195px;
+  right: 148px;
   top: 40px;
   border-width: 15px;
   border-color: transparent white transparent transparent;

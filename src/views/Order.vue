@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import Service from "@/components/Service";
+import Service from "@/components/Footer";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names

@@ -7,17 +7,17 @@
         type="text"
         class="p-1 rounded rounded-2 top input"
     />
-    <ItemCard :products="filteredProducts" :image="image"/>
+    <CardItem :products="filteredProducts" :image="image"/>
   </div>
 </template>
 
 <script>
-import ItemCard from "@/components/ItemCard";
+import CardItem from "@/components/CardItem";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Search",
-  components: {ItemCard},
+  components: {CardItem},
   data() {
     return {
       searchWord: "",

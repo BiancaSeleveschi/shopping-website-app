@@ -38,7 +38,7 @@
         </p>
         <button class="d-flex m-auto my-5 login" @click="signIn( email, password)">Login</button>
         <router-link
-            to="/new-account"
+            to="/register"
             class="card-footer-account d-flex m-auto"
         >
           <div class="p-2" id="create-account-div">
@@ -47,17 +47,17 @@
         </router-link>
       </div>
     </div>
-    <Service/>
+    <Footer/>
   </div>
 </template>
 
 <script>
-import Service from "@/components/Service";
+import Footer from "@/components/Footer";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Login",
-  components: {Service},
+  components: {Footer},
   data() {
     return {
       hasAccount: false,
@@ -70,8 +70,15 @@ export default {
   },
   mounted() {
     console.log(this.$store.state.user.isLogged)
+    // console.log(this.email )
   },
+  // updated() {
+  //   console.log(this.userEmail )
+  // },
   computed: {
+    userEmail() {
+      return this.email
+    },
     passwordFieldType() {
       return this.showPassword ? "text" : "password";
     },
@@ -93,8 +100,9 @@ export default {
       this.isAuthInvalid = this.email !== "test@yahoo.com" || this.password !== "Test123."
       if (!this.isAuthInvalid) {
         this.$store.dispatch("signIn", {
-          email: this.email,
+          email: this.userEmail,
           password: this.password,
+          isLoggedIn: true,
         });
         this.$router.push('/')
       } else {
