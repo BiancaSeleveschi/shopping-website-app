@@ -2,7 +2,7 @@
   <div>
     <h1 class="title-women text-dark fw-bold">Women</h1>
     <CardItem :products="this.$store.state.women" :image="image"/>
-    <Footer/>
+    <Footer class="footer"/>
   </div>
 </template>
 
@@ -37,4 +37,9 @@ export default {
   display: grid;
   font-family: "JetBrains Mono Light", sans-serif;
 }
+/*.footer {*/
+/*  margin-top: 70%;*/
+/*  width: 100%;*/
+/*  position: absolute;*/
+/*}*/
 </style>

@@ -38,7 +38,7 @@
               />
               <div v-show="isEmailAddressInvalid" class="alert-message">Enter a valid email address</div>
             </div>
-            <button class="px-3 py-1 mb-5 save-button" @click="updateUserInfomation">Save</button>
+            <button class="btn btn-primary mb-5 save-button" @click="updateUserInformation">Save</button>
           </div>
 
           <div class="border border-1 bg-light mx-5">
@@ -76,7 +76,7 @@
               />
               <div v-show="isInvalidConfirmedPassword" class="alert-message">{{ alertInvalidConfirmedPassword }}</div>
             </div>
-            <button class="px-3 py-1 mb-5 save-button" @click="changePassword">Save</button>
+            <button class="btn btn-primary mb-5 save-button" @click="changePassword">Save</button>
           </div>
         </div>
       </div>
@@ -121,7 +121,7 @@ export default {
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
     },
-    updateUserInfomation() {
+    updateUserInformation() {
       this.isEmailAddressInvalid = !this.newEmail.includes("@");
       if (!this.isEmailAddressInvalid && this.newEmail !== 'test@') {
         this.$store.dispatch('updateUserInformation', {
@@ -221,7 +221,6 @@ export default {
   margin-top: 70%;
   width: 100%;
   position: absolute;
-
 }
 
 .account-input {
@@ -242,9 +241,5 @@ export default {
 
 .save-button {
   margin-left:780px;
-  background-color: black;
-  color: white;
-  width: max-content;
-  border: none;
 }
 </style>

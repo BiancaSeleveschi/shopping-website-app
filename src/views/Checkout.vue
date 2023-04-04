@@ -1,134 +1,10 @@
 <template>
   <div class="checkout-page">
     <h1 class="title">Checkout</h1>
-    <div v-if="(isLoggedIn && !addressIsSaved) || (!isLoggedIn && !addressIsSaved)">
-      <div class="m-auto my-4 border border-2 w-50 m-auto p-4 rounded rounded-4">
-        <h4 class=" py-5" id="address-title">Add your address</h4>
-        <div class=" w-50 col-div mb-5 d-block m-auto">
-          <span class=" address-pgf ">Country*</span>
-          <input
-              v-model="country"
-              type="text"
-              class="w-100 address-input"
-              required
-          />
-          <span class="address-alert" v-show="isCountryIncomplete">Please enter a country</span>
-        </div>
-        <div class=" w-50 col-div mb-5 d-block m-auto">
-          <p class="address-pgf">Town/City*</p>
-          <input
-              v-model="city"
-              type="text"
-              class="w-100 address-input"
-              required
-          />
-          <span class="address-alert" v-show="isCityIncomplete">Please enter a city/town</span>
-        </div>
-        <div class=" w-50 col-div mb-5 d-block m-auto">
-          <p class="address-pgf">Street*</p>
-          <input
-              v-model="street"
-              type="text"
-              class="w-100 address-input"
-              required
-          />
-          <span class="address-alert" v-show="isStreetIncomplete">Enter a street</span>
-        </div>
-        <div class=" w-50 col-div mb-5 d-block m-auto">
-          <p class="address-pgf">Number*</p>
-          <input
-              v-model="number"
-              type="number"
-              class="w-100 address-input"
-              required
-          />
-          <span class="address-alert" v-show="isNumberIncomplete">Enter a house/block number</span>
-        </div>
-        <div class=" w-50 col-div mb-5 d-block m-auto">
-          <p class="address-pgf">Block staircase, floor, apartment</p>
-          <input
-              v-model="blockStaircase"
-              type="text"
-              class="w-100 address-input"
-          />
-        </div>
-        <div class=" w-50 col-div mb-5 d-block m-auto">
-          <p class="address-pgf">Postcode*</p>
-          <input
-              v-model="postcode"
-              type="number"
-              class="w-100 address-input"
-              required
-          />
-          <span class="address-alert" v-show="isPostcodeIncomplete">Please enter a postcode</span>
-        </div>
-        <button @click="saveAddress" class="btn btn-primary mb-5">Save</button>
-      </div>
-    </div>
-    <div v-else id="address-form" class="px-5 m-auto my-4 border border-2 w-50 m-auto p-4 rounded rounded-4">
-      <h5 class=" px-4 my-address">My address</h5>
-      <div class="edit-card" @click="editAddress">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
-             viewBox="0 0 16 16">
-          <path
-              d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-        </svg>
-      </div>
-      <p class=" px-4 city-address">{{ city }}, {{ country }}</p>
-      <p class=" px-4 " id="street-number"> {{ street }},{{ number }}, {{ blockStaircase }} </p>
-      <p class=" px-4" id="postcode">{{ postcode }}</p>
-    </div>
-
-    <div v-if="!isBillingAddressSaved " class="m-auto my-4 border border-2 w-50 m-auto p-4 rounded rounded-4">
-      <h4 class="billing-address p-4" id="billing-address-title">Billing address</h4>
-      <p class="billing-address ">Enter your billing address</p>
-      <div class="w-50 col-div mb-5 d-block m-auto">
-        <p class="address-pgf">Address*</p>
-        <input
-            v-model="billingAddress"
-            type="text"
-            class="w-100 address-input"
-            required
-        />
-        <span class="address-alert" v-show="isBillingAddressIncomplete">Please enter an address</span>
-      </div>
-      <div class=" w-50 col-div mb-5 d-block m-auto">
-        <p class="address-pgf">Town/City*</p>
-        <input
-            v-model="townBillingAddress"
-            type="text"
-            class="w-100 address-input"
-            required
-        />
-        <span class="address-alert" v-show="isTownBillingAddressIncomplete">Enter a town/city</span>
-      </div>
-      <div class=" w-50 col-div mb-5 d-block m-auto">
-        <p class="address-pgf">Postcode*</p>
-        <input
-            v-model="postcodeBillingAddress"
-            type="number"
-            class="w-100 address-input"
-            required
-        />
-        <span class="address-alert" v-show="isPostcodeBillingAddressIncomplete">Enter a postcode</span>
-      </div>
-      <button @click="saveBillingAddress" class="btn btn-primary mb-5">Save</button>
-    </div>
-    <div v-else id="billing-address-card" class="px-5 m-auto my-4 border border-2 w-50 m-auto p-4 rounded rounded-4">
-      <h5 class=" px-4 my-address">Billing address</h5>
-      <div class="edit-card" @click="editBillingAddress">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
-             viewBox="0 0 16 16">
-          <path
-              d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-        </svg>
-      </div>
-      <p class=" px-4 city-address">{{ billingAddress }}, {{ townBillingAddress }}</p>
-      <p class=" px-4" id="postcode-billing">{{ postcodeBillingAddress }}</p>
-    </div>
-
+    <AddressForm :address="address" :isAddressSavedInitial="false"/>
+    <BillingAddressForm :address="billingAddress" :isBillingAddressSavedInitial="false" />
     <div class="summary-card border border-2 m-auto w-50 pt-3 px-5 rounded rounded-4">
-      <div class="p-4 m-auto shipping ">
+      <div class="p-4 m-auto shipping">
         <h4 class="mb-5 summary-title">Shipping method</h4>
         <p v-if="showShippingMethodAlert" class="shipping-method-alert">Please select a shipping method</p>
         <div><input v-model="isCheckboxStandardChecked" @click="selectShippingMethod" type="checkbox" name="example"
@@ -196,10 +72,10 @@
           <div v-else>
             <span class="coupon-code-span" @click="enterCouponCode">- Enter coupon code</span>
             <input v-model="couponCode" class="coupon-code-input " type="text" v-on:keyup.enter='applyCouponCode'/>
-            <button @click="applyCouponCode" class="coupon-code-button">{{
-                couponCode === '' ? 'Apply' : 'Remove'
-              }}
+            <button v-if="!isCouponCodeApplied" @click="applyCouponCode"
+                    class="coupon-code-button">Apply
             </button>
+            <button v-else class="coupon-code-button" @click="removeCoupon">Remove</button>
           </div>
           <p v-if="isCouponCodeInvalid" class="coupon-code-alert">The coupon code is not valid.</p>
         </div>
@@ -219,7 +95,7 @@
           </svg>
           Back to shopping
         </router-link>
-        <router-link to="payment" class="p-1" id="footer-payment" @click="goToCheckout">Pay Now</router-link>
+        <button to="payment" class="p-1" id="footer-payment" @click="goToCheckout">Pay Now</button>
       </div>
     </div>
     <Footer class="service-comp "/>
@@ -228,24 +104,31 @@
 
 <script>
 import Footer from "@/components/Footer";
+import AddressForm from "@/components/AddressForm";
+import BillingAddressForm from "@/components/BillingAddressForm";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Checkout",
-  components: {Footer},
+  components: { BillingAddressForm, AddressForm, Footer},
   data() {
     return {
-      country: '',
-      city: '',
-      street: '',
-      number: '',
-      blockStaircase: '',
-      postcode: '',
-      billingAddress: '',
-      townBillingAddress: '',
-      postcodeBillingAddress: '',
+      address: {
+        country: '',
+        city: '',
+        street: '',
+        number: '',
+        blockStaircase: '',
+        postcode: '',
+      },
+      billingAddress: {
+        address: '',
+        town: '',
+        postcode: '',
+      },
       cart: this.$store.state.user.cart,
       isLoggedIn: this.$store.state.user.isLogged,
+      isAddressSavedFormOpened2: true,
       showEnterCouponCode: false,
       isCouponCodeInvalid: false,
       showShippingMethodAlert: false,
@@ -256,15 +139,7 @@ export default {
       isCheckboxCreditCardChecked: false,
       isCheckboxAmazonPayChecked: false,
 
-      isCountryIncomplete: false,
-      isCityIncomplete: false,
-      isStreetIncomplete: false,
-      isNumberIncomplete: false,
-      isPostcodeIncomplete: false,
-      isBillingAddressIncomplete: false,
-      isTownBillingAddressIncomplete: false,
-      isPostcodeBillingAddressIncomplete: false,
-      isBillingAddressSaved: false,
+      isCouponCodeApplied: false,
       addressIsSaved: false,
       couponCode: '',
       subtotal: this.$store.getters.getCartTotalPrice,
@@ -272,6 +147,10 @@ export default {
     };
   },
   computed: {
+    isAddressSavedFormOpened() {
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      return this.isAddressSavedFormOpened2 = !this.isAddressSavedFormOpened2;
+    },
     expressShippingPrice() {
       let expressShippingPrice = 35;
       return expressShippingPrice.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
@@ -389,13 +268,21 @@ export default {
         this.isCouponCodeInvalid = false;
         total = price - (price * 0.1)
       }
+      this.isCouponCodeApplied = true;
       return total
+    },
+    removeCoupon() {
+      this.couponCode = "";
+      if (this.couponCode === "") {
+        this.isCouponCodeInvalid = false;
+      }
+      this.isCouponCodeApplied = false;
     },
     goToCheckout() {
       this.showShippingMethodAlert = !this.isCheckboxStandardChecked && !this.isCheckboxExpressChecked
       this.showPaymentMethodAlert = !this.isCheckboxAlipayChecked && !this.isCheckboxCreditCardChecked && !this.isCheckboxAmazonPayChecked
       if (!this.showShippingMethodAlert && !this.showPaymentMethodAlert) {
-        this.$router.push('/checkout')
+        this.$router.push('/payment')
       }
     }
   },

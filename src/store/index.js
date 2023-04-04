@@ -5,16 +5,6 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        user: {
-            genre: '',
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-            isLogged: false,
-            cart: [],
-            favorites: [],
-        },
         women: [
             {
                 title: "Ribbed jersey dress with cut-out detail",
@@ -454,6 +444,43 @@ export default new Vuex.Store({
                 id: 37,
             },
         ],
+        user: {
+            genre: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            isLogged: false,
+            cart: [],
+            favorites: [],
+            addresses: [
+                {
+                    city: 'Cluj-Napoca',
+                    country: 'Romania',
+                    street: 'V. Bologa',
+                    number: '7',
+                    blockStaircase: '',
+                    postcode: '400567',
+                },
+            ],
+            billingAddresses: [
+                {
+                    address: 'Romania',
+                    town: 'Baia-Mare',
+                    postcode: '447221',
+                }, {
+                    address: 'Romania',
+                    town: 'Cluj-Napoca',
+                    postcode: '123543',
+                }
+            ],
+            cards: {
+                cardholderName: '',
+                cardNumber: '',
+                expirationDate: '',
+                cvv: '',
+            }
+        },
     },
     getters: {
         getCart: (state) => state.user.cart,
@@ -550,10 +577,16 @@ export default new Vuex.Store({
                 cart: [],
                 favorites: [],
             };
-        }  ,
+        },
         CHANGE_PASSWORD(state, newPassword) {
             state.user.password = newPassword
-        }
+        },
+        REMOVE_ADDRESS(state, index) {
+            state.user.addresses.splice(index)
+        },
+        REMOVE_BILLING_ADDRESS(state, index) {
+            state.user.billingAddresses.splice(index)
+        },
         // SET_CART_TOTAL_PRICE(state, couponCode, showCouponCodeAlert, cartTotalPrice) {
         //    let total = 0;
         //     if (couponCode === '') {
@@ -583,6 +616,25 @@ export default new Vuex.Store({
         //         isCheckboxAlipayChecked = false
         //     }
         // }
+        SAVE_ADDRESS(state, address) {
+            state.user.addresses.push(address)
+        },
+        SAVE_BILLING_ADDRESS(state, address) {
+            state.user.billingAddresses.push(address)
+        },
+        // UPDATE_ADDRESS(state, address, index) {
+        //     state.user.addresses[index] = {
+        //         city: address.city,
+        //         country: address.country,
+        //         street: address.street,
+        //         number: address.number,
+        //         blockStaircase: address.blockStaircase,
+        //         postcode: address.postcode,
+        //     }
+        // }
+        UPDATE_ADDRESS(state,  { address, index }) {
+            state.user.addresses[index] = address;
+        },
     },
     actions: {
         addToCart(context, item) {
@@ -613,13 +665,43 @@ export default new Vuex.Store({
             context.commit("SIGN_IN", email, password);
             context.commit("SIGN_IN");
         },
-        updateUserInfomation(context, newFirstname, newLastname, newEmail) {
+        updateUserInformation(context, newFirstname, newLastname, newEmail) {
             context.commit("UPDATE_USER_INFORMATION", {newFirstname, newLastname, newEmail});
             context.commit("UPDATE_USER_INFORMATION");
         },
         changePassword(context, newPassword) {
             context.commit("CHANGE_PASSWORD", newPassword);
             context.commit("CHANGE_PASSWORD");
+        },
+        removeAddress(context, index) {
+            context.commit("REMOVE_ADDRESS", index);
+            context.commit("REMOVE_ADDRESS");
+        },
+        removeBillingAddress(context, index) {
+            context.commit("REMOVE_BILLING_ADDRESS", index);
+            context.commit("REMOVE_BILLING_ADDRESS");
+        },
+        // saveAddress(context, {index, country, city, street, number, blockStaircase, postcode}) {
+        //     context.commit("SAVE_ADDRESS", {index, country, city, street, number, blockStaircase, postcode});
+        //     context.commit("SAVE_ADDRESS");
+        // },
+        saveAddress(context, address) {
+            context.commit("SAVE_ADDRESS", address);
+            context.commit("SAVE_ADDRESS");
+        }, saveBillingAddress(context, address) {
+            context.commit("SAVE_BILLING_ADDRESS", address);
+            context.commit("SAVE_BILLING_ADDRESS");
+        },
+        // updateAddress(context, address, index) {
+        //     context.commit("UPDATE_ADDRESS", address, index);
+        //     context.commit("UPDATE_ADDRESS");
+        // }
+        updateBillingAddress(context,  { billingAddress, index }) {
+            context.commit("UPDATE_BILLING_ADDRESS", { address: billingAddress, index });
+            context.commit("UPDATE_BILLING_ADDRESS");
+        },updateAddress(context,  { deliveryAddress, index }) {
+            context.commit("UPDATE_ADDRESS", { address: deliveryAddress, index });
+            context.commit("UPDATE_ADDRESS");
         }
         // setCartTotalPrice(context, { couponCode, showCouponCodeAlert,cartTotalPrice}) {
         //     context.commit("SET_CART_TOTAL_PRICE", { couponCode, showCouponCodeAlert,cartTotalPrice});
