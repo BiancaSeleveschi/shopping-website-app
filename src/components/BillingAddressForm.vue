@@ -33,19 +33,20 @@
         <span class="address-alert" v-show="isPostcodeBillingAddressIncomplete">Enter a postcode</span>
       </div>
       <div>
-        <button @click="saveBillingAddress(billingAddress)" data-bs-dismiss="alert" class="btn btn-primary mb-5">Save
+        <button @click="saveBillingAddress" data-bs-dismiss="alert" class="btn btn-primary mb-5">Save
         </button>
       </div>
     </div>
+
     <div v-if="showAlertBillingAddressSaved"
-             class=" alert alert-success fade show active" :class="{ hidden: showAlert }">
+         class=" alert alert-success fade show active" :class="{ hidden: showAlert }">
       The billing address have been saved.
 
     </div>
 
     <div v-else-if="isBillingAddressSaved && isEditActive"
          class="m-auto bg-white my-4 border border-2 w-50 m-auto p-4 rounded rounded-4">
-      <h4 class="billing-address p-4" id="billing-address-title">Billing address</h4>
+      <h4 class="billing-address p-4">Billing address</h4>
       <div class="w-50 col-div mb-5 d-block m-auto">
         <p class="address-pgf">Address*</p>
         <input
@@ -100,6 +101,8 @@
         <p class=" px-4 address" id="postcode">{{ billingAddress.postcode }}</p>
       </div>
     </div>
+
+
   </div>
 </template>
 
@@ -111,12 +114,14 @@ export default {
   data() {
     return {
       billingAddress: this.address,
-      billingAddressInitial: {
-        address: '',
-        town: '',
-        postcode: '',
-      },
+      // billingAddressInitial: {
+      //   address: '',
+      //   town: '',
+      //   postcode: '',
+      // },
       showAlert: true,
+      billingAddressesWithoutAccount: [],
+      isLoggedIn: this.$store.state.user.isLogged,
       indexAddressToEdit: this.index,
       isBillingAddressIncomplete: false,
       isTownBillingAddressIncomplete: false,
@@ -127,36 +132,37 @@ export default {
       isBillingAddressSavedInitial2: this.isBillingAddressSavedInitial,
     }
   },
+
   methods: {
     saveBillingAddress() {
+      this.billingAddress = {
+        address: this.billingAddress.address,
+        town: this.billingAddress.town,
+        postcode: this.billingAddress.postcode,
+      }
       this.isBillingAddressIncomplete = this.billingAddress.address === '';
       this.isTownBillingAddressIncomplete = this.billingAddress.town === '';
       this.isPostcodeBillingAddressIncomplete = this.billingAddress.postcode === '';
       this.isBillingAddressSaved = !this.isBillingAddressIncomplete
           && !this.isTownBillingAddressIncomplete && !this.isPostcodeBillingAddressIncomplete;
-      if (this.isBillingAddressSaved) {
-        this.billingAddressInitial = {
-          address: this.billingAddress.address,
-          town: this.billingAddress.town,
-          postcode: this.billingAddress.postcode,
-        }
+      if (this.isBillingAddressSaved && this.isLoggedIn) {
         this.$store.dispatch('saveBillingAddress', this.billingAddress)
+        this.$emit('showBillingAddress')
         // this.isBillingAddressSaved = false;
         // this.isEditActive = false;
-        this.showAlertBillingAddressSaved = true;
-        setTimeout(() => {
-          this.showAlertBillingAddressSaved = false;
-          this.hideAlert();
-        }, 3000);
+        // this.showAlertBillingAddressSaved = true;
+        // setTimeout(() => {
+        //   this.showAlertBillingAddressSaved = false;
+        //   this.hideAlert();
+        // }, 3000);
         // this.billingAddress = {
         //   address: '',
         //   town: '',
         //   postcode: '',
         // };
+      } else if (!this.isLoggedIn && this.isBillingAddressSaved) {
+        this.billingAddressesWithoutAccount.push(this.billingAddress)
       }
-    },
-    hideAlert() {
-      this.showAlert = false;
     },
     updateBillingAddress(billingAddress, index) {
       this.isEditActive = false;

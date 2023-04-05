@@ -1,51 +1,49 @@
 <template>
   <div class="outer-card-sign-in">
-    <div v-show="!hasAccount" class="d-block m-auto">
-      <div class="card-body">
-        <h1 id="signIn-title">SIGN IN</h1>
-        <div v-if="isAuthInvalid"
-             class="alert-message d-flex m-auto mb-2 w-25">
-          {{ message }}
-        </div>
-        <input
-            v-model="email"
-            class="d-flex m-auto mb-4 w-25"
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Email"
-            required
-        />
-        <input
-            v-model="password"
-            class="d-flex m-auto mb-1 w-25"
-            :type="passwordFieldType"
-            id="password"
-            name="password"
-            placeholder="Password"
-            required
-        />
-        <span class="password-sign-in" @click="togglePasswordVisibility">{{
-            passwordToggleLabel
-          }}</span>
-        <router-link to="/password" class="forgot-password mb-2"
-        >Forgot my password
-        </router-link
-        >
-        <p class="account-pgf mb-5">
-          <input type="checkbox" name="example" value="1"/>
-          Sign-up for newsletter
-        </p>
-        <button class="d-flex m-auto my-5 login" @click="signIn( email, password)">Login</button>
-        <router-link
-            to="/register"
-            class="card-footer-account d-flex m-auto"
-        >
-          <div class="p-2" id="create-account-div">
-            Create account
-          </div>
-        </router-link>
+    <div class="card-body">
+      <h1 id="signIn-title">SIGN IN</h1>
+      <div v-show="isAuthInvalid"
+           class="alert-message d-flex m-auto mb-2 w-25">
+        {{ message }}
       </div>
+      <input
+          v-model="email"
+          class="d-flex m-auto mb-4 w-25"
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Email"
+          required
+      />
+      <input
+          v-model="password"
+          class="d-flex m-auto mb-1 w-25"
+          :type="passwordFieldType"
+          id="password"
+          name="password"
+          placeholder="Password"
+          required
+      />
+      <span class="password-sign-in" @click="togglePasswordVisibility">{{
+          passwordToggleLabel
+        }}</span>
+      <router-link to="/password" class="forgot-password mb-2"
+      >Forgot my password
+      </router-link
+      >
+      <p class="account-pgf mb-5">
+        <input type="checkbox" name="example" value="1"/>
+        Sign-up for newsletter
+      </p>
+      <button class="d-flex m-auto my-5 login" @click="signIn( email, password)">Login</button>
+      <router-link
+          to="/register"
+          class="card-footer-account d-flex m-auto"
+      >
+        <div class="p-2" id="create-account-div">
+          Create account
+        </div>
+      </router-link>
     </div>
     <Footer/>
   </div>
@@ -60,7 +58,6 @@ export default {
   components: {Footer},
   data() {
     return {
-      hasAccount: false,
       showPassword: false,
       email: "",
       password: "",
@@ -97,13 +94,10 @@ export default {
       this.hasAccount = !this.hasAccount;
     },
     signIn() {
+      console.log(this.email)
       this.isAuthInvalid = this.email !== "test@yahoo.com" || this.password !== "Test123."
       if (!this.isAuthInvalid) {
-        this.$store.dispatch("signIn", {
-          email: this.userEmail,
-          password: this.password,
-          isLoggedIn: true,
-        });
+        this.$store.dispatch("signIn", this.email, this.password);
         this.$router.push('/')
       } else {
         this.message = 'Username and/or password incorrect!';

@@ -11,7 +11,7 @@
             <router-link class="nav-link" to="/about">About</router-link>
           </div>
           <div class="right">
-            <div v-if="!isNotLoggedIn" @click="showLoginBox" class="navbar-login">Login</div>
+            <div v-if="!$store.state.user.isLogged" @click="showLoginBox" class="navbar-login">Login</div>
             <div v-else @click="openProfile" id="profile-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="16"
                    height="16" fill="currentColor" class="bi bi-person-lines-fill"
@@ -89,35 +89,14 @@ export default {
       scrollPosition: null,
       productName: "",
       showCartDetails: false,
-      isNotLoggedIn: true,
       showLogin: false,
       showProfile: false,
       profile: '',
-      email: 'eee',
     };
   },
   mounted() {
     window.addEventListener("scroll", this.updateScroll);
     console.log(this.$store.state.user.email)
-    // console.log(this.$store.state.user.email)
-  },
-  updated() {
-    console.log(this.userEmail)
-  },
-  computed: {
-    userEmail() {
-      return this.$store.state.user.email
-    },
-    isLoggedIn() {
-      return this.$store.state.user.isLogged
-    },
-    personProfile() {
-      if (this.$store.state.user.isLogged) {
-        return this.$store.state.user.email
-      } else {
-        return "You're not logged"
-      }
-    },
   },
   methods: {
     updateScroll() {
@@ -131,12 +110,10 @@ export default {
     showLoginBox() {
       this.showLogin = !this.showLogin;
       this.showCartDetails = false;
-      this.showProfile = false;
     },
     openProfile() {
       this.showProfile = !this.showProfile
       this.showCartDetails = false;
-      this.showLogin = false;
     }
   },
 };

@@ -15,9 +15,7 @@
             <h4 class="my-4  content-addresses-title">My addresses</h4>
           </div>
           <div>
-            <div v-for="(address, index) in this.$store.state.user.addresses" :key="index">
-              <AddressForm :address="address" :isAddressSavedInitial="true"/>
-            </div>
+            <AddressForm/>
           </div>
           <div>
             <div v-for="(billingAddress, index) in this.$store.state.user.billingAddresses" :key="index">
@@ -37,9 +35,13 @@
               </button>
             </div>
           </div>
-          <div v-show="showAddressForm">
-            <AddressForm :address="address" :isAddressSavedInitial="false"/>
+          <div v-show="showAddingDeliveryAddressForm ">
+            <DeliveryAddress :address="address"
+                             :isAddressSavedInitial="false"
+                             :index="currentIndex"
+                             @closeDeliveryAddressForm="closeAddingDeliveryAddressForm "/>
           </div>
+          <div class="my-4 p-2 m-auto bg-success bg-opacity-10 alert" v-show="isAddressSaved"> The address have been saved</div>
           <div v-show="showBillingAddressForm">
             <BillingAddressForm
                 :address="billingAddress"
@@ -55,11 +57,12 @@
 <script>
 import AddressForm from "@/components/AddressForm";
 import BillingAddressForm from "@/components/BillingAddressForm";
+import DeliveryAddress from "@/components/DeliveryAddress";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Addresses",
-  components: {BillingAddressForm, AddressForm},
+  components: {DeliveryAddress, BillingAddressForm, AddressForm},
   data() {
     return {
       isBillingAddressSavedInitial: false,
@@ -77,24 +80,37 @@ export default {
         postcode: '',
       },
       isAddressSaved: false,
-      showAddressForm: false,
+      isOp: true,
+      showAddingDeliveryAddressForm: false,
       showBillingAddressForm: false,
+      showDeliveryAddressAlert: false,
       isEditAddressClicked: false,
     }
   },
   computed: {
     currentIndex() {
-      return this.$store.state.user.addresses.length
+      if (this.$store.state.user.isLogged) {
+        return this.$store.state.user.addresses.length
+      } else {
+        return 0
+      }
     }
   },
   methods: {
+    closeAddingDeliveryAddressForm() {
+      this.showAddingDeliveryAddressForm = false;
+      this.isAddressSaved = true
+      setTimeout(() => {
+        this.isAddressSaved = false;
+      }, 3000)
+    },
     openAddressForm() {
-      this.showAddressForm = !this.showAddressForm;
+      this.showAddingDeliveryAddressForm = !this.showAddingDeliveryAddressForm;
       this.showBillingAddressForm = false;
     },
     openBillingAddressForm() {
       this.showBillingAddressForm = !this.showBillingAddressForm;
-      this.showAddressForm = false;
+      this.showAddingDeliveryAddressForm = false;
     },
     removeAddress(index) {
       this.$store.dispatch('removeAddress', index)
@@ -109,18 +125,6 @@ export default {
       this.isEditAddressClicked = true;
 
     },
-    // updateAddress() {
-    //   // let address = {
-    //   //   // country: this.
-    //   // }
-    // },
-    saveAddress() {
-      this.$store.dispatch('saveAddress',)
-      this.isEditAddressClicked = false;
-    },
-    // editAddress(address, index) {
-    //   this.$store.dispatch('updateAddress', address, index)
-    // },
 
   },
 }
@@ -143,60 +147,10 @@ export default {
   float: right;
 }
 
-.changed-address {
-  width: 125%;
-  margin-left: 25%;
-}
-
 .addresses-page {
   font-family: "Malgun Gothic Semilight", sans-serif;
 }
 
-.address-billing-address-form {
-  width: 130%;
-  margin-left: -15%;
-}
-
-.add-button {
-  /*width: 210px;*/
-  display: inline-block;
-  margin-right: 6%;
-  margin-left: 6%;
-  color: white;
-  /*border: 1px solid black;*/
-  background-color: black;
-}
-
-.add-button:hover {
-  background-color: white;
-  border: 1px solid black;
-  color: black;
-}
-
-.edit-delete {
-  cursor: pointer;
-}
-
-.edit-delete:hover {
-  color: #ffffff;
-}
-
-
-.my-address {
-  border: 1px solid #a4a4a4;
-  padding: 7px;
-  margin-left: 40%;
-}
-
-.my-billing-address {
-  border: 1px solid #a4a4a4;
-  padding: 7px;
-  margin-left: 10%;
-}
-
-.address {
-  margin-bottom: -5px;
-}
 
 .outer-card {
   text-align: left;
@@ -240,34 +194,7 @@ input[type=number] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
-
-
-.address-input {
-  border: none;
-  border-bottom: 1px solid #000000;
-  outline: none;
+.alert {
+  width: 300px;
 }
-
-.address-alert {
-  color: red;
-  font-size: 14px;
-  float: left
-}
-
-.address-pgf {
-  margin-bottom: 0;
-  float: left;
-  font-family: "JetBrains Mono Light", sans-serif;
-}
-
-.my-address,
-#address-title {
-  letter-spacing: 2px;
-}
-
-.my-address {
-  float: left;
-}
-
-
 </style>

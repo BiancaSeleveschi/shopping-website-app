@@ -462,6 +462,29 @@ export default new Vuex.Store({
                     blockStaircase: '',
                     postcode: '400567',
                 },
+                {
+                    city: 'Baia-Mare',
+                    country: 'Romania',
+                    street: 'V. Bologa',
+                    number: '7',
+                    blockStaircase: '',
+                    postcode: '3333',
+                },  {
+                    city: 'Cluj-Napoca',
+                    country: 'Romania',
+                    street: 'V. Bologa',
+                    number: '7',
+                    blockStaircase: '',
+                    postcode: '400567',
+                },
+                {
+                    city: 'Baia-Mare',
+                    country: 'Romania',
+                    street: 'V. Bologa',
+                    number: '7',
+                    blockStaircase: '',
+                    postcode: '3333',
+                },
             ],
             billingAddresses: [
                 {
@@ -481,6 +504,7 @@ export default new Vuex.Store({
                 cvv: '',
             }
         },
+        deliveryAddress: [],
     },
     getters: {
         getCart: (state) => state.user.cart,
@@ -522,9 +546,9 @@ export default new Vuex.Store({
         ADD_TO_CART(state, item) {
             let itemCart = state.user.cart.find((i) => i.product.id === item.product.id && item.size === i.size);
             if (itemCart) {
-                itemCart.quantity += item.quantity;
-                itemCart.quantityPrice += item.quantityPrice;
-                itemCart.quantityPrice = itemCart.quantityPrice.toFixed(2);
+                itemCart.quantity++;
+                itemCart.quantityPrice = itemCart.quantity * item.product.price;
+                itemCart.quantityPrice = parseFloat(itemCart.quantityPrice).toLocaleString('pt-BR', {maximumFractionDigits: 2});
             } else {
                 state.user.cart.push(item);
             }
@@ -563,8 +587,11 @@ export default new Vuex.Store({
                 email: email,
                 password: password,
                 isLogged: true,
-                cart: [],
-                favorites: [],
+                cart: state.user.cart,
+                favorites: state.user.favorites,
+                addresses: state.user.addresses,
+                billingAddresses: state.user.billingAddresses,
+                cards: state.user.cards,
             };
         },
         UPDATE_USER_INFORMATION(state, newFirstname, newLastname, newEmail) {
@@ -574,18 +601,20 @@ export default new Vuex.Store({
                 email: newEmail,
                 password: state.user.password,
                 isLogged: true,
-                cart: [],
-                favorites: [],
+                favorites: state.user.favorites,
+                addresses: state.user.addresses,
+                billingAddresses: state.user.billingAddresses,
+                cards: state.user.cards,
             };
         },
         CHANGE_PASSWORD(state, newPassword) {
             state.user.password = newPassword
         },
         REMOVE_ADDRESS(state, index) {
-            state.user.addresses.splice(index)
+            state.user.addresses.splice(index, 1)
         },
         REMOVE_BILLING_ADDRESS(state, index) {
-            state.user.billingAddresses.splice(index)
+            state.user.billingAddresses.splice(index, 1)
         },
         // SET_CART_TOTAL_PRICE(state, couponCode, showCouponCodeAlert, cartTotalPrice) {
         //    let total = 0;
@@ -619,6 +648,9 @@ export default new Vuex.Store({
         SAVE_ADDRESS(state, address) {
             state.user.addresses.push(address)
         },
+        SAVE_ADDRESS_WITHOUT_ACCOUNT(state, address) {
+            state.deliveryAddress.push(address)
+        },
         SAVE_BILLING_ADDRESS(state, address) {
             state.user.billingAddresses.push(address)
         },
@@ -632,6 +664,13 @@ export default new Vuex.Store({
         //         postcode: address.postcode,
         //     }
         // }
+        UPDATE_BILLING_ADDRESS(state,  { billingAddress, index }) {
+            Vue.set(state.user.billingAddresses, index, {
+                address: billingAddress.address,
+                town: billingAddress.town,
+                postcode: billingAddress.postcode,
+            })
+        },
         UPDATE_ADDRESS(state,  { address, index }) {
             state.user.addresses[index] = address;
         },
@@ -663,45 +702,44 @@ export default new Vuex.Store({
         },
         signIn(context, email, password) {
             context.commit("SIGN_IN", email, password);
-            context.commit("SIGN_IN");
+            context.commit("UPDATE_STORE");
         },
         updateUserInformation(context, newFirstname, newLastname, newEmail) {
             context.commit("UPDATE_USER_INFORMATION", {newFirstname, newLastname, newEmail});
-            context.commit("UPDATE_USER_INFORMATION");
+            context.commit("UPDATE_STORE");
         },
         changePassword(context, newPassword) {
             context.commit("CHANGE_PASSWORD", newPassword);
-            context.commit("CHANGE_PASSWORD");
+            context.commit("UPDATE_STORE");
         },
         removeAddress(context, index) {
             context.commit("REMOVE_ADDRESS", index);
-            context.commit("REMOVE_ADDRESS");
+            context.commit("UPDATE_STORE");
         },
         removeBillingAddress(context, index) {
             context.commit("REMOVE_BILLING_ADDRESS", index);
-            context.commit("REMOVE_BILLING_ADDRESS");
+            context.commit("UPDATE_STORE");
         },
-        // saveAddress(context, {index, country, city, street, number, blockStaircase, postcode}) {
-        //     context.commit("SAVE_ADDRESS", {index, country, city, street, number, blockStaircase, postcode});
-        //     context.commit("SAVE_ADDRESS");
-        // },
         saveAddress(context, address) {
             context.commit("SAVE_ADDRESS", address);
-            context.commit("SAVE_ADDRESS");
-        }, saveBillingAddress(context, address) {
-            context.commit("SAVE_BILLING_ADDRESS", address);
-            context.commit("SAVE_BILLING_ADDRESS");
+            context.commit("UPDATE_STORE");
         },
-        // updateAddress(context, address, index) {
-        //     context.commit("UPDATE_ADDRESS", address, index);
-        //     context.commit("UPDATE_ADDRESS");
-        // }
+        saveAddressWithoutAccount(context, address) {
+            context.commit("SAVE_ADDRESS_WITHOUT_ACCOUNT", address);
+            context.commit("UPDATE_STORE");
+        },
+
+        saveBillingAddress(context, address) {
+            context.commit("SAVE_BILLING_ADDRESS", address);
+            context.commit("UPDATE_STORE");
+        },
         updateBillingAddress(context,  { billingAddress, index }) {
             context.commit("UPDATE_BILLING_ADDRESS", { address: billingAddress, index });
-            context.commit("UPDATE_BILLING_ADDRESS");
-        },updateAddress(context,  { deliveryAddress, index }) {
+            context.commit("UPDATE_STORE");
+        },
+        updateAddress(context,  { deliveryAddress, index }) {
             context.commit("UPDATE_ADDRESS", { address: deliveryAddress, index });
-            context.commit("UPDATE_ADDRESS");
+            context.commit("UPDATE_STORE");
         }
         // setCartTotalPrice(context, { couponCode, showCouponCodeAlert,cartTotalPrice}) {
         //     context.commit("SET_CART_TOTAL_PRICE", { couponCode, showCouponCodeAlert,cartTotalPrice});

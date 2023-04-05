@@ -83,7 +83,6 @@ export default {
 
 .my-address {
   letter-spacing: 2px;
-  float: left;
 }
 
 .edit-card {

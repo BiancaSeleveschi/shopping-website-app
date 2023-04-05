@@ -1,9 +1,44 @@
 <template>
   <div class="checkout-page">
     <h1 class="title">Checkout</h1>
-    <AddressForm :address="address" :isAddressSavedInitial="false"/>
-    <BillingAddressForm :address="billingAddress" :isBillingAddressSavedInitial="false" />
-    <div class="summary-card border border-2 m-auto w-50 pt-3 px-5 rounded rounded-4">
+    <div v-if="isLoggedIn">
+      <h4 v-show="existAtLeastOneDeliveryAddressSaved">Choose a delivery address</h4>
+      <AddressForm/>
+    </div>
+
+
+    <div v-if="(showAddingDeliveryAddressForm ||
+     (isLoggedIn && !existAtLeastOneDeliveryAddressSaved) || !isLoggedIn )">
+      <DeliveryAddress :address="deliveryAddress"
+                       :isAddressSavedInitial="isAddressSaved"
+                       :index="currentDeliveryAddressesIndex"
+                       @closeDeliveryAddressForm="closeAddingDeliveryAddressForm "/>
+    </div>
+
+
+    <h4 class="mt-4">Choose a billing address</h4>
+    <div v-if="isLoggedIn && existAtLeastOneBillingAddressSaved">
+      <div v-for="(billingAddress, index) in this.$store.state.user.billingAddresses" :key="index">
+        <BillingAddressForm :address="billingAddress"
+                            :index="index"
+                            :isBillingAddressSavedInitial="true"
+        />
+      </div>
+    </div>
+
+    <button class="py-2 px-4 add-button "
+            @click="openBillingAddressForm">Add billing address</button>
+    <div v-show="showNewBillingAddressForm">
+      <BillingAddressForm :address="billingAddress"
+                          :index="currentBillingAddressesIndex"
+                          :isBillingAddressSavedInitial="false"/>
+    </div>
+    <div v-if="(isLoggedIn && !existAtLeastOneBillingAddressSaved) || !isLoggedIn">
+      <BillingAddressForm :address="billingAddress"
+                          :index="currentBillingAddressesIndex"
+                          :isBillingAddressSavedInitial="false"/>
+    </div>
+    <div class="summary-card border border-2 m-auto w-50 pt-3 mt-5 px-5 rounded rounded-4">
       <div class="p-4 m-auto shipping">
         <h4 class="mb-5 summary-title">Shipping method</h4>
         <p v-if="showShippingMethodAlert" class="shipping-method-alert">Please select a shipping method</p>
@@ -106,14 +141,16 @@
 import Footer from "@/components/Footer";
 import AddressForm from "@/components/AddressForm";
 import BillingAddressForm from "@/components/BillingAddressForm";
+import DeliveryAddress from "@/components/DeliveryAddress";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Checkout",
-  components: { BillingAddressForm, AddressForm, Footer},
+  components: {DeliveryAddress, BillingAddressForm, AddressForm, Footer},
   data() {
     return {
-      address: {
+      selectedAddress: null,
+      deliveryAddress: {
         country: '',
         city: '',
         street: '',
@@ -127,8 +164,10 @@ export default {
         postcode: '',
       },
       cart: this.$store.state.user.cart,
+      // billingAddresses: this.$store.state.user.billingAddresses,
       isLoggedIn: this.$store.state.user.isLogged,
       isAddressSavedFormOpened2: true,
+      isAddressSaved: false,
       showEnterCouponCode: false,
       isCouponCodeInvalid: false,
       showShippingMethodAlert: false,
@@ -138,19 +177,64 @@ export default {
       isCheckboxAlipayChecked: false,
       isCheckboxCreditCardChecked: false,
       isCheckboxAmazonPayChecked: false,
+      showAddingDeliveryAddressForm: false,
 
       isCouponCodeApplied: false,
       addressIsSaved: false,
       couponCode: '',
       subtotal: this.$store.getters.getCartTotalPrice,
       couponCodeName: 'MED',
+
+      showNewDeliveryAddressForm: false,
+      showNewBillingAddressForm: false,
+      // isAddressSaved: false,
+      selectedAddressIndex: null,
     };
   },
   computed: {
-    isAddressSavedFormOpened() {
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      return this.isAddressSavedFormOpened2 = !this.isAddressSavedFormOpened2;
+    // dd() {
+    //   if (this.$store.state.user.isLogged && this.$store.state.user.addresses.length < 1
+    //       || !this.isLoggedIn) {
+    //     // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+    //     this.deliveryAddress = {
+    //       country: '',
+    //       city: '',
+    //       street: '',
+    //       number: '',
+    //       blockStaircase: '',
+    //       postcode: '',
+    //     }
+    //     // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+    //     this.isAddressSaved = false
+    //
+    //
+    //   }
+    // },
+    currentDeliveryAddressesIndex() {
+      if (this.$store.state.user.isLogged) {
+        return this.$store.state.user.addresses.length
+      } else {
+        return 0
+      }
     },
+    existAtLeastOneBillingAddressSaved() {
+      if (this.$store.state.user.billingAddresses.length > 0) {
+        return true
+      }
+      return false
+    },
+    currentBillingAddressesIndex() {
+      return this.$store.state.user.billingAddresses.length;
+    },
+    existAtLeastOneDeliveryAddressSaved() {
+      if (this.$store.state.user.addresses.length > 0) {
+        return true
+      }
+      return false
+    },
+    // currentDeliveryAddressesIndex() {
+    //   return this.$store.state.user.addresses.length
+    // },
     expressShippingPrice() {
       let expressShippingPrice = 35;
       return expressShippingPrice.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
@@ -192,29 +276,33 @@ export default {
       }
       return total.toLocaleString('pt-BR', {maximumFractionDigits: 2});
       ;
-    }
+    },
   },
   methods: {
-    saveAddress() {
-      this.isCountryIncomplete = this.country === "";
-      this.isCityIncomplete = this.city === "";
-      this.isStreetIncomplete = this.street === "";
-      this.isNumberIncomplete = this.number === "";
-      this.isPostcodeIncomplete = this.postcode === "";
-      this.addressIsSaved = !this.isCountryIncomplete && !this.isCityIncomplete
-          && !this.isStreetIncomplete && !this.isNumberIncomplete && !this.isPostcodeIncomplete;
+    closeAddingDeliveryAddressForm() {
+      if ((this.isLoggedIn && !this.existAtLeastOneDeliveryAddressSaved)
+          || !this.isLoggedIn) {
+        this.isAddressSaved = false;
+      }
+      this.showAddingDeliveryAddressForm = false;
+      this.isAddressSaved = true
+      setTimeout(() => {
+        this.isAddressSaved = false;
+      }, 3000)
     },
-    editAddress() {
-      this.addressIsSaved = false;
+    addNewDeliveryAddress() {
+      this.deliveryAddress = {
+        country: '',
+        city: '',
+        street: '',
+        number: '',
+        blockStaircase: '',
+        postcode: '',
+      }
+      this.showAddingDeliveryAddressForm = !this.showAddingDeliveryAddressForm
     },
-    saveBillingAddress() {
-      this.isBillingAddressIncomplete = this.billingAddress === '';
-      this.isTownBillingAddressIncomplete = this.townBillingAddress === '';
-      this.isPostcodeBillingAddressIncomplete = this.postcodeBillingAddress === '';
-      this.isBillingAddressSaved = !this.isBillingAddressIncomplete && !this.isTownBillingAddressIncomplete && !this.isPostcodeBillingAddressIncomplete;
-    },
-    editBillingAddress() {
-      this.isBillingAddressSaved = false;
+    openBillingAddressForm() {
+      this.showNewBillingAddressForm = true;
     },
     selectShippingMethod() {
       if (this.isCheckboxStandardChecked) {
@@ -224,7 +312,15 @@ export default {
         this.isCheckboxExpressChecked = !this.isCheckboxExpressChecked;
         this.isCheckboxStandardChecked = false;
       }
+    }
+    ,
+    showBillingAddress() {
+      this.showNewBillingAddressForm = false;
     },
+    selectDeliveryAddress(index) {
+      this.selectedAddressIndex = index;
+    },
+
     selectPaymentMethod() {
       // this.isCheckboxAlipayChecked = !this.isCheckboxCreditCardChecked && !this.isCheckboxAmazonPayChecked;
       // this.isCheckboxCreditCardChecked = !this.isCheckboxAlipayChecked && !this.isCheckboxAmazonPayChecked;
@@ -249,13 +345,16 @@ export default {
       //   isCheckboxCreditCardChecked: this.isCheckboxCreditCardChecked,
       //   isCheckboxAmazonPayChecked: this.isCheckboxAmazonPayChecked
       // })
-    },
+    }
+    ,
     removeProductFromCart(product) {
       this.$store.dispatch("removeProductFromCart", product);
-    },
+    }
+    ,
     enterCouponCode() {
       this.showEnterCouponCode = !this.showEnterCouponCode
-    },
+    }
+    ,
     applyCouponCode() {
       let total;
       let price = parseFloat(this.subtotal.replace('.', ''));
@@ -270,14 +369,16 @@ export default {
       }
       this.isCouponCodeApplied = true;
       return total
-    },
+    }
+    ,
     removeCoupon() {
       this.couponCode = "";
       if (this.couponCode === "") {
         this.isCouponCodeInvalid = false;
       }
       this.isCouponCodeApplied = false;
-    },
+    }
+    ,
     goToCheckout() {
       this.showShippingMethodAlert = !this.isCheckboxStandardChecked && !this.isCheckboxExpressChecked
       this.showPaymentMethodAlert = !this.isCheckboxAlipayChecked && !this.isCheckboxCreditCardChecked && !this.isCheckboxAmazonPayChecked
@@ -285,11 +386,24 @@ export default {
         this.$router.push('/payment')
       }
     }
-  },
-};
+  }
+  ,
+}
+;
 </script>
 
 <style scoped>
+.add-button {
+  border: 1px solid black;
+  background-color: white;
+  color: black;
+}
+
+.add-button:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -300,6 +414,7 @@ input[type=number] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+
 
 .checkout-page {
   font-family: "Malgun Gothic Semilight";
@@ -312,24 +427,6 @@ input[type=number] {
   font-weight: 100;
 }
 
-
-.address-input {
-  border: none;
-  border-bottom: 1px solid #000000;
-  outline: none;
-}
-
-.address-alert {
-  color: red;
-  font-size: 14px;
-  float: left
-}
-
-.address-pgf {
-  margin-bottom: 0;
-  float: left;
-  font-family: "JetBrains Mono Light", sans-serif;
-}
 
 .shipping-price-standard {
   margin-left: 70px;
@@ -355,9 +452,7 @@ input[type=number] {
 .shipping, .payment {
   border-bottom: solid 1px #333;
 }
-
-.billing-address, .my-address,
-#address-title, .summary-title {
+ .summary-title {
   letter-spacing: 2px;
 }
 
@@ -377,46 +472,6 @@ input[type=number] {
   font-size: 14px;
   color: red;
   transform: translateX(118%);
-}
-
-.edit-card {
-  float: right;
-  display: grid;
-  cursor: pointer
-}
-
-.city-address, #street-number,
-#postcode, #postcode-billing {
-  display: grid;
-  position: absolute;
-  float: left;
-  font-size: 16px;
-}
-
-.city-address {
-  margin-top: 40px;
-}
-
-#postcode-billing,
-#street-number {
-  margin-top: 65px;
-}
-
-#postcode {
-  margin-top: 90px;
-}
-
-#address-form {
-  height: 170px;
-}
-
-.my-address {
-  float: left;
-
-}
-
-#billing-address-card {
-  height: 150px;
 }
 
 .payment-method-alert,

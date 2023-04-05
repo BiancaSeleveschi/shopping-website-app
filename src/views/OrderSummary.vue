@@ -211,7 +211,7 @@ export default {
   background-color: black;
   color: white;
   border-radius: 0;
-  margin-left: 81%;
+  margin-left:70%;
   width: max-content;
   border: 1px solid black;
 }
