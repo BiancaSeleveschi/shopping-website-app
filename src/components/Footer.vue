@@ -1,39 +1,35 @@
 <template>
-  <div class="bg bg-black">
+  <div class="bg bg-black w-100">
     <div class="border border-white"></div>
-    <div class="contact-service">
-      <h5 class="fw-semibold">Contact us</h5>
-      <ul style="list-style: none">
-        <li>📧 service@meduzza.com</li>
-        <li>📞 +49 (0) 61 42 83 54 400</li>
-        <li>📞 +49 897 400 458 40</li>
-      </ul>
-    </div>
-    <div class="contact-service">
-      <h5 class="fw-semibold">Legale notice</h5>
-      <router-link to="/privacy/policy" class="nav-link link"
-      >Privacy Policy
-      </router-link
-      >
-      <router-link to="/terms" class="nav-link link"
-      >Terms and Conditions
-      </router-link
-      >
-      <router-link to="/cookie" class="nav-link link">Cookie Statement</router-link>
-    </div>
-    <div class="contact-service">
-      <h5 class="fw-semibold">Service</h5>
-      <ol>
-        <li>
-          <router-link to="/service" class="nav-link link">Delivery</router-link>
-        </li>
-        <li>
-          <router-link to="/service" class="nav-link link">Payment methods</router-link>
-        </li>
-        <li>
-          <router-link to="/service" class="nav-link link">Return</router-link>
-        </li>
-      </ol>
+    <div id="content-footer">
+      <div class="contact-service">
+        <h5 class="fw-bold">Contact us</h5>
+        <ul style="list-style: none">
+          <li>📧 service@meduzza.com</li>
+          <li>📞 +49 (0) 61 42 83 54 400</li>
+          <li>📞 +49 897 400 458 40</li>
+        </ul>
+      </div>
+      <div class="contact-service">
+        <h5 class="fw-bold">Legal notice</h5>
+        <router-link to="/privacy/policy" class="nav-link link">Privacy Policy</router-link>
+        <router-link to="/terms" class="nav-link link">Terms and Conditions</router-link>
+        <router-link to="/cookie" class="nav-link link">Cookie Statement</router-link>
+      </div>
+      <div class="contact-service">
+        <h5 class="fw-bold">Service</h5>
+        <ol>
+          <li>
+            <router-link to="/service" class="nav-link link">Delivery</router-link>
+          </li>
+          <li>
+            <router-link to="/service" class="nav-link link">Payment methods</router-link>
+          </li>
+          <li>
+            <router-link to="/service" class="nav-link link">Return</router-link>
+          </li>
+        </ol>
+      </div>
     </div>
   </div>
 </template>
@@ -46,6 +42,11 @@ export default {
 </script>
 
 <style scoped>
+#content-footer {
+  margin-left: 28%;
+  display: flex;
+  position: relative;
+}
 
 .contact-service {
   display: inline-block;

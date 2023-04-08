@@ -1,43 +1,40 @@
 <template>
   <div class="checkout-page">
     <h1 class="title">Checkout</h1>
-    <div v-if="isLoggedIn">
-      <h4 v-show="existAtLeastOneDeliveryAddressSaved">Choose a delivery address</h4>
-      <AddressForm/>
+
+    <div v-if="showAddingDeliveryAddressForm  || !existAtLeastOneDeliveryAddressSaved">
+      <AddressForm :addressInitial="address"
+                   titleInitial="Delivery address"
+                   :isAddressSavedInitial="false"
+                   :index="currentDeliveryAddressesIndex"
+                   @closeAddressForm="closeAddingDeliveryAddressForm "/>
     </div>
+    <div v-else-if="existAtLeastOneDeliveryAddressSaved">
+      <h4 v-show="isLoggedIn"> Choose a delivery address<span class="d-block m-auto">or</span></h4>
+      <button class="py-2 px-4 add-button " @click="addNewDeliveryAddress">
+        Add delivery address
+      </button>
+    </div>
+    <AddressList :addresses="deliveryAddresses"/>
 
 
-    <div v-if="(showAddingDeliveryAddressForm ||
-     (isLoggedIn && !existAtLeastOneDeliveryAddressSaved) || !isLoggedIn )">
-      <DeliveryAddress :address="deliveryAddress"
-                       :isAddressSavedInitial="isAddressSaved"
-                       :index="currentDeliveryAddressesIndex"
-                       @closeDeliveryAddressForm="closeAddingDeliveryAddressForm "/>
+    <div v-if="showAddingBillingAddressForm  || !existAtLeastOneBillingAddressSaved">
+      <AddressForm :addressInitial="address"
+                   titleInitial="Billing address"
+                   :isAddressSavedInitial="false"
+                   :index="currentDeliveryAddressesIndex"
+                   @closeAddressForm="closeAddingBillingAddressForm "/>
+
     </div>
 
+    <div v-else-if="existAtLeastOneBillingAddressSaved ">
+      <h4 v-show="isLoggedIn">Choose a billing address<span class="d-block m-auto">or</span></h4>
+      <button class="py-2 px-4 add-button " @click="addNewBillingAddress">
+        Add billing address
+      </button>
+    </div>
+    <AddressList :addresses="billingAddresses"/>
 
-    <h4 class="mt-4">Choose a billing address</h4>
-    <div v-if="isLoggedIn && existAtLeastOneBillingAddressSaved">
-      <div v-for="(billingAddress, index) in this.$store.state.user.billingAddresses" :key="index">
-        <BillingAddressForm :address="billingAddress"
-                            :index="index"
-                            :isBillingAddressSavedInitial="true"
-        />
-      </div>
-    </div>
-
-    <button class="py-2 px-4 add-button "
-            @click="openBillingAddressForm">Add billing address</button>
-    <div v-show="showNewBillingAddressForm">
-      <BillingAddressForm :address="billingAddress"
-                          :index="currentBillingAddressesIndex"
-                          :isBillingAddressSavedInitial="false"/>
-    </div>
-    <div v-if="(isLoggedIn && !existAtLeastOneBillingAddressSaved) || !isLoggedIn">
-      <BillingAddressForm :address="billingAddress"
-                          :index="currentBillingAddressesIndex"
-                          :isBillingAddressSavedInitial="false"/>
-    </div>
     <div class="summary-card border border-2 m-auto w-50 pt-3 mt-5 px-5 rounded rounded-4">
       <div class="p-4 m-auto shipping">
         <h4 class="mb-5 summary-title">Shipping method</h4>
@@ -110,7 +107,10 @@
             <button v-if="!isCouponCodeApplied" @click="applyCouponCode"
                     class="coupon-code-button">Apply
             </button>
-            <button v-else class="coupon-code-button" @click="removeCoupon">Remove</button>
+            <button v-else class="coupon-code-button" @click="removeCoupon">{{
+                couponCode !== "" ? 'Remove' : 'Apply'
+              }}
+            </button>
           </div>
           <p v-if="isCouponCodeInvalid" class="coupon-code-alert">The coupon code is not valid.</p>
         </div>
@@ -130,7 +130,7 @@
           </svg>
           Back to shopping
         </router-link>
-        <button to="payment" class="p-1" id="footer-payment" @click="goToCheckout">Pay Now</button>
+        <button class="p-1" id="footer-payment" @click="goToCheckout">Pay Now</button>
       </div>
     </div>
     <Footer class="service-comp "/>
@@ -140,17 +140,15 @@
 <script>
 import Footer from "@/components/Footer";
 import AddressForm from "@/components/AddressForm";
-import BillingAddressForm from "@/components/BillingAddressForm";
-import DeliveryAddress from "@/components/DeliveryAddress";
+import AddressList from "@/components/AddressList";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Checkout",
-  components: {DeliveryAddress, BillingAddressForm, AddressForm, Footer},
+  components: {AddressForm, AddressList, Footer},
   data() {
     return {
-      selectedAddress: null,
-      deliveryAddress: {
+      address: {
         country: '',
         city: '',
         street: '',
@@ -158,16 +156,11 @@ export default {
         blockStaircase: '',
         postcode: '',
       },
-      billingAddress: {
-        address: '',
-        town: '',
-        postcode: '',
-      },
+      deliveryAddresses: this.$store.state.user.deliveryAddresses,
+      billingAddresses: this.$store.state.user.billingAddresses,
+      subtotal: this.$store.getters.getCartTotalPrice,
+      isLoggedIn: this.$store.state.user.isLoggedIn,
       cart: this.$store.state.user.cart,
-      // billingAddresses: this.$store.state.user.billingAddresses,
-      isLoggedIn: this.$store.state.user.isLogged,
-      isAddressSavedFormOpened2: true,
-      isAddressSaved: false,
       showEnterCouponCode: false,
       isCouponCodeInvalid: false,
       showShippingMethodAlert: false,
@@ -178,76 +171,47 @@ export default {
       isCheckboxCreditCardChecked: false,
       isCheckboxAmazonPayChecked: false,
       showAddingDeliveryAddressForm: false,
-
+      showAddingBillingAddressForm: false,
       isCouponCodeApplied: false,
-      addressIsSaved: false,
-      couponCode: '',
-      subtotal: this.$store.getters.getCartTotalPrice,
+      expressShippingCost: 35,
       couponCodeName: 'MED',
-
-      showNewDeliveryAddressForm: false,
-      showNewBillingAddressForm: false,
-      // isAddressSaved: false,
-      selectedAddressIndex: null,
+      couponCode: '',
     };
   },
   computed: {
-    // dd() {
-    //   if (this.$store.state.user.isLogged && this.$store.state.user.addresses.length < 1
-    //       || !this.isLoggedIn) {
-    //     // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-    //     this.deliveryAddress = {
-    //       country: '',
-    //       city: '',
-    //       street: '',
-    //       number: '',
-    //       blockStaircase: '',
-    //       postcode: '',
-    //     }
-    //     // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-    //     this.isAddressSaved = false
-    //
-    //
-    //   }
-    // },
-    currentDeliveryAddressesIndex() {
-      if (this.$store.state.user.isLogged) {
-        return this.$store.state.user.addresses.length
-      } else {
-        return 0
-      }
+    areAllOrderConditionsMet() {
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.showShippingMethodAlert = !this.isCheckboxStandardChecked && !this.isCheckboxExpressChecked
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.showPaymentMethodAlert = !this.isCheckboxAlipayChecked && !this.isCheckboxCreditCardChecked && !this.isCheckboxAmazonPayChecked
+      return !this.showShippingMethodAlert && !this.showPaymentMethodAlert
     },
-    existAtLeastOneBillingAddressSaved() {
-      if (this.$store.state.user.billingAddresses.length > 0) {
-        return true
+    currentDeliveryAddressesIndex() {
+      if (this.isLoggedIn) {
+        return this.deliveryAddresses.length
       }
-      return false
+      return this.$store.state.deliveryAddresses.length
     },
     currentBillingAddressesIndex() {
-      return this.$store.state.user.billingAddresses.length;
+      if (this.isLoggedIn) {
+        return this.$store.state.user.billingAddresses.length
+      }
+      return this.$store.state.billingAddresses.length
+    },
+    existAtLeastOneBillingAddressSaved() {
+      return this.currentBillingAddressesIndex > 0;
     },
     existAtLeastOneDeliveryAddressSaved() {
-      if (this.$store.state.user.addresses.length > 0) {
-        return true
-      }
-      return false
+      return this.currentDeliveryAddressesIndex > 0;
     },
-    // currentDeliveryAddressesIndex() {
-    //   return this.$store.state.user.addresses.length
-    // },
     expressShippingPrice() {
-      let expressShippingPrice = 35;
-      return expressShippingPrice.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-      ;
+      return this.expressShippingCost.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
     },
     shippingFinalCost() {
-      let shippingCost;
       if (this.isCheckboxStandardChecked) {
-        shippingCost = 0
-      } else if (this.isCheckboxExpressChecked) {
-        shippingCost = this.expressShippingPrice;
+        return 0
       }
-      return shippingCost
+      return this.expressShippingPrice;
     },
     subtotalAfterCouponCode() {
       let price = parseFloat(this.subtotal.replace('.', ''));
@@ -255,9 +219,8 @@ export default {
       return '$' + total
     },
     savedMoney() {
-      let total;
       let price = parseFloat(this.subtotal.replace('.', ''));
-      total = (price - (price * 0.9)).toFixed(2)
+      let total = (price - (price * 0.9)).toFixed(2)
       return total.replace('.', ',')
     },
     cartTotalPrice() {
@@ -275,23 +238,20 @@ export default {
         total = price
       }
       return total.toLocaleString('pt-BR', {maximumFractionDigits: 2});
-      ;
     },
   },
   methods: {
     closeAddingDeliveryAddressForm() {
-      if ((this.isLoggedIn && !this.existAtLeastOneDeliveryAddressSaved)
-          || !this.isLoggedIn) {
-        this.isAddressSaved = false;
-      }
+      this.existAtLeastOneDeliveryAddressSaved = true;
       this.showAddingDeliveryAddressForm = false;
-      this.isAddressSaved = true
-      setTimeout(() => {
-        this.isAddressSaved = false;
-      }, 3000)
+    },
+    closeAddingBillingAddressForm() {
+      this.existAtLeastOneBillingAddressSaved = true;
+      this.showAddingBillingAddressForm = false;
     },
     addNewDeliveryAddress() {
-      this.deliveryAddress = {
+      this.showAddingDeliveryAddressForm = !this.showAddingDeliveryAddressForm
+      this.address = {
         country: '',
         city: '',
         street: '',
@@ -299,32 +259,28 @@ export default {
         blockStaircase: '',
         postcode: '',
       }
-      this.showAddingDeliveryAddressForm = !this.showAddingDeliveryAddressForm
     },
-    openBillingAddressForm() {
-      this.showNewBillingAddressForm = true;
+    addNewBillingAddress() {
+      this.showAddingBillingAddressForm = !this.showAddingBillingAddressForm;
+      this.address = {
+        country: '',
+        city: '',
+        street: '',
+        number: '',
+        blockStaircase: '',
+        postcode: '',
+      }
     },
     selectShippingMethod() {
       if (this.isCheckboxStandardChecked) {
         this.isCheckboxStandardChecked = !this.isCheckboxStandardChecked;
         this.isCheckboxExpressChecked = false;
-      } else if (this.isCheckboxExpressChecked) {
+      } else {
         this.isCheckboxExpressChecked = !this.isCheckboxExpressChecked;
         this.isCheckboxStandardChecked = false;
       }
-    }
-    ,
-    showBillingAddress() {
-      this.showNewBillingAddressForm = false;
     },
-    selectDeliveryAddress(index) {
-      this.selectedAddressIndex = index;
-    },
-
     selectPaymentMethod() {
-      // this.isCheckboxAlipayChecked = !this.isCheckboxCreditCardChecked && !this.isCheckboxAmazonPayChecked;
-      // this.isCheckboxCreditCardChecked = !this.isCheckboxAlipayChecked && !this.isCheckboxAmazonPayChecked;
-      // this.isCheckboxAmazonPayChecked = !this.isCheckboxAlipayChecked && !this.isCheckboxCreditCardChecked;
       if (this.isCheckboxAlipayChecked) {
         this.isCheckboxAlipayChecked = !this.isCheckboxAlipayChecked
         this.isCheckboxCreditCardChecked = false;
@@ -345,16 +301,13 @@ export default {
       //   isCheckboxCreditCardChecked: this.isCheckboxCreditCardChecked,
       //   isCheckboxAmazonPayChecked: this.isCheckboxAmazonPayChecked
       // })
-    }
-    ,
+    },
     removeProductFromCart(product) {
       this.$store.dispatch("removeProductFromCart", product);
-    }
-    ,
+    },
     enterCouponCode() {
       this.showEnterCouponCode = !this.showEnterCouponCode
-    }
-    ,
+    },
     applyCouponCode() {
       let total;
       let price = parseFloat(this.subtotal.replace('.', ''));
@@ -369,16 +322,14 @@ export default {
       }
       this.isCouponCodeApplied = true;
       return total
-    }
-    ,
+    },
     removeCoupon() {
       this.couponCode = "";
       if (this.couponCode === "") {
         this.isCouponCodeInvalid = false;
       }
       this.isCouponCodeApplied = false;
-    }
-    ,
+    },
     goToCheckout() {
       this.showShippingMethodAlert = !this.isCheckboxStandardChecked && !this.isCheckboxExpressChecked
       this.showPaymentMethodAlert = !this.isCheckboxAlipayChecked && !this.isCheckboxCreditCardChecked && !this.isCheckboxAmazonPayChecked
@@ -386,10 +337,8 @@ export default {
         this.$router.push('/payment')
       }
     }
-  }
-  ,
-}
-;
+  },
+};
 </script>
 
 <style scoped>
@@ -415,7 +364,6 @@ input[type=number] {
   appearance: textfield;
 }
 
-
 .checkout-page {
   font-family: "Malgun Gothic Semilight";
 }
@@ -426,7 +374,6 @@ input[type=number] {
   letter-spacing: 2px;
   font-weight: 100;
 }
-
 
 .shipping-price-standard {
   margin-left: 70px;
@@ -452,7 +399,8 @@ input[type=number] {
 .shipping, .payment {
   border-bottom: solid 1px #333;
 }
- .summary-title {
+
+.summary-title {
   letter-spacing: 2px;
 }
 
@@ -513,6 +461,10 @@ input[type=number] {
   color: #656565;
 }
 
+.service-comp {
+  margin-top: 12%;
+}
+
 #footer-payment {
   display: grid;
   margin-left: 80%;
@@ -522,10 +474,6 @@ input[type=number] {
   text-align: center;
   color: #ffffff;
   background-color: #000000;
-}
-
-.service-comp {
-  margin-top: 12%;
 }
 
 </style>

@@ -29,6 +29,36 @@ export default {
 </script>
 
 <style scoped>
+
+#create-account {
+  display: block;
+  bottom: 35px;
+  width: 200px;
+  position: fixed;
+  z-index: -1;
+  cursor: pointer;
+  border: none;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+#create-account:hover {
+  background-color: #939393;
+  color: black;
+}
+
+#sign-in-div {
+  width: 150px;
+  margin-top: -7px;
+  background-color: #006b6e;
+  color: #ffffff;
+}
+
+#sign-in-div:hover {
+  background-color: #939393;
+  color: #000000;
+}
+
 .outer-card-login {
   position: fixed;
   display: flex;
@@ -44,7 +74,7 @@ export default {
   display: flex;
   flex-direction: column;
   position: relative;
-  width:300px;
+  width: 300px;
   height: 200px;
   background: #ffffff;
   transform: translateX(-4%);
@@ -90,32 +120,4 @@ export default {
   color: black;
 }
 
-#create-account {
-  display: block;
-  bottom: 35px;
-  width: 200px;
-  position: fixed;
-  z-index: -1;
-  cursor: pointer;
-  border: none;
-  background-color: #000000;
-  color: #ffffff;
-}
-
-#create-account:hover {
-  background-color: #939393;
-  color: black;
-}
-
-#sign-in-div {
-  width: 150px;
-  margin-top:-7px;
-  background-color: #006b6e;
-  color: #ffffff;
-}
-
-#sign-in-div:hover {
-  background-color: #939393;
-  color: #000000;
-}
 </style>

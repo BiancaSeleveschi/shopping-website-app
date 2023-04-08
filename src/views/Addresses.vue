@@ -2,70 +2,63 @@
   <div class="addresses-page">
     <div>
       <h2 id="title">My account</h2>
-      <div class="border-top pt-5 w-100">
-        <div class="outer-card bg-light bg-opacity-10">
-          <router-link to="/settings" class="mt-4 px-2 body-pgf ">Settings</router-link>
-          <router-link to="/cards" class="px-2  body-pgf">Saved Cards</router-link>
-          <router-link to="/orders" class="px-2 body-pgf">Orders</router-link>
-          <router-link to="/returns" class="px-2 body-pgf">Returns</router-link>
-          <router-link to="/addresses" class="px-2 body-pgf fw-bold">Addresses</router-link>
-        </div>
-        <div class="d-inline-bloc bg-secondary bg-opacity-10 " id="address-card">
-          <div class="border border-1 bg-white m-5">
-            <h4 class="my-4  content-addresses-title">My addresses</h4>
-          </div>
-          <div>
-            <AddressForm/>
-          </div>
-          <div>
-            <div v-for="(billingAddress, index) in this.$store.state.user.billingAddresses" :key="index">
-              <BillingAddressForm :address="billingAddress"
-                                  :index="index"
-                                  :isBillingAddressSavedInitial="true"
-              />
-            </div>
-          </div>
-          <div>
-            <div>
-              <button class="ccc border border-1 btn btn-dark d-inline-block w-25  mx-5 mb-3 mt-5">
-                <p class="pt-3 content-addresses-title" @click="openAddressForm">Add delivery address</p>
-              </button>
-              <button class="ccc border border-1 btn btn-dark d-inline-block w-25  mx-5 mb-3 mt-5">
-                <p class="pt-3 content-addresses-title" @click="openBillingAddressForm">Add billing address</p>
-              </button>
-            </div>
-          </div>
+      <div class="border-top pt-5 w-100"></div>
+      <div class="outer-card bg-light bg-opacity-10">
+        <router-link to="/settings" class="mt-4 px-2 body-pgf ">Settings</router-link>
+        <router-link to="/cards" class="px-2  body-pgf">Saved Cards</router-link>
+        <router-link to="/orders" class="px-2 body-pgf">Orders</router-link>
+        <router-link to="/returns" class="px-2 body-pgf">Returns</router-link>
+        <router-link to="/addresses" class="px-2 body-pgf fw-bold">Addresses</router-link>
+      </div>
+      <div class="d-inline-bloc bg-secondary bg-opacity-10 " id="address-card">
+        <h4 class=" m-5 border border-1 bg-white p-3 content-addresses-title">My addresses</h4>
+
+        <AddressList :addresses="deliveryAddresses"/>
+        <AddressList :addresses="billingAddresses"/>
+
+        <div class="mt-5 pt-5">
+          <button class=" btn btn-dark d-inline-block w-25 p-4 mx-5 mb-3 mt-5 content-addresses-title"
+                  @click="openAddressForm">Add delivery address
+          </button>
+          <button class=" btn btn-dark d-inline-block w-25 p-4 mx-5 mb-3 mt-5 content-addresses-title"
+                  @click="openBillingAddressForm">Add billing address
+          </button>
+
           <div v-show="showAddingDeliveryAddressForm ">
-            <DeliveryAddress :address="address"
-                             :isAddressSavedInitial="false"
-                             :index="currentIndex"
-                             @closeDeliveryAddressForm="closeAddingDeliveryAddressForm "/>
+            <AddressForm :addressInitial="address"
+                         titleInitial="Delivery address"
+                         :isAddressSavedInitial="false"
+                         :index="currentDeliveryAddressesIndex"
+                         @closeDeliveryAddressForm="closeAddingDeliveryAddressForm "/>
           </div>
-          <div class="my-4 p-2 m-auto bg-success bg-opacity-10 alert" v-show="isAddressSaved"> The address have been saved</div>
-          <div v-show="showBillingAddressForm">
-            <BillingAddressForm
-                :address="billingAddress"
-                :index="currentIndex"
-                :isBillingAddressSavedInitial="false"/>
+          <div class="my-4 p-2 m-auto bg-success bg-opacity-10 alert" v-show="isAddressSaved">
+            The address have been saved
+          </div>
+          <div v-show="showAddingBillingAddressForm">
+            <AddressForm :addressInitial="address"
+                         titleInitial="Billing address"
+                         :isAddressSavedInitial="false"
+                         :index="currentDeliveryAddressesIndex"
+                         @closeDeliveryAddressForm="closeAddingDeliveryAddressForm "/>
           </div>
         </div>
       </div>
     </div>
+    <Footer class="footer"/>
   </div>
 </template>
 
 <script>
 import AddressForm from "@/components/AddressForm";
-import BillingAddressForm from "@/components/BillingAddressForm";
-import DeliveryAddress from "@/components/DeliveryAddress";
+import Footer from "@/components/Footer";
+import AddressList from "@/components/AddressList";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Addresses",
-  components: {DeliveryAddress, BillingAddressForm, AddressForm},
+  components: {AddressList, Footer, AddressForm},
   data() {
     return {
-      isBillingAddressSavedInitial: false,
       address: {
         country: '',
         city: '',
@@ -74,56 +67,51 @@ export default {
         blockStaircase: '',
         postcode: '',
       },
-      billingAddress: {
-        address: '',
-        town: '',
-        postcode: '',
-      },
       isAddressSaved: false,
-      isOp: true,
       showAddingDeliveryAddressForm: false,
-      showBillingAddressForm: false,
-      showDeliveryAddressAlert: false,
-      isEditAddressClicked: false,
+      showAddingBillingAddressForm: false,
+      isLoggedIn: this.$store.state.user.isLoggedIn,
+      deliveryAddresses: this.$store.state.user.deliveryAddresses,
+      billingAddresses: this.$store.state.user.billingAddresses,
     }
   },
   computed: {
-    currentIndex() {
-      if (this.$store.state.user.isLogged) {
-        return this.$store.state.user.addresses.length
-      } else {
-        return 0
+    currentDeliveryAddressesIndex() {
+      if (this.isLoggedIn) {
+        return this.deliveryAddresses.length
       }
-    }
+      return this.$store.state.deliveryAddresses.length
+    },
+    currentBillingAddressesIndex() {
+      if (this.isLoggedIn) {
+        return this.$store.state.user.billingAddresses.length
+      }
+      return this.$store.state.billingAddresses.length
+    },
   },
   methods: {
     closeAddingDeliveryAddressForm() {
-      this.showAddingDeliveryAddressForm = false;
       this.isAddressSaved = true
       setTimeout(() => {
         this.isAddressSaved = false;
+        this.showAddingDeliveryAddressForm = true;
       }, 3000)
+      this.showAddingDeliveryAddressForm = !this.showAddingDeliveryAddressForm;
+
+    }, closeAddingBillingAddressForm() {
+      // this.isAddressSaved = true
+      let clear = () => (this.isAddressSaved = false)
+      this.isAddressSaved = true
+      setTimeout(clear, 3000)
+      this.showAddingBillingAddressForm = !this.showAddingBillingAddressForm;
     },
     openAddressForm() {
       this.showAddingDeliveryAddressForm = !this.showAddingDeliveryAddressForm;
-      this.showBillingAddressForm = false;
+      this.showAddingBillingAddressForm = false;
     },
     openBillingAddressForm() {
-      this.showBillingAddressForm = !this.showBillingAddressForm;
+      this.showAddingBillingAddressForm = !this.showAddingBillingAddressForm;
       this.showAddingDeliveryAddressForm = false;
-    },
-    removeAddress(index) {
-      this.$store.dispatch('removeAddress', index)
-    },
-    removeBillingAddress(index) {
-      this.$store.dispatch('removeBillingAddress', index)
-    },
-    updateBillingAddress({billingAddress, index}) {
-      this.$store.dispatch('updateBillingAddress', {billingAddress, index})
-    },
-    editAddress() {
-      this.isEditAddressClicked = true;
-
     },
 
   },
@@ -131,6 +119,17 @@ export default {
 </script>
 
 <style scoped>
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 #title {
   margin-top: 90px;
   margin-bottom: 90px;
@@ -150,7 +149,6 @@ export default {
 .addresses-page {
   font-family: "Malgun Gothic Semilight", sans-serif;
 }
-
 
 .outer-card {
   text-align: left;
@@ -183,18 +181,15 @@ export default {
   letter-spacing: 2px;
 }
 
-
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type=number] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
 .alert {
   width: 300px;
+}
+
+.footer {
+  margin-top: 900px;
+  margin-left: -2px;
+  width: 100%;
+  position: relative;
+  display: flex;
 }
 </style>

@@ -27,8 +27,8 @@ export default {
   data() {
     return {
       emailAddress: '',
-      alert: false,
       alertMessage: '',
+      alert: false,
       isValid: false,
     }
   },
@@ -43,13 +43,13 @@ export default {
         this.isValid = false;
         this.alertMessage = 'Please enter a valid email address'
       }
-      // this.alert = this.emailAddress === ''
-      // this.alertMessage = 'Please enter email'
-      // this.alert = !this.emailAddress.includes('@');
-      // this.alertMessage = 'Please enter a valid email address'
-      // else {
-      //   this.alert = true;
-      //   this.alertMessage = 'This address is not registered in our database'
+          // this.alert = this.emailAddress === ''
+          // this.alertMessage = 'Please enter email'
+          // this.alert = !this.emailAddress.includes('@');
+          // this.alertMessage = 'Please enter a valid email address'
+          // else {
+          //   this.alert = true;
+          //   this.alertMessage = 'This address is not registered in our database'
       // }
       else {
         this.isValid = true;
@@ -90,6 +90,7 @@ export default {
 .alert-message {
   font-size: 14px;
 }
+
 .service-in-password {
   margin-top: 20%;
 }

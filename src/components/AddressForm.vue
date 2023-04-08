@@ -1,105 +1,105 @@
 <template>
-  <div>
-    <div v-for="(address, index) in this.$store.state.user.addresses" :key="index">
-
-      <div v-if="!isEditActive && addressIndex !== index" id="address-form">
-        <div id="address-saved-form"
-             :class="{ 'selected-address': index === selectedAddress }"
-             @click="selectedAddress = index"
-             class="px-5 pt-3 m-auto mt-4 border border-2 w-50 m-auto rounded rounded-4">
-          <h5 class=" px-4 my-address"> Delivery address </h5>
-          <div class="edit-delete ps-2 d-inline-block " @click="removeAddress(index)">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                 class="bi bi-trash3" viewBox="0 0 16 16">
-              <path
-                  d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-            </svg>
-          </div>
-          <div class="edit-delete d-inline-block"
-               @click="editAddress(index)">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
-                 viewBox="0 0 16 16">
-              <path
-                  d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-            </svg>
-          </div>
-          <p class=" px-4 address">{{ address.city }}, {{ address.country }},{{
-              address.street
-            }},{{ address.number }},
-            {{ address.blockStaircase }}</p>
-          <p class=" px-4 address" id="postcode">{{ address.postcode }}</p>
-        </div>
-      </div>
-
-
-      <div v-else-if="addressIndex === index ">
-        <DeliveryAddress :address="address"
-                         :isAddressSavedInitial="isAddressSaved"
-                         :index="addressIndex"
-                         @closeDeliveryAddressForm="closeEditDeliveryAddressForm"/>
-      </div>
-
-
+  <div class="m-auto my-4 border border-2 w-50 m-auto p-4 rounded rounded-4 bg-white">
+    <h4 v-if="isAddressSaved" class="py-4" id="address-title">Edit address</h4>
+    <h4 v-else class="py-4" id="address-title">
+      {{ title === 'Delivery address' ? 'Add delivery address' : 'Add billing address' }}</h4>
+    <div class="w-50 col-div mb-5 d-block m-auto">
+      <span class=" address-pgf ">Country*</span>
+      <input
+          v-model="address.country"
+          type="text"
+          class="w-100 address-input"
+          required
+      />
+      <span class="address-alert" v-show="isCountryIncomplete">Please enter a country</span>
     </div>
+    <div class=" w-50 col-div mb-5 d-block m-auto">
+      <p class="address-pgf">Town/City*</p>
+      <input
+          v-model="address.city"
+          type="text"
+          class="w-100 address-input"
+          required
+      />
+      <span class="address-alert" v-show="isCityIncomplete">Please enter a city/town</span>
+    </div>
+    <div class=" w-50 col-div mb-5 d-block m-auto">
+      <p class="address-pgf">Street*</p>
+      <input
+          v-model="address.street"
+          type="text"
+          class="w-100 address-input"
+          required
+      />
+      <span class="address-alert" v-show="isStreetIncomplete">Enter a street</span>
+    </div>
+    <div class=" w-50 col-div mb-5 d-block m-auto">
+      <p class="address-pgf">Number*</p>
+      <input
+          v-model="address.number"
+          type="number"
+          class="w-100 address-input"
+          required
+      />
+      <span class="address-alert" v-show="isNumberIncomplete">Enter a house/block number</span>
+    </div>
+    <div class=" w-50 col-div mb-5 d-block m-auto">
+      <p class="address-pgf">Block staircase, floor, apartment</p>
+      <input
+          v-model="address.blockStaircase"
+          type="text"
+          class="w-100 address-input"
+      />
+    </div>
+    <div class=" w-50 col-div mb-5 d-block m-auto">
+      <p class="address-pgf">Postcode*</p>
+      <input
+          v-model="address.postcode"
+          type="number"
+          class="w-100 address-input"
+          required
+      />
+      <span class="address-alert" v-show="isPostcodeIncomplete">Please enter a postcode</span>
+    </div>
+    <button v-if="!isAddressSaved" @click="saveAddress" class="btn btn-primary mb-5">Save</button>
+    <button v-else @click="updateAddress(index)" class="btn btn-primary mb-5">Save</button>
   </div>
 </template>
 
 <script>
 
-
-import DeliveryAddress from "@/components/DeliveryAddress";
+import {v4 as uuid} from "uuid";
 
 export default {
   name: "AddressForm",
-  components: {DeliveryAddress},
+  props: ['addressInitial', 'titleInitial', 'isAddressSavedInitial', 'index'],
   data() {
     return {
-      newDeliveryAddress: {
-        country: '',
-        city: '',
-        street: '',
-        number: '',
-        blockStaircase: '',
-        postcode: '',
-      },
-      selectedAddressIndex: null,
-
-      selectedAddress: null,
-      deliveryAddress: this.address,
+      address: this.addressInitial,
+      isAddressSaved: this.isAddressSavedInitial,
+      isLoggedIn: this.$store.state.user.isLoggedIn,
+      addressIndex: this.index,
+      title: this.titleInitial,
       isCountryIncomplete: false,
       isCityIncomplete: false,
       isStreetIncomplete: false,
       isNumberIncomplete: false,
       isPostcodeIncomplete: false,
-      isEditActive: false,
-      isAddressSaved: false,
-      addressIndex: -1,
+      isAddressComplete: false,
     };
   },
-  computed: {
-    addresses() {
-      let deliveryAddresses = [];
-      if(this.$store.state.user.isLogged) {
-        deliveryAddresses = this.$store.state.user.addresses
-      }
-      else {
-        deliveryAddresses =  this.$store.state.deliveryAddress;
-      }
-      return deliveryAddresses
-    },
-    currentIndex() {
-      return this.$store.state.user.addresses.length
-    }
-  },
   methods: {
-    editAddress(index) {
-      this.isAddressSaved = true
-      this.addressIndex = this.addressIndex !== index ? index : -1
-    },
-    closeEditDeliveryAddressForm() {
-      this.isAddressSaved = true
-      this.addressIndex = -1;
-      this.deliveryAddress = {
+    saveAddress() {
+      let address = {
+        country: this.address.country,
+        city: this.address.city,
+        street: this.address.street,
+        number: this.address.number,
+        blockStaircase: this.address.blockStaircase,
+        postcode: this.address.postcode,
+        id: uuid(),
+      }
+      let newAddress = {
         country: '',
         city: '',
         street: '',
@@ -107,21 +107,59 @@ export default {
         blockStaircase: '',
         postcode: '',
       }
+      this.isCountryIncomplete = address.country === "";
+      this.isCityIncomplete = address.city === "";
+      this.isStreetIncomplete = address.street === "";
+      this.isNumberIncomplete = address.number === "";
+      this.isPostcodeIncomplete = address.postcode === "";
+      this.isAddressComplete = !this.isCountryIncomplete && !this.isCityIncomplete
+          && !this.isStreetIncomplete && !this.isNumberIncomplete && !this.isPostcodeIncomplete;
+      if (!this.isAddressSaved && this.isAddressComplete && this.isLoggedIn && this.title === 'Delivery address') {
+        this.$store.dispatch('saveDeliveryAddress', address)
+        this.address = newAddress
+        this.$emit('closeAddressForm')
+      } else if (!this.isAddressSaved && this.isAddressComplete && this.isLoggedIn && this.title === 'Billing address') {
+        this.$store.dispatch('saveBillingAddress', address)
+        this.address = newAddress
+        this.$emit('closeAddressForm')
+      } else if (!this.isAddressSaved && this.isAddressComplete && !this.isLoggedIn && this.title === 'Billing address') {
+        this.$store.state.billingAddresses.push(address)
+        this.address = newAddress
+        this.$emit('closeAddressForm')
+      } else if (!this.isAddressSaved && this.isAddressComplete && !this.isLoggedIn && this.title === 'Delivery address') {
+        this.$store.state.deliveryAddress.push(address)
+        this.address = newAddress
+        this.$emit('closeAddressForm')
+      }
     },
-    selectAddress(index) {
-      this.selectedAddressIndex = index;
-    },
-    removeAddress(index) {
-      this.$store.dispatch('removeAddress', index)
-    },
-
+    updateAddress(address, index) {
+      this.isCountryIncomplete = address.country === "";
+      this.isCityIncomplete = address.city === "";
+      this.isStreetIncomplete = address.street === "";
+      this.isNumberIncomplete = address.number === "";
+      this.isPostcodeIncomplete = address.postcode === "";
+      this.isAddressComplete = !this.isCountryIncomplete && !this.isCityIncomplete
+          && !this.isStreetIncomplete && !this.isNumberIncomplete && !this.isPostcodeIncomplete;
+      if (this.isAddressComplete && this.isAddressSaved && this.isLoggedIn && this.title === 'Delivery address') {
+        this.$store.dispatch('updateDeliveryAddress', {address, index})
+        this.$emit('closeAddressForm')
+      } else if (this.isAddressComplete && this.isAddressSaved && this.isLoggedIn && this.title === 'Billing address') {
+        this.$store.dispatch('updateBillingAddress', {address, index})
+        this.$emit('closeAddressForm')
+      } else if (this.isAddressComplete && this.isAddressSaved && !this.isLoggedIn && this.title === 'Billing address') {
+        this.$store.state.deliveryAddress[index] = address
+        this.$emit('closeAddressForm')
+      } else if (this.isAddressComplete && this.isAddressSaved && !this.isLoggedIn && this.title === 'Delivery address') {
+        this.$store.state.billingAddresses[index] = address
+        this.$emit('closeAddressForm')
+      }
+    }
   },
 }
 </script>
 
 
 <style scoped>
-
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -133,55 +171,26 @@ input[type=number] {
   appearance: textfield;
 }
 
-
-#address-form {
-  height: 170px;
+.address-input {
+  border: none;
+  border-bottom: 1px solid #000000;
+  outline: none;
 }
 
-.my-address {
+.address-alert {
+  color: red;
+  font-size: 14px;
+  float: left
+}
+
+.address-pgf {
+  margin-bottom: 0;
+  float: left;
+  font-family: "JetBrains Mono Light", sans-serif;
+}
+
+#address-title {
   letter-spacing: 2px;
-  float: left;
 }
-
-.edit-delete {
-  float: right;
-  display: grid;
-  cursor: pointer;
-}
-
-
-.edit-delete:hover {
-  color: #5b5b5b;
-}
-
-.address,
-#postcode {
-  display: grid;
-  position: absolute;
-  float: left;
-  font-size: 16px;
-}
-
-#address-saved-form {
-  height: 115px;
-}
-
-#address-saved-form:hover {
-  background-color: #dcdcdc;
-  cursor: pointer;
-}
-
-.selected-address {
-  background-color: #bdbdbd;
-}
-
-.address {
-  margin-top: 30px;
-}
-
-#postcode {
-  margin-top: 50px;
-}
-
 
 </style>

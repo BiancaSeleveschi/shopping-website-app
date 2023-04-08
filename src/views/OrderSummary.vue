@@ -69,8 +69,7 @@ export default {
     return {
       cart: this.$store.state.user.cart,
       isContinueToCheckoutClicked: false,
-      isLoggedIn: this.$store.state.user.isLogged,
-      // isUserLoggedIn: this.$store.state.user.isLogged,
+      isLoggedIn: this.$store.state.user.isLoggedIn,
     };
   },
   computed: {
@@ -95,6 +94,30 @@ export default {
 </script>
 
 <style scoped>
+
+#checkout-btn {
+  display: grid;
+  background-color: black;
+  color: white;
+  border-radius: 0;
+  margin-left: 70%;
+  width: max-content;
+  border: 1px solid black;
+}
+
+#size {
+  text-transform: uppercase;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #000000;
+  padding: 4px;
+}
+
+#checkout-btn:hover {
+  background-color: white;
+  color: black;
+}
+
 .order-summary-page {
   font-family: "Malgun Gothic Semilight", sans-serif;
   position: relative;
@@ -107,7 +130,6 @@ export default {
   letter-spacing: 0.1em;
   font-weight: 100;
 }
-
 
 .cart-item {
   width: 60%;
@@ -125,7 +147,6 @@ export default {
 .service-comp {
   margin-top: 30%;
 }
-
 
 .cart-item img {
   position: relative;
@@ -163,15 +184,6 @@ export default {
   text-align: start;
 }
 
-
-#size {
-  text-transform: uppercase;
-  font-size: 14px;
-  border-radius: 8px;
-  border: 1px solid #000000;
-  padding: 4px;
-}
-
 .cancel {
   text-align: right;
   margin-right: 7px;
@@ -204,21 +216,6 @@ export default {
 
 .footer-back:hover {
   color: #656565;
-}
-
-#checkout-btn {
-  display: grid;
-  background-color: black;
-  color: white;
-  border-radius: 0;
-  margin-left:70%;
-  width: max-content;
-  border: 1px solid black;
-}
-
-#checkout-btn:hover {
-  background-color: white;
-  color: black;
 }
 
 .login-checkout {

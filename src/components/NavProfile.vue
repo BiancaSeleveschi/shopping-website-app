@@ -6,7 +6,7 @@
       <router-link to="/orders" class="px-2 body-pgf">Orders</router-link>
       <router-link to="/returns" class="px-2 body-pgf">Returns</router-link>
       <router-link to="/addresses" class="px-2 body-pgf">Addresses</router-link>
-      <p class="px-2 body-pgf border-top pt-2 w-100">Logout</p>
+      <p @click="logout" class="px-2 body-pgf border-top pt-2 w-100">Logout</p>
     </div>
   </div>
 </template>
@@ -14,6 +14,12 @@
 <script>
 export default {
   name: "NavProfile",
+  methods: {
+    logout() {
+      this.$store.dispatch('logout')
+      this.$emit('closeProfile')
+    }
+  }
 }
 </script>
 

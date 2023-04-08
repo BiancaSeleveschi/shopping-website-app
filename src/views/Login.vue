@@ -7,11 +7,11 @@
         {{ message }}
       </div>
       <input
-          v-model="email"
+          v-model="emailAddress"
           class="d-flex m-auto mb-4 w-25"
-          type="email"
-          id="email"
-          name="email"
+          type="emailAddress"
+          id="emailAddress"
+          name="emailAddress"
           placeholder="Email"
           required
       />
@@ -35,7 +35,7 @@
         <input type="checkbox" name="example" value="1"/>
         Sign-up for newsletter
       </p>
-      <button class="d-flex m-auto my-5 login" @click="signIn( email, password)">Login</button>
+      <button class="d-flex m-auto my-5 login" @click="signIn(emailAddress, password)">Login</button>
       <router-link
           to="/register"
           class="card-footer-account d-flex m-auto"
@@ -59,23 +59,13 @@ export default {
   data() {
     return {
       showPassword: false,
-      email: "",
-      password: "",
       isAuthInvalid: false,
+      emailAddress: "",
+      password: "",
       message: '',
     };
   },
-  mounted() {
-    console.log(this.$store.state.user.isLogged)
-    // console.log(this.email )
-  },
-  // updated() {
-  //   console.log(this.userEmail )
-  // },
   computed: {
-    userEmail() {
-      return this.email
-    },
     passwordFieldType() {
       return this.showPassword ? "text" : "password";
     },
@@ -94,10 +84,9 @@ export default {
       this.hasAccount = !this.hasAccount;
     },
     signIn() {
-      console.log(this.email)
-      this.isAuthInvalid = this.email !== "test@yahoo.com" || this.password !== "Test123."
+      this.isAuthInvalid = this.emailAddress !== "test@yahoo.com" || this.password !== "Test123."
       if (!this.isAuthInvalid) {
-        this.$store.dispatch("signIn", this.email, this.password);
+        this.$store.dispatch("signIn", this.emailAddress, this.password);
         this.$router.push('/')
       } else {
         this.message = 'Username and/or password incorrect!';
@@ -119,7 +108,7 @@ export default {
 }
 
 #password,
-#email {
+#emailAddress {
   padding: 3px;
   width: 300px;
   border: none;

@@ -56,8 +56,10 @@ export default {
   background-color: #e5e5e5;
 }
 .footer {
-  margin-top: 30%;
+  margin-top: 900px;
+  margin-left: -2px;
   width: 100%;
-  position: absolute;
+  position: relative;
+  display: flex;
 }
 </style>

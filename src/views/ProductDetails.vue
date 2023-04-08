@@ -69,7 +69,8 @@
               </div>
             </form>
             <div v-if="showAlert" role="alert"
-                 class="alert-message p-2 d-flex m-auto mt-2" > The product has been added to cart</div>
+                 class="alert-message p-2 d-flex m-auto mt-2"> The product has been added to cart
+            </div>
           </div>
         </div>
       </div>
@@ -91,6 +92,7 @@ export default {
       isFavorite: false,
       showAlert: false,
       favorites: this.$store.state.user.favorites,
+      isLoggedIn: this.$store.state.user.isLoggedIn,
     };
   },
   mounted() {
@@ -122,12 +124,11 @@ export default {
         quantity: 1,
         quantityPrice: product.price,
       };
+      let clear = () => (this.showAlert = false)
       if (size !== "Size") {
         this.showAlert = true;
-        setTimeout(() => {
-          this.showAlert = false;
-        }, 3000);
         this.$store.dispatch("addToCart", item);
+        setTimeout(clear, 3000);
       } else {
         this.error = true;
       }

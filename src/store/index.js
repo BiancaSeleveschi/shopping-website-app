@@ -1,5 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { v4 as uuid } from 'uuid';
+
 
 Vue.use(Vuex);
 
@@ -16,7 +18,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Dress",
                 gender: "women",
-                id: 1,
+                id: uuid(),
             },
 
             {
@@ -29,7 +31,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Dress",
                 gender: "women",
-                id: 2,
+                id: uuid(),
             },
             {
                 title: "Silk chiffon dress",
@@ -41,7 +43,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Dress",
                 gender: "women",
-                id: 3,
+                id: uuid(),
                 isFavorite: false,
             },
             {
@@ -54,7 +56,7 @@ export default new Vuex.Store({
                 brand: " Gucci",
                 type: "Dress",
                 gender: "women",
-                id: 4,
+                id: uuid(),
             },
             {
                 title: "Renaissance Dress",
@@ -66,7 +68,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Dress",
                 gender: "women",
-                id: 5,
+                id: uuid(),
             },
             {
                 title: "Rhombus tile print silk dress",
@@ -78,7 +80,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Dress",
                 gender: "women",
-                id: 6,
+                id: uuid(),
             },
             {
                 title: "Silk georgette dress",
@@ -90,7 +92,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Dress",
                 gender: "women",
-                id: 7,
+                id: uuid(),
             },
             {
                 title: "adidas x Gucci GG Trefoil stripe dress",
@@ -102,7 +104,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Dress",
                 gender: "women",
-                id: 8,
+                id: uuid(),
             },
             {
                 title: "KIM DOLCE&GABBANA ",
@@ -113,7 +115,7 @@ export default new Vuex.Store({
                 brand: "Dolce & Gabbana",
                 type: "Dress",
                 gender: "women",
-                id: 9,
+                id: uuid(),
             },
             {
                 title: "KIM DOLCE&GABBANA",
@@ -124,7 +126,7 @@ export default new Vuex.Store({
                 brand: "Dolce & Gabbana",
                 type: "Dress",
                 gender: "women",
-                id: 10,
+                id: uuid(),
             },
             {
                 title: "KIM DOLCE&GABBANA ",
@@ -135,7 +137,7 @@ export default new Vuex.Store({
                 brand: "Dolce & Gabbana",
                 type: "Dress",
                 gender: "women",
-                id: 11,
+                id: uuid(),
             },
             {
                 title: "KIM DOLCE&GABBANA ",
@@ -146,7 +148,7 @@ export default new Vuex.Store({
                 brand: "Dolce & Gabbana",
                 type: "Dress",
                 gender: "women",
-                id: 12,
+                id: uuid(),
             },
             {
                 title: "Floral jacquard midi dress",
@@ -157,7 +159,7 @@ export default new Vuex.Store({
                 brand: "Dolce & Gabbana",
                 type: "Dress",
                 gender: "women",
-                id: 13,
+                id: uuid(),
             },
             {
                 title: "LONG DRESS IN COTTON GUIPURE LACE",
@@ -168,7 +170,7 @@ export default new Vuex.Store({
                 brand: "Valentino",
                 type: "Dress",
                 gender: "women",
-                id: 14,
+                id: uuid(),
             },
 
             {
@@ -180,7 +182,7 @@ export default new Vuex.Store({
                 brand: "Prada",
                 type: "Dress",
                 gender: "women",
-                id: 15,
+                id: uuid(),
             },
             {
                 title: "Abito - Pink",
@@ -191,7 +193,7 @@ export default new Vuex.Store({
                 brand: "Prada",
                 type: "Dress",
                 gender: "women",
-                id: 16,
+                id: uuid(),
             },
 
             {
@@ -203,7 +205,7 @@ export default new Vuex.Store({
                 brand: "Massimo Dutti",
                 type: "Dress",
                 gender: "women",
-                id: 17,
+                id: uuid(),
             },
             {
                 title: "LONG SLEEVELESS BLENDED PRINT DRESS ",
@@ -214,7 +216,7 @@ export default new Vuex.Store({
                 brand: "Massimo Dutti",
                 type: "Dress",
                 gender: "women",
-                id: 18,
+                id: uuid(),
             },
             {
                 title: "CREPE BOX PLEAT MIDI DRESS",
@@ -225,7 +227,7 @@ export default new Vuex.Store({
                 brand: "Massimo Dutti",
                 type: "Dress",
                 gender: "women",
-                id: 19,
+                id: uuid(),
             },
             {
                 title: "Long black ribbed V-neck dress",
@@ -236,7 +238,7 @@ export default new Vuex.Store({
                 brand: "Massimo Dutti",
                 type: "Dress",
                 gender: "women",
-                id: 20,
+                id: uuid(),
             },
             {
                 title: "MEDUSA MIDI DRESS",
@@ -248,7 +250,7 @@ export default new Vuex.Store({
                 brand: "Versace",
                 type: "Dress",
                 gender: "women",
-                id: 21,
+                id: uuid(),
             },
             {
                 title: "Logo Orchid Midi Shirt Dress",
@@ -272,7 +274,7 @@ export default new Vuex.Store({
                 brand: "Versace",
                 type: "Dress",
                 gender: "women",
-                id: 23,
+                id: uuid(),
             },
             {
                 title: "BAROCCO SILK MIDI SHIRT DRESS",
@@ -284,7 +286,7 @@ export default new Vuex.Store({
                 brand: "Versace",
                 type: "Dress",
                 gender: "women",
-                id: 24,
+                id: uuid(),
             },
         ],
         men: [
@@ -297,7 +299,7 @@ export default new Vuex.Store({
                 brand: "Valentino",
                 type: "Jacket",
                 gender: "men",
-                id: 25,
+                id: uuid(),
             },
             {
                 title: "CARGO TROUSERS IN SILK FAILLE",
@@ -309,7 +311,7 @@ export default new Vuex.Store({
                 brand: "Valentino",
                 type: "Trousers",
                 gender: "men",
-                id: 26,
+                id: uuid(),
             },
             {
                 title: "SILK TWILL BOWLING SHIRT ",
@@ -321,7 +323,7 @@ export default new Vuex.Store({
                 brand: "Valentino",
                 type: "Shirt",
                 gender: "men",
-                id: 27,
+                id: uuid(),
             },
             {
                 title: "COTTON SHIRT JACKET",
@@ -333,7 +335,7 @@ export default new Vuex.Store({
                 brand: "Valentino",
                 type: "Jacket",
                 gender: "men",
-                id: 28,
+                id: uuid(),
             },
             {
                 title: "Skull cashmere sweater",
@@ -345,7 +347,7 @@ export default new Vuex.Store({
                 brand: "Alexander Mqueen",
                 type: "Sweater",
                 gender: "men",
-                id: 29,
+                id: uuid(),
             },
             {
                 title: "Stripe sweatpants",
@@ -357,7 +359,7 @@ export default new Vuex.Store({
                 brand: "BURBERRY",
                 type: "Trousers",
                 gender: "men",
-                id: 30,
+                id: uuid(),
             },
             {
                 title: "Logo long-sleeved shirt",
@@ -369,7 +371,7 @@ export default new Vuex.Store({
                 brand: "BURBERRY",
                 type: "Shirt",
                 gender: "men",
-                id: 31,
+                id: uuid(),
             },
             {
                 title: "Camden car coat",
@@ -381,7 +383,7 @@ export default new Vuex.Store({
                 brand: "BURBERRY",
                 type: "Overcoat",
                 gender: "men",
-                id: 32,
+                id: uuid(),
             },
             {
                 title: "Wool gabardine formal jacket\n",
@@ -393,7 +395,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Jacket",
                 gender: "men",
-                id: 33,
+                id: uuid(),
             },
             {
                 title: "Gucci HA HA HA herringbone jacket",
@@ -405,7 +407,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Jacket",
                 gender: "men",
-                id: 34,
+                id: uuid(),
             },
             {
                 title: "Wool linen herringbone formal jacket",
@@ -417,10 +419,10 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Jacket",
                 gender: "men",
-                id: 35,
+                id: uuid(),
             },
             {
-                title: "adidas x Gucci nylon down jacket\n",
+                title: "adidas x Gucci nylon down jacket",
                 img: "https://media.gucci.com/style/HEXE0E8E5_Center_0_0_800x800/1670976089/722513_ZALC8_7470_001_100_0000_Light-adidas-x-Gucci-nylon-down-jacket.jpg",
                 price: 599,
                 description:
@@ -429,7 +431,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Jacket",
                 gender: "men",
-                id: 36,
+                id: uuid(),
             },
             {
                 title: "Printed cotton poplin shirt",
@@ -441,26 +443,27 @@ export default new Vuex.Store({
                 brand: "Alexander Mqueen",
                 type: "Shirt",
                 gender: "men",
-                id: 37,
+                id: uuid(),
             },
         ],
         user: {
             genre: '',
             firstName: '',
             lastName: '',
-            email: '',
+            emailAddressAddress: '',
             password: '',
-            isLogged: false,
+            isLoggedIn: false,
             cart: [],
             favorites: [],
-            addresses: [
+            deliveryAddresses: [
                 {
-                    city: 'Cluj-Napoca',
+                    city: 'Baia-Mare',
                     country: 'Romania',
                     street: 'V. Bologa',
                     number: '7',
                     blockStaircase: '',
-                    postcode: '400567',
+                    postcode: '3333',
+                    id: uuid(),
                 },
                 {
                     city: 'Baia-Mare',
@@ -469,64 +472,62 @@ export default new Vuex.Store({
                     number: '7',
                     blockStaircase: '',
                     postcode: '3333',
-                },  {
-                    city: 'Cluj-Napoca',
-                    country: 'Romania',
-                    street: 'V. Bologa',
-                    number: '7',
-                    blockStaircase: '',
-                    postcode: '400567',
-                },
-                {
-                    city: 'Baia-Mare',
-                    country: 'Romania',
-                    street: 'V. Bologa',
-                    number: '7',
-                    blockStaircase: '',
-                    postcode: '3333',
+                    id: uuid(),
                 },
             ],
             billingAddresses: [
                 {
-                    address: 'Romania',
-                    town: 'Baia-Mare',
-                    postcode: '447221',
-                }, {
-                    address: 'Romania',
-                    town: 'Cluj-Napoca',
-                    postcode: '123543',
-                }
+                    city: 'Baia-Mare',
+                    country: 'Romania',
+                    street: 'V. Bologa',
+                    number: '7',
+                    blockStaircase: '',
+                    postcode: '3333',
+                    id: uuid(),
+                },
+                {
+                    city: 'Cluj-Napoca',
+                    country: 'Romania',
+                    street: 'V. Bologa',
+                    number: '7',
+                    blockStaircase: '',
+                    postcode: '400567',
+                    id: uuid(),
+                },
             ],
-            cards: {
-                cardholderName: '',
-                cardNumber: '',
-                expirationDate: '',
-                cvv: '',
-            }
+            cards: []
         },
-        deliveryAddress: [],
+        deliveryAddresses: [],
+        billingAddresses: [],
     },
     getters: {
         getCart: (state) => state.user.cart,
         getCartTotalPrice: (state) => {
             let total = 0;
-            state.user.cart.forEach((item) => {
-                total += item.product.price * item.quantity;
-            });
+            if (state.user.cart) {
+                state.user.cart.forEach((item) => {
+                    total += item.product.price * item.quantity;
+                });
+            }
             return total.toLocaleString('pt-BR', {maximumFractionDigits: 2})
         },
         getIsLogged: (state) => {
-            return state.user.isLogged
+            return state.user.isLoggedIn
         },
         getCartItemCount: (state) => {
             let total = 0;
-            state.user.cart.forEach((item) => {
-                total += item.quantity;
-            });
+            if (state.user.cart) {
+                state.user.cart.forEach((item) => {
+                    total += item.quantity;
+                });
+            }
             return total
         },
         getUserEmail: (state) => {
             return state.user
+        },
+        getUserCardCount: (state) =>{
+         return state.user.cards.length
         }
     },
     mutations: {
@@ -558,7 +559,7 @@ export default new Vuex.Store({
             state.user.cart.splice(index, 1);
         },
         ADD_TO_FAVORITES(state, product) {
-            if (!state.user.favorites.includes(product) && state.user.isLogged === true) {
+            if (!state.user.favorites.includes(product) && state.user.isLoggedIn === true) {
                 state.user.favorites.push(product);
             }
         },
@@ -582,27 +583,29 @@ export default new Vuex.Store({
                 itemCart.quantityPrice = parseFloat(itemCart.quantityPrice).toLocaleString('pt-BR', {maximumFractionDigits: 2});
             }
         },
-        SIGN_IN(state, email, password) {
+        SIGN_IN(state, emailAddress, password) {
             state.user = {
-                email: email,
+                firstName: state.user.firstName,
+                lastName: state.user.lastName,
+                emailAddressAddress: emailAddress,
                 password: password,
-                isLogged: true,
+                isLoggedIn: true,
                 cart: state.user.cart,
                 favorites: state.user.favorites,
-                addresses: state.user.addresses,
+                deliveryAddresses: state.user.deliveryAddresses,
                 billingAddresses: state.user.billingAddresses,
                 cards: state.user.cards,
             };
         },
-        UPDATE_USER_INFORMATION(state, newFirstname, newLastname, newEmail) {
+        UPDATE_USER_INFORMATION(state, user) {
             state.user = {
-                firstName: newFirstname,
-                lastName: newLastname,
-                email: newEmail,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                emailAddress: user.emailAddress,
                 password: state.user.password,
-                isLogged: true,
+                isLoggedIn: true,
                 favorites: state.user.favorites,
-                addresses: state.user.addresses,
+                deliveryAddresses: state.user.deliveryAddresses,
                 billingAddresses: state.user.billingAddresses,
                 cards: state.user.cards,
             };
@@ -610,74 +613,41 @@ export default new Vuex.Store({
         CHANGE_PASSWORD(state, newPassword) {
             state.user.password = newPassword
         },
-        REMOVE_ADDRESS(state, index) {
-            state.user.addresses.splice(index, 1)
+        REMOVE_CARD(state, index) {
+            state.user.cards.splice(index, 1)
+        },
+        REMOVE_DELIVERY_ADDRESS(state, index) {
+            state.user.deliveryAddresses.splice(index, 1)
         },
         REMOVE_BILLING_ADDRESS(state, index) {
             state.user.billingAddresses.splice(index, 1)
         },
-        // SET_CART_TOTAL_PRICE(state, couponCode, showCouponCodeAlert, cartTotalPrice) {
-        //    let total = 0;
-        //     if (couponCode === '') {
-        //         total = cartTotalPrice;
-        //     } else if (couponCode === 'MED') {
-        //         total = (cartTotalPrice * 0.9).toFixed(3);
-        //         showCouponCodeAlert = false;
-        //     } else {
-        //         // eslint-disable-next-line no-unused-vars
-        //         total = cartTotalPrice;
-        //         showCouponCodeAlert = true;
-        //     }
-        //     // state.cartTotalPrice = total;
-        // },
-        // SELECT_PAYMENT_METHOD(state, {isCheckboxAlipayChecked,isCheckboxCreditCardChecked,isCheckboxAmazonPayChecked}) {
-        //     if (isCheckboxAlipayChecked) {
-        //         isCheckboxAlipayChecked = !isCheckboxAlipayChecked
-        //         isCheckboxCreditCardChecked = false;
-        //         isCheckboxAmazonPayChecked = false;
-        //     } else if (isCheckboxCreditCardChecked) {
-        //         isCheckboxCreditCardChecked = !isCheckboxCreditCardChecked;
-        //         isCheckboxAmazonPayChecked = false;
-        //         isCheckboxAlipayChecked = false
-        //     } else if (isCheckboxAmazonPayChecked) {
-        //         isCheckboxAmazonPayChecked = !isCheckboxAmazonPayChecked;
-        //         isCheckboxCreditCardChecked = false;
-        //         isCheckboxAlipayChecked = false
-        //     }
-        // }
-        SAVE_ADDRESS(state, address) {
-            state.user.addresses.push(address)
+        SAVE_CARD(state, card) {
+            state.user.cards.push(card)
         },
-        SAVE_ADDRESS_WITHOUT_ACCOUNT(state, address) {
-            state.deliveryAddress.push(address)
+        SAVE_DELIVERY_ADDRESS(state, address) {
+            state.user.deliveryAddresses.push(address)
         },
         SAVE_BILLING_ADDRESS(state, address) {
             state.user.billingAddresses.push(address)
         },
-        // UPDATE_ADDRESS(state, address, index) {
-        //     state.user.addresses[index] = {
-        //         city: address.city,
-        //         country: address.country,
-        //         street: address.street,
-        //         number: address.number,
-        //         blockStaircase: address.blockStaircase,
-        //         postcode: address.postcode,
-        //     }
-        // }
-        UPDATE_BILLING_ADDRESS(state,  { billingAddress, index }) {
-            Vue.set(state.user.billingAddresses, index, {
-                address: billingAddress.address,
-                town: billingAddress.town,
-                postcode: billingAddress.postcode,
-            })
+        UPDATE_BILLING_ADDRESS(state, {address, index}) {
+            state.user.billingAddresses[index] = address;
         },
-        UPDATE_ADDRESS(state,  { address, index }) {
-            state.user.addresses[index] = address;
+        UPDATE_DELIVERY_ADDRESS(state, {address, index}) {
+            state.user.deliveryAddresses[index] = address;
         },
+        LOGOUT(state) {
+            state.user.isLoggedIn = false;
+        }
     },
     actions: {
         addToCart(context, item) {
             context.commit("ADD_TO_CART", item);
+            context.commit("UPDATE_STORE");
+        },
+        logout(context) {
+            context.commit("LOGOUT");
             context.commit("UPDATE_STORE");
         },
         removeProductFromCart(context, product) {
@@ -700,51 +670,50 @@ export default new Vuex.Store({
             context.commit("DECREASE_QUANTITY", item);
             context.commit("UPDATE_STORE");
         },
-        signIn(context, email, password) {
-            context.commit("SIGN_IN", email, password);
+        signIn(context, emailAddress, password) {
+            context.commit("SIGN_IN", emailAddress, password);
             context.commit("UPDATE_STORE");
         },
-        updateUserInformation(context, newFirstname, newLastname, newEmail) {
-            context.commit("UPDATE_USER_INFORMATION", {newFirstname, newLastname, newEmail});
+        updateUserInformation(context, user) {
+            context.commit("UPDATE_USER_INFORMATION", user);
             context.commit("UPDATE_STORE");
         },
         changePassword(context, newPassword) {
             context.commit("CHANGE_PASSWORD", newPassword);
             context.commit("UPDATE_STORE");
         },
-        removeAddress(context, index) {
-            context.commit("REMOVE_ADDRESS", index);
+        removeDeliveryAddress(context, index) {
+            context.commit("REMOVE_DELIVERY_ADDRESS", index);
+            context.commit("UPDATE_STORE");
+        },
+        removeCard(context, index) {
+            context.commit("REMOVE_CARD", index);
             context.commit("UPDATE_STORE");
         },
         removeBillingAddress(context, index) {
             context.commit("REMOVE_BILLING_ADDRESS", index);
             context.commit("UPDATE_STORE");
         },
-        saveAddress(context, address) {
-            context.commit("SAVE_ADDRESS", address);
+        saveCard(context, card) {
+            context.commit("SAVE_CARD", card);
             context.commit("UPDATE_STORE");
         },
-        saveAddressWithoutAccount(context, address) {
-            context.commit("SAVE_ADDRESS_WITHOUT_ACCOUNT", address);
+        saveDeliveryAddress(context, address) {
+            context.commit("SAVE_DELIVERY_ADDRESS", address);
             context.commit("UPDATE_STORE");
         },
-
         saveBillingAddress(context, address) {
             context.commit("SAVE_BILLING_ADDRESS", address);
             context.commit("UPDATE_STORE");
         },
-        updateBillingAddress(context,  { billingAddress, index }) {
-            context.commit("UPDATE_BILLING_ADDRESS", { address: billingAddress, index });
+        updateBillingAddress(context, {billingAddress, index}) {
+            context.commit("UPDATE_BILLING_ADDRESS", {address: billingAddress, index});
             context.commit("UPDATE_STORE");
         },
-        updateAddress(context,  { deliveryAddress, index }) {
-            context.commit("UPDATE_ADDRESS", { address: deliveryAddress, index });
+        updateDeliveryAddress(context, {deliveryAddress, index}) {
+            context.commit("UPDATE_DELIVERY_ADDRESS", {address: deliveryAddress, index});
             context.commit("UPDATE_STORE");
-        }
-        // setCartTotalPrice(context, { couponCode, showCouponCodeAlert,cartTotalPrice}) {
-        //     context.commit("SET_CART_TOTAL_PRICE", { couponCode, showCouponCodeAlert,cartTotalPrice});
-        //     context.commit("SET_CART_TOTAL_PRICE");
-        // },
+        },
         // selectPaymentMethod(context, {isCheckboxAlipayChecked,isCheckboxCreditCardChecked,isCheckboxAmazonPayChecked}) {
         //     context.commit("SELECT_PAYMENT_METHOD", {isCheckboxAlipayChecked,isCheckboxCreditCardChecked,isCheckboxAmazonPayChecked});
         //     context.commit("SELECT_PAYMENT_METHOD");

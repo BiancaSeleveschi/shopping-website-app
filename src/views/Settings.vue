@@ -1,85 +1,85 @@
 <template>
   <div class="settings-page">
-      <h2 id="title">My account</h2>
-      <div class="border-top pt-5 w-100">
-        <div class="outer-card bg-light bg-opacity-10">
-          <router-link to="/settings" class="mt-4 px-2 body-pgf fw-bold" >Settings</router-link>
-          <router-link to="/cards" class="px-2  body-pgf">Saved Cards</router-link>
-          <router-link to="/orders" class="px-2 body-pgf">Orders</router-link>
-          <router-link to="/returns" class="px-2 body-pgf">Returns</router-link>
-          <router-link to="/addresses" class="px-2 body-pgf" >Addresses</router-link>
+    <h2 id="title">My account</h2>
+    <div class="border-top pt-5 w-100">
+      <div class="outer-card bg-light bg-opacity-10">
+        <router-link to="/settings" class="mt-4 px-2 body-pgf fw-bold">Settings</router-link>
+        <router-link to="/cards" class="px-2  body-pgf">Saved Cards</router-link>
+        <router-link to="/orders" class="px-2 body-pgf">Orders</router-link>
+        <router-link to="/returns" class="px-2 body-pgf">Returns</router-link>
+        <router-link to="/addresses" class="px-2 body-pgf">Addresses</router-link>
+      </div>
+
+      <div class="d-inline-bloc bg-secondary bg-opacity-10 " id="settings-card">
+        <div class="border border-1 bg-light m-5">
+          <h4 class="mt-4 ps-5 content-title">General</h4>
+          <div class="w-50 ps-5 mt-3 d-inline-block col-div mb-5">
+            <p>FIRSTNAME</p>
+            <input
+                v-model="user.firstName"
+                type="text"
+                class=" w-75 account-input"
+            />
+          </div>
+          <div class="w-50 d-inline-block col-div mb-5">
+            <p>LASTNAME</p>
+            <input
+                v-model="user.lastName"
+                type="email"
+                class="w-75  account-input"
+            />
+          </div>
+          <div class="w-50 ps-5 mt-4 col-div mb-5">
+            <p>EMAIL*</p>
+            <input
+                v-model="user.emailAddress"
+                type="text"
+                class=" w-75 account-input"
+            />
+            <div v-show="isEmailAddressInvalid" class="alert-message">Enter a valid email address</div>
+          </div>
+          <button class="btn btn-primary mb-5 save-button" @click="updateUserInformation">Save</button>
         </div>
 
-        <div class="d-inline-bloc bg-secondary bg-opacity-10 " id="settings-card">
-          <div class="border border-1 bg-light m-5">
-            <h4 class="mt-4 ps-5 content-title">General</h4>
-            <div class="w-50 ps-5 mt-3 d-inline-block col-div mb-5">
-              <p>FIRSTNAME</p>
-              <input
-                  v-model="newFirstname"
-                  type="text"
-                  class=" w-75 account-input"
-              />
-            </div>
-            <div class="w-50 d-inline-block col-div mb-5">
-              <p>LASTNAME</p>
-              <input
-                  v-model="newLastname"
-                  type="email"
-                  class="w-75  account-input"
-              />
-            </div>
-            <div class="w-50 ps-5 mt-4 col-div mb-5">
-              <p>EMAIL*</p>
-              <input
-                  v-model="newEmail"
-                  type="text"
-                  class=" w-75 account-input"
-              />
-              <div v-show="isEmailAddressInvalid" class="alert-message">Enter a valid email address</div>
-            </div>
-            <button class="btn btn-primary mb-5 save-button" @click="updateUserInformation">Save</button>
+        <div class="border border-1 bg-light mx-5">
+          <h4 class="mt-4 ps-5 content-title">Change password</h4>
+          <div class="w-50 ps-5 mt-4  col-div mb-5">
+            <p>PASSWORD*</p>
+            <input
+                v-model="user.password"
+                name="password"
+                class="w-75  account-input"
+                :type="passwordFieldType"
+                required
+            />
+            <div v-show="isCurrentPasswordMismatch" class="alert-message">{{ alertCurrentPasswordMismatch }}</div>
           </div>
-
-          <div class="border border-1 bg-light mx-5">
-            <h4 class="mt-4 ps-5 content-title">Change password</h4>
-            <div class="w-50 ps-5 mt-4  col-div mb-5">
-              <p>PASSWORD*</p>
-              <input
-                  v-model="password"
-                  name="password"
-                  class="w-75  account-input"
-                  :type="passwordFieldType"
-                  required
-              />
-              <div v-show="isCurrentPasswordMismatch" class="alert-message">{{ alertCurrentPasswordMismatch }}</div>
-            </div>
-            <div class="w-50 ps-5 mt-3 d-inline-block col-div mb-5">
-              <p>NEW PASSWORD</p>
-              <input
-                  v-model="newPassword"
-                  name="password"
-                  class="w-75  account-input"
-                  :type="passwordFieldType"
-                  required
-              />
-              <div v-show="isInvalidNewPassword" class="alert-message">{{ alertInvalidNewPassword }}</div>
-            </div>
-            <div class="w-50 d-inline-block col-div mb-5">
-              <p>CONFIRM PASSWORD</p>
-              <input
-                  v-model="passwordConfirmed"
-                  name="password"
-                  class="w-75  account-input"
-                  :type="passwordFieldType"
-                  required
-              />
-              <div v-show="isInvalidConfirmedPassword" class="alert-message">{{ alertInvalidConfirmedPassword }}</div>
-            </div>
-            <button class="btn btn-primary mb-5 save-button" @click="changePassword">Save</button>
+          <div class="w-50 ps-5 mt-3 d-inline-block col-div mb-5">
+            <p>NEW PASSWORD</p>
+            <input
+                v-model="newPassword"
+                name="password"
+                class="w-75  account-input"
+                :type="passwordFieldType"
+                required
+            />
+            <div v-show="isInvalidNewPassword" class="alert-message">{{ alertInvalidNewPassword }}</div>
           </div>
+          <div class="w-50 d-inline-block col-div mb-5">
+            <p>CONFIRM PASSWORD</p>
+            <input
+                v-model="passwordConfirmed"
+                name="password"
+                class="w-75  account-input"
+                :type="passwordFieldType"
+                required
+            />
+            <div v-show="isInvalidConfirmedPassword" class="alert-message">{{ alertInvalidConfirmedPassword }}</div>
+          </div>
+          <button class="btn btn-primary mb-5 save-button" @click="changePassword">Save</button>
         </div>
       </div>
+    </div>
     <Footer class="footer"/>
   </div>
 </template>
@@ -93,9 +93,7 @@ export default {
   components: {Footer},
   data() {
     return {
-      title: "",
-      newFirstname: "",
-      newLastname: "",
+      user: this.$store.state.user,
       newEmail: "",
       password: "",
       newPassword: "",
@@ -122,34 +120,35 @@ export default {
       this.showPassword = !this.showPassword;
     },
     updateUserInformation() {
-      this.isEmailAddressInvalid = !this.newEmail.includes("@");
-      if (!this.isEmailAddressInvalid && this.newEmail !== 'test@') {
-        this.$store.dispatch('updateUserInformation', {
-          newFirstname: this.newFirstname,
-          newLastname: this.newLastname,
-          newEmail: this.newEmail
-        })
+      this.user = {
+        firstName: this.user.firstName,
+        lastName: this.user.lastName,
+        emailAddress: this.user.emailAddress
+      }
+      this.isEmailAddressInvalid = !this.user.emailAddress.includes("@");
+      if (!this.isEmailAddressInvalid) {
+        this.$store.dispatch('updateUserInformation', this.user)
         alert('Changes have been saved.');
       }
     },
     changePassword() {
       const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*).{8,}$/;
       this.isInvalidNewPassword = !passwordRegex.test(this.newPassword);
-      // this.isCurrentPasswordMismatch = this.password !== this.$store.state.user.password
-      this.isCurrentPasswordMismatch = this.password !== 'Test123.'
+      this.isCurrentPasswordMismatch = this.user.password !== 'Test123.'
       this.alertCurrentPasswordMismatch = 'Invalid password. Please try again'
       if (!this.isCurrentPasswordMismatch) {
         if (this.isInvalidNewPassword) {
           this.alertInvalidNewPassword = 'Please enter a valid password'
         }
-        if (this.newPassword === this.password) {
+        if (this.newPassword === this.user.password) {
           this.isInvalidNewPassword = true;
           this.alertInvalidNewPassword = 'New password cannot be the same as the old password'
         }
         if (!this.isInvalidNewPassword && this.passwordConfirmed === '') {
           this.isInvalidConfirmedPassword = true;
           this.alertInvalidConfirmedPassword = 'Confirm the new password'
-        } else if (!this.isInvalidNewPassword && this.newPassword !== this.passwordConfirmed) {
+        }
+        if (!this.isInvalidNewPassword && this.newPassword !== this.passwordConfirmed) {
           this.isInvalidConfirmedPassword = true;
           this.alertInvalidConfirmedPassword = 'New password and confirm password do not match'
         }
@@ -157,6 +156,8 @@ export default {
       if (!this.isInvalidNewPassword && !this.isCurrentPasswordMismatch) {
         this.$store.dispatch('changePassword', this.newPassword)
         alert('The new password have been saved.');
+        this.newPassword = '';
+        this.passwordConfirmed = '';
       }
     }
   },
@@ -180,9 +181,11 @@ export default {
   float: right;
   margin-bottom: 300px;
 }
+
 .settings-page {
-  font-family: "Malgun Gothic Semilight",sans-serif;
+  font-family: "Malgun Gothic Semilight", sans-serif;
 }
+
 .alert-message {
   position: absolute;
   color: red;
@@ -218,9 +221,11 @@ export default {
 }
 
 .footer {
-  margin-top: 70%;
+  margin-top: 900px;
+  margin-left: -2px;
   width: 100%;
-  position: absolute;
+  position: relative;
+  display: flex;
 }
 
 .account-input {
@@ -240,6 +245,6 @@ export default {
 }
 
 .save-button {
-  margin-left:780px;
+  margin-left: 780px;
 }
 </style>

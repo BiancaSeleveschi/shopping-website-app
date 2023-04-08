@@ -41,7 +41,7 @@
         <div class="col-6 col-div mb-5">
           <p>EMAIL*</p>
           <input
-              v-model="account.email"
+              v-model="account.emailAddress"
               type="email"
               class="w-75  account-input"
               required
@@ -100,7 +100,7 @@ export default {
         title: "",
         firstName: "",
         lastName: "",
-        email: "",
+        emailAddress: "",
         password: "",
       },
       isCheckboxChecked: false,
@@ -125,7 +125,7 @@ export default {
     },
     createAccount() {
       this.alertMessageGenre = this.account.title === '';
-      this.alertMessageEmail = !this.account.email.includes("@");
+      this.alertMessageEmail = !this.account.emailAddress.includes("@");
       const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*).{8,}$/;
       this.alertMessagePassword = !passwordRegex.test(this.account.password);
       this.alertMessageCheckbox = !this.isCheckboxChecked;

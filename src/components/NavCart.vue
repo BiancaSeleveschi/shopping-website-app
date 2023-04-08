@@ -6,12 +6,14 @@
         <div class="cart-close" @click="toggleCartButton">X</div>
       </div>
       <div class="cart-body">
-        <CartItem />
+        <CartItem/>
+        <p class="p-2 fw-bold py-5 px-4 m-5 text-danger" v-show="showAlert">YOUR BAG IS EMPTY</p>
+        <p  class="p-5" v-show="this.$store.getters.getCartItemCount === 0 && !showAlert">YOUR BAG IS EMPTY</p>
       </div>
       <div class="subtotal p-3">Subtotal: $ {{ this.$store.getters.getCartTotalPrice }}</div>
-      <router-link class="cart-footer" to="/order/summary">
-        <div class="checkout text-uppercase bg-black text-light p-2">Proceed to checkout</div>
-      </router-link>
+      <button @click="proceedToCheckout"
+              class=" checkout p-2  w-50 m-auto">Proceed to checkout
+      </button>
     </div>
   </div>
 </template>
@@ -22,12 +24,29 @@ import CartItem from "@/components/CartItem";
 export default {
   name: "NavCart",
   components: {CartItem},
+  data() {
+    return {
+      showAlert: false,
+    }
+  },
   methods: {
     toggleCartButton() {
       this.$emit("toggleCart");
     },
-  },
-};
+    proceedToCheckout() {
+      if (this.$store.getters.getCartItemCount === 0) {
+        this.showAlert = true;
+        setTimeout(() => {
+          this.showAlert = false;
+        }, 3000);
+      } else {
+        this.$router.push('/order/summary')
+      }
+    }
+  }
+  ,
+}
+;
 </script>
 
 <style scoped>
@@ -107,26 +126,13 @@ export default {
 .subtotal {
   background-color: #e8e8e8;
   top: 0;
-}
-
-.cart-footer {
-  position: fixed;
-  bottom: 0;
-  display: flex;
-  border-top: 1px solid black;
-  width: 100%;
-  height: 70px;
-  justify-content: center;
-  background-color: #cccccc;
+  border-bottom: 1px solid black;
 }
 
 .checkout {
-  margin-bottom: 10px;
-  display: block;
-  bottom: 0;
-  width: 230px;
-  position: fixed;
-  z-index: -1;
-  cursor: pointer;
+  background-color: black;
+  color: white;
+  border: black 1px solid;
+
 }
 </style>
