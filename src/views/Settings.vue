@@ -2,32 +2,29 @@
   <div class="settings-page">
     <h2 id="title">My account</h2>
     <div class="border-top pt-5 w-100">
-      <div class="outer-card bg-light bg-opacity-10">
-        <router-link to="/settings" class="mt-4 px-2 body-pgf fw-bold">Settings</router-link>
-        <router-link to="/cards" class="px-2  body-pgf">Saved Cards</router-link>
-        <router-link to="/orders" class="px-2 body-pgf">Orders</router-link>
-        <router-link to="/returns" class="px-2 body-pgf">Returns</router-link>
-        <router-link to="/addresses" class="px-2 body-pgf">Addresses</router-link>
-      </div>
-
+      <NavProfile class="outer-card"/>
       <div class="d-inline-bloc bg-secondary bg-opacity-10 " id="settings-card">
         <div class="border border-1 bg-light m-5">
           <h4 class="mt-4 ps-5 content-title">General</h4>
           <div class="w-50 ps-5 mt-3 d-inline-block col-div mb-5">
-            <p>FIRSTNAME</p>
+            <p>FIRSTNAME*</p>
             <input
                 v-model="user.firstName"
                 type="text"
                 class=" w-75 account-input"
             />
+            <p v-show="!isFirstNameInputCompleted" class="alert-message">{{ firstNameMessageAlert }}</p>
+
           </div>
           <div class="w-50 d-inline-block col-div mb-5">
-            <p>LASTNAME</p>
+            <p>LASTNAME*</p>
             <input
                 v-model="user.lastName"
                 type="email"
                 class="w-75  account-input"
             />
+            <p v-show="!isLastNameInputCompleted" class="alert-message">{{ lastNameMessageAlert }}</p>
+
           </div>
           <div class="w-50 ps-5 mt-4 col-div mb-5">
             <p>EMAIL*</p>
@@ -36,61 +33,86 @@
                 type="text"
                 class=" w-75 account-input"
             />
-            <div v-show="isEmailAddressInvalid" class="alert-message">Enter a valid email address</div>
+            <p v-show="isEmailAddressInvalid" class="alert-message">Enter a valid email address</p>
           </div>
           <button class="btn btn-primary mb-5 save-button" @click="updateUserInformation">Save</button>
+          <div v-show="showInformationSavedAlert" class="overlay">
+            <transition name="fade">
+              <div class="alert alert-success py-4"
+                   role="alert">
+                Changes have been saved
+              </div>
+            </transition>
+          </div>
         </div>
 
         <div class="border border-1 bg-light mx-5">
           <h4 class="mt-4 ps-5 content-title">Change password</h4>
-          <div class="w-50 ps-5 mt-4  col-div mb-5">
+
+          <div class="w-50 ps-5 mt-4 col-div mb-5">
+
             <p>PASSWORD*</p>
             <input
-                v-model="user.password"
+                v-model="password"
                 name="password"
-                class="w-75  account-input"
-                :type="passwordFieldType"
+                class="w-75 account-input"
+                :type="currentPasswordFieldType"
                 required
             />
-            <div v-show="isCurrentPasswordMismatch" class="alert-message">{{ alertCurrentPasswordMismatch }}</div>
+            <div v-show="isCurrentPasswordMismatch" class="alert-message">{{ currentPasswordMismatchMessageAlert }}</div>
+            <span class="password-toggle" @click="toggleCurrentPasswordVisibility">{{
+                currentPasswordToggleLabel
+              }}</span>
           </div>
           <div class="w-50 ps-5 mt-3 d-inline-block col-div mb-5">
-            <p>NEW PASSWORD</p>
+            <p>NEW PASSWORD*</p>
             <input
                 v-model="newPassword"
                 name="password"
                 class="w-75  account-input"
-                :type="passwordFieldType"
+                :type="newPasswordFieldType"
                 required
             />
-            <div v-show="isInvalidNewPassword" class="alert-message">{{ alertInvalidNewPassword }}</div>
+            <p v-show="isInvalidNewPassword" class="alert-message">{{ invalidNewPasswordMessageAlert  }}</p>
+            <span class="password-toggle" @click="toggleNewPasswordVisibility">{{ newPasswordToggleLabel }}</span>
           </div>
           <div class="w-50 d-inline-block col-div mb-5">
-            <p>CONFIRM PASSWORD</p>
+            <p>CONFIRM PASSWORD*</p>
             <input
                 v-model="passwordConfirmed"
                 name="password"
                 class="w-75  account-input"
-                :type="passwordFieldType"
+                :type="confirmedNewPasswordFieldType"
                 required
             />
-            <div v-show="isInvalidConfirmedPassword" class="alert-message">{{ alertInvalidConfirmedPassword }}</div>
+            <p v-show="isInvalidConfirmedPassword" class="alert-message">{{ invalidConfirmedPasswordMessageAlert }}</p>
+            <span class="password-toggle" @click="toggleConfirmedPasswordVisibility">{{
+                confirmedNewPasswordToggleLabel
+              }}</span>
           </div>
           <button class="btn btn-primary mb-5 save-button" @click="changePassword">Save</button>
+          <div v-show="showPasswordChangedSuccessfullyAlert" class="overlay">
+            <transition name="fade">
+              <div class="alert alert-success py-4 alert-password"
+                   role="alert">
+                Changes have been saved
+              </div>
+            </transition>
+          </div>
         </div>
       </div>
     </div>
-    <Footer class="footer"/>
   </div>
 </template>
 
 <script>
-import Footer from "@/components/Footer";
+
+import NavProfile from "@/components/NavProfile";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Settings",
-  components: {Footer},
+  components: {NavProfile},
   data() {
     return {
       user: this.$store.state.user,
@@ -98,26 +120,59 @@ export default {
       password: "",
       newPassword: "",
       passwordConfirmed: "",
+      isFirstNameInputCompleted: false,
+      isLastNameInputCompleted: false,
       isEmailAddressInvalid: false,
+      showCurrentPassword: false,
+      showNewPassword: false,
+      showConfirmedPassword: false,
       isCurrentPasswordMismatch: false,
       isInvalidNewPassword: false,
       isInvalidConfirmedPassword: false,
-      alertInvalidNewPassword: '',
-      alertCurrentPasswordMismatch: '',
-      alertInvalidConfirmedPassword: '',
+      showInformationSavedAlert: false,
+      showPasswordChangedSuccessfullyAlert: false,
+      firstNameMessageAlert: '',
+      lastNameMessageAlert: '',
+      invalidNewPasswordMessageAlert : '',
+      currentPasswordMismatchMessageAlert: '',
+      invalidConfirmedPasswordMessageAlert: '',
     }
   },
+  mounted() {
+    console.log(this.password)
+    console.log(this.$store.state.user.password)
+    console.log(this.newPassword)
+    console.log(this.passwordConfirmed)
+  },
   computed: {
-    passwordFieldType() {
-      return this.showPassword ? "text" : "password";
+    currentPasswordFieldType() {
+      return this.showCurrentPassword ? "text" : "password";
     },
-    passwordToggleLabel() {
-      return this.showPassword ? "Hide" : "Show ";
+    newPasswordFieldType() {
+      return this.showNewPassword ? "text" : "password";
+    },
+    confirmedNewPasswordFieldType() {
+      return this.showConfirmedPassword ? "text" : "password";
+    },
+    currentPasswordToggleLabel() {
+      return this.showCurrentPassword ? "Hide" : "Show ";
+    },
+    newPasswordToggleLabel() {
+      return this.showNewPassword ? "Hide" : "Show ";
+    },
+    confirmedNewPasswordToggleLabel() {
+      return this.showConfirmedPassword ? "Hide" : "Show ";
     },
   },
   methods: {
-    togglePasswordVisibility() {
-      this.showPassword = !this.showPassword;
+    toggleCurrentPasswordVisibility() {
+      this.showCurrentPassword = !this.showCurrentPassword;
+    },
+    toggleNewPasswordVisibility() {
+      this.showNewPassword = !this.showNewPassword;
+    },
+    toggleConfirmedPasswordVisibility() {
+      this.showConfirmedPassword = !this.showConfirmedPassword;
     },
     updateUserInformation() {
       this.user = {
@@ -125,43 +180,98 @@ export default {
         lastName: this.user.lastName,
         emailAddress: this.user.emailAddress
       }
-      this.isEmailAddressInvalid = !this.user.emailAddress.includes("@");
-      if (!this.isEmailAddressInvalid) {
+      this.isLastNameInputCompleted = this.verifyLastName();
+      this.isFirstNameInputCompleted = this.verifyFirstName();
+      this.isEmailAddressInvalid = !this.user.emailAddress.includes("@") || this.user.emailAddress === '';
+      if (!this.isEmailAddressInvalid && this.isLastNameInputCompleted && this.isFirstNameInputCompleted) {
         this.$store.dispatch('updateUserInformation', this.user)
-        alert('Changes have been saved.');
+        this.showInformationSavedAlert = true
+        let clear = () => (this.showInformationSavedAlert = false)
+        if (this.showInformationSavedAlert) {
+          setTimeout(clear, 3000);
+        }
       }
     },
-    changePassword() {
-      const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*).{8,}$/;
-      this.isInvalidNewPassword = !passwordRegex.test(this.newPassword);
-      this.isCurrentPasswordMismatch = this.user.password !== 'Test123.'
-      this.alertCurrentPasswordMismatch = 'Invalid password. Please try again'
-      if (!this.isCurrentPasswordMismatch) {
-        if (this.isInvalidNewPassword) {
-          this.alertInvalidNewPassword = 'Please enter a valid password'
-        }
-        if (this.newPassword === this.user.password) {
-          this.isInvalidNewPassword = true;
-          this.alertInvalidNewPassword = 'New password cannot be the same as the old password'
-        }
-        if (!this.isInvalidNewPassword && this.passwordConfirmed === '') {
-          this.isInvalidConfirmedPassword = true;
-          this.alertInvalidConfirmedPassword = 'Confirm the new password'
-        }
-        if (!this.isInvalidNewPassword && this.newPassword !== this.passwordConfirmed) {
-          this.isInvalidConfirmedPassword = true;
-          this.alertInvalidConfirmedPassword = 'New password and confirm password do not match'
-        }
+    verifyFirstName() {
+      const regex = /^[a-zA-Z]+$/;
+      if (this.user.firstName === '') {
+        this.isFirstNameInputCompleted = false;
+        this.firstNameMessageAlert = 'This field is required'
+      } else if (!regex.test(this.user.firstName)) {
+        this.isFirstNameInputCompleted = false;
+        this.firstNameMessageAlert = 'Please enter only characters'
+      } else {
+        this.isFirstNameInputCompleted = true;
       }
-      if (!this.isInvalidNewPassword && !this.isCurrentPasswordMismatch) {
+      return this.isFirstNameInputCompleted
+    },
+    verifyLastName() {
+      const regex = /^[a-zA-Z]+$/;
+      if (this.user.lastName === '') {
+        this.isLastNameInputCompleted = false;
+        this.lastNameMessageAlert = 'This field is required'
+      } else if (!regex.test(this.user.lastName)) {
+        this.isLastNameInputCompleted = false;
+        this.lastNameMessageAlert = 'Please enter only characters'
+      } else {
+        this.isLastNameInputCompleted = true;
+      }
+      return this.isLastNameInputCompleted
+    },
+    changePassword() {
+      this.isCurrentPasswordMismatch = this.verifyCurrentPassword();
+      this.isInvalidNewPassword = this.verifyNewPassword();
+      this.isInvalidConfirmedPassword = this.verifyConfirmedPassword();
+      if (!this.isCurrentPasswordMismatch && !this.isInvalidNewPassword && !this.isInvalidConfirmedPassword) {
         this.$store.dispatch('changePassword', this.newPassword)
-        alert('The new password have been saved.');
+        this.showPasswordChangedSuccessfullyAlert = true
+        let clear = () => (this.showPasswordChangedSuccessfullyAlert = false)
+        if (this.showPasswordChangedSuccessfullyAlert) {
+          setTimeout(clear, 3000);
+        }
         this.newPassword = '';
         this.passwordConfirmed = '';
       }
+    },
+    verifyCurrentPassword() {
+      if (this.password !== this.user.password) {
+        this.isCurrentPasswordMismatch = true;
+        this.currentPasswordMismatchMessageAlert = 'Invalid password. Please try again'
+      } else if (this.password === '') {
+        this.isCurrentPasswordMismatch = true;
+        this.currentPasswordMismatchMessageAlert = 'Enter you password'
+      } else {
+        this.isCurrentPasswordMismatch = false;
+      }
+      return this.isCurrentPasswordMismatch
+    },
+    verifyNewPassword() {
+      const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*).{8,}$/;
+      if (this.newPassword === this.password) {
+        this.isInvalidNewPassword = true;
+        this.invalidNewPasswordMessageAlert  = 'New password cannot be the same as the old password'
+      } else if (this.newPassword === '' || !passwordRegex.test(this.newPassword)) {
+        this.isInvalidNewPassword = true;
+        this.invalidNewPasswordMessageAlert  = 'Please enter a valid password'
+      } else {
+        this.isInvalidNewPassword = false;
+      }
+      return this.isInvalidNewPassword
+    },
+    verifyConfirmedPassword() {
+      if (this.passwordConfirmed === '') {
+        this.isInvalidConfirmedPassword = true;
+        this.invalidConfirmedPasswordMessageAlert = 'Confirm the new password'
+      } else if (this.newPassword !== this.passwordConfirmed) {
+        this.isInvalidConfirmedPassword = true;
+        this.invalidConfirmedPasswordMessageAlert = 'New password and confirm password do not match'
+      } else {
+        this.isInvalidConfirmedPassword = false;
+      }
+      return this.isInvalidConfirmedPassword
     }
   },
-}
+};
 </script>
 
 <style scoped>
@@ -171,15 +281,38 @@ export default {
   letter-spacing: 2px;
 }
 
+
 #settings-card {
-  display: grid;
+  display: flow;
+  float: right;
   width: 65%;
   height: max-content;
   padding-bottom: 3%;
   margin-right: 60px;
   border: 1px solid grey;
-  float: right;
   margin-bottom: 300px;
+}
+
+.overlay {
+  width: 100%;
+  border-bottom: solid 1px #333;
+  display: grid;
+  background-color: #a2a2a2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black background */
+  z-index: 1;
+}
+
+.alert {
+  position: absolute;
+  top: 15%;
+  left: 35%;
+  width: 30%;
+  height: max-content;
+  z-index: 2;
 }
 
 .settings-page {
@@ -193,39 +326,25 @@ export default {
   width: 75%;
 }
 
+.password-toggle {
+  right: 45px;
+  font-size: 14px;
+  color: #999;
+  cursor: pointer;
+  position: relative;
+  width: 15%;
+}
+
 .outer-card {
   text-align: left;
   float: left;
   margin-left: 13%;
+  font-family: "Malgun Gothic Semilight", sans-serif;
   font-size: 16px;
   letter-spacing: 2px;
   text-decoration: none;
   border: 1px solid grey;
   width: 16%;
-  height: 280px;
-}
-
-.body-pgf {
-  position: relative;
-  cursor: pointer;
-  margin-top: -10px;
-  padding: 6px;
-  text-decoration: none;
-  color: black;
-  margin-bottom: 22px;
-  display: block;
-}
-
-.body-pgf:hover {
-  background-color: #e5e5e5;
-}
-
-.footer {
-  margin-top: 900px;
-  margin-left: -2px;
-  width: 100%;
-  position: relative;
-  display: flex;
 }
 
 .account-input {
@@ -245,6 +364,6 @@ export default {
 }
 
 .save-button {
-  margin-left: 780px;
+  margin-left: 70%;
 }
 </style>

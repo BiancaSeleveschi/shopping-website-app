@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { v4 as uuid } from 'uuid';
+import {v4 as uuid} from 'uuid';
 
 
 Vue.use(Vuex);
@@ -314,12 +314,12 @@ export default new Vuex.Store({
                 id: uuid(),
             },
             {
-                title: "SILK TWILL BOWLING SHIRT ",
-                img: "https://www.valentino.com/variants/images/1647597301226155/F/w750.jpg",
+                title: "WOOL GABARDINE SHIRT JACKET",
+                img: "https://valentino-cdn.thron.com/delivery/public/image/valentino/8067cfbc-2dfa-42d3-9a3c-2ef92b3a0832/ihqstx/std/2000x0/WOOL-GABARDINE-SHIRT-JACKET-WITH-VLOGO-SIGNATURE-PATCH?quality=80&size=35&format=auto",
                 price: 799,
                 description:
-                    "Bowling shirt in silk twill with Valentino Bandana Flower print",
-                color: "Multicolor",
+                    "Wool gabardine shirt jacket with VLogo Signature patch",
+                color: "Beige",
                 brand: "Valentino",
                 type: "Shirt",
                 gender: "men",
@@ -447,10 +447,11 @@ export default new Vuex.Store({
             },
         ],
         user: {
+            id: uuid(),
             genre: '',
             firstName: '',
             lastName: '',
-            emailAddressAddress: '',
+            emailAddress: '',
             password: '',
             isLoggedIn: false,
             cart: [],
@@ -499,9 +500,11 @@ export default new Vuex.Store({
         },
         deliveryAddresses: [],
         billingAddresses: [],
+        isAccountCreated: false,
     },
     getters: {
         getCart: (state) => state.user.cart,
+        getAllProducts: (state) => state.women.concat(state.men),
         getCartTotalPrice: (state) => {
             let total = 0;
             if (state.user.cart) {
@@ -526,9 +529,42 @@ export default new Vuex.Store({
         getUserEmail: (state) => {
             return state.user
         },
-        getUserCardCount: (state) =>{
-         return state.user.cards.length
-        }
+        getUserCardCount: (state) => {
+            return state.user.cards.length
+        },
+        getProductById: (state) => (productId) => {
+            return state.user.favorites.find((product) => product.id === productId);
+        },
+        getCurrentDeliveryAddressesIndex: (state) => {
+            if (state.user.isLoggedIn) {
+                return state.user.deliveryAddresses.length
+            }
+            return state.deliveryAddresses.length
+        },
+        getCurrentBillingAddressesIndex: (state) => {
+            if (state.user.isLoggedIn) {
+                return state.user.billingAddresses.length
+            }
+            return state.billingAddresses.length
+        },
+        existAtLeastOneBillingAddressSaved: (state) => {
+            let t;
+            if (state.user.isLoggedIn) {
+                t = state.user.billingAddresses.length
+            } else {
+                t = state.billingAddresses.length
+            }
+            return t > 0
+        },
+        existAtLeastOneDeliveryAddressSaved: (state) => {
+            let t;
+            if (state.user.isLoggedIn) {
+                t = state.user.deliveryAddresses.length
+            } else {
+                t = state.deliveryAddresses.length
+            }
+            return t > 0
+        },
     },
     mutations: {
         INIT_STORE(state) {
@@ -554,17 +590,33 @@ export default new Vuex.Store({
                 state.user.cart.push(item);
             }
         },
-        REMOVE_FROM_CART(state, product) {
-            let index = state.user.cart.indexOf(product);
+        REMOVE_FROM_CART(state, item) {
+            let index = state.user.cart.indexOf(item);
             state.user.cart.splice(index, 1);
         },
-        ADD_TO_FAVORITES(state, product) {
-            if (!state.user.favorites.includes(product) && state.user.isLoggedIn === true) {
-                state.user.favorites.push(product);
+        SET_PRODUCTS(state) {
+            state.women.concat(state.men).forEach(product => {
+                state.$set(product, 'isFavorite', false);
+            })
+        },
+        SET_PRODUCTS_IS_FAVORITE(state, {productId, isFavorite}) {
+            const product = state.women.find(p => p.id === productId) || state.men.find(p => p.id === productId);
+            if (product) {
+                product.isFavorite = isFavorite;
             }
         },
-        REMOVE_FROM_FAVORITES(state, product) {
-            let index = state.user.favorites.indexOf(product);
+        UPDATE_PRODUCTS(state) {
+            const allProducts = [...state.women, ...state.men];
+            allProducts.forEach(product => {
+                const isFavorite = localStorage.getItem(`favorite_${product.id}`) === 'true';
+                product.isFavorite = isFavorite;
+            });
+        },
+        ADD_TO_FAVORITES(state, product) {
+            state.user.favorites.push(product);
+        },
+        REMOVE_FROM_FAVORITES(state, productId) {
+            let index = state.user.favorites.findIndex((p) => p.id === productId);
             state.user.favorites.splice(index, 1);
         },
         INCREASE_QUANTITY(state, item) {
@@ -587,7 +639,7 @@ export default new Vuex.Store({
             state.user = {
                 firstName: state.user.firstName,
                 lastName: state.user.lastName,
-                emailAddressAddress: emailAddress,
+                emailAddress: emailAddress,
                 password: password,
                 isLoggedIn: true,
                 cart: state.user.cart,
@@ -604,6 +656,7 @@ export default new Vuex.Store({
                 emailAddress: user.emailAddress,
                 password: state.user.password,
                 isLoggedIn: true,
+                cart: state.user.cart,
                 favorites: state.user.favorites,
                 deliveryAddresses: state.user.deliveryAddresses,
                 billingAddresses: state.user.billingAddresses,
@@ -636,6 +689,24 @@ export default new Vuex.Store({
         },
         UPDATE_DELIVERY_ADDRESS(state, {address, index}) {
             state.user.deliveryAddresses[index] = address;
+        }, UPDATE_LOGIN_STATUS(state) {
+            state.user.isLoggedIn = true;
+        },
+        SET_ACCOUNT_CREATED(state, user) {
+            state.isAccountCreated = true;
+            state.user = {
+                title: user.title,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                emailAddress: user.emailAddress,
+                password: user.password,
+                isLoggedIn: true,
+                cart: state.user.cart,
+                favorites: state.user.favorites,
+                deliveryAddresses: state.user.deliveryAddresses,
+                billingAddresses: state.user.billingAddresses,
+                cards: state.user.cards,
+            };
         },
         LOGOUT(state) {
             state.user.isLoggedIn = false;
@@ -646,20 +717,34 @@ export default new Vuex.Store({
             context.commit("ADD_TO_CART", item);
             context.commit("UPDATE_STORE");
         },
-        logout(context) {
-            context.commit("LOGOUT");
+        removeProductFromCart(context, item) {
+            context.commit("REMOVE_FROM_CART", item);
             context.commit("UPDATE_STORE");
         },
-        removeProductFromCart(context, product) {
-            context.commit("REMOVE_FROM_CART", product);
+        setProductsIsFavorite(context) {
+            context.commit("UPDATE_PRODUCTS");
+            context.commit("UPDATE_STORE");
+        },
+        toggleFavorite(context, productId) {
+            let isFavorite = localStorage.getItem(`favorite_${productId}`) === 'true';
+            localStorage.setItem(`favorite_${productId}`, String(!isFavorite));
+            context.commit('SET_PRODUCTS_IS_FAVORITE', {productId, isFavorite: !isFavorite});
             context.commit("UPDATE_STORE");
         },
         addToFavorites(context, product) {
             context.commit("ADD_TO_FAVORITES", product);
             context.commit("UPDATE_STORE");
         },
-        removeFromFavorites(context, product) {
-            context.commit("REMOVE_FROM_FAVORITES", product);
+        removeFromFavorites(context, productId) {
+            context.commit("REMOVE_FROM_FAVORITES", productId);
+            context.commit("UPDATE_STORE");
+        },
+        setProducts(context, products) {
+            context.commit("SET_PRODUCTS", products);
+            context.commit("UPDATE_STORE");
+        },
+        updateProductsIsFavorite(context) {
+            context.commit("UPDATE_PRODUCT_IS_FAVORITE");
             context.commit("UPDATE_STORE");
         },
         increaseQuantity(context, item) {
@@ -672,6 +757,10 @@ export default new Vuex.Store({
         },
         signIn(context, emailAddress, password) {
             context.commit("SIGN_IN", emailAddress, password);
+            context.commit("UPDATE_STORE");
+        },
+        logout(context) {
+            context.commit("LOGOUT");
             context.commit("UPDATE_STORE");
         },
         updateUserInformation(context, user) {
@@ -714,11 +803,20 @@ export default new Vuex.Store({
             context.commit("UPDATE_DELIVERY_ADDRESS", {address: deliveryAddress, index});
             context.commit("UPDATE_STORE");
         },
+        updateLoginStatus(context) {
+            context.commit("UPDATE_LOGIN_STATUS");
+            context.commit("UPDATE_STORE");
+        },
+        setAccountCreated(context, user) {
+            context.commit("SET_ACCOUNT_CREATED", user);
+            context.commit("UPDATE_STORE");
+        }
         // selectPaymentMethod(context, {isCheckboxAlipayChecked,isCheckboxCreditCardChecked,isCheckboxAmazonPayChecked}) {
         //     context.commit("SELECT_PAYMENT_METHOD", {isCheckboxAlipayChecked,isCheckboxCreditCardChecked,isCheckboxAmazonPayChecked});
         //     context.commit("SELECT_PAYMENT_METHOD");
         // }
     },
-    modules: {},
+    modules: {}
+    ,
 })
 ;

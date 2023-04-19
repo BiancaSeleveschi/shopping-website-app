@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-for="(item,index) in this.$store.state.user.cart" :key="index" class="cart-item">
+    <div v-for="(item, index) in this.$store.state.user.cart" :key="index" class="cart-item">
       <img :src="item.product.img"/>
-      <div class="details">
+      <div>
         <router-link
             :to="{
                   name: 'ProductDetails',
@@ -10,7 +10,7 @@
                     product: item.product,
                     id: item.product.id,
                   },
-                }" class="item-title"
+                }" class="item-header"
         >
           <h3 class="item-product-title px-2">{{ item.product.title }}</h3></router-link>
         <div>
@@ -34,8 +34,8 @@
 export default {
   name: "CartItem",
   methods: {
-    removeProductFromCart(product) {
-      this.$store.dispatch("removeProductFromCart", product);
+    removeProductFromCart(item) {
+      this.$store.dispatch("removeProductFromCart", item);
     },
     increaseQuantity(item) {
       this.$store.dispatch('increaseQuantity', item)
@@ -48,6 +48,28 @@ export default {
 </script>
 
 <style scoped>
+img {
+  position: relative;
+  width: 80px;
+  height: 130px;
+  display: block;
+  left: 0;
+  object-position: top;
+  animation: fade-in 0.5s forwards;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+#size {
+  text-transform: uppercase;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid black;
+  padding: 4px;
+  font-family: "ITC Cheltenham Std", sans-serif;
+}
 
 .cart-item {
   display: grid;
@@ -61,20 +83,6 @@ export default {
 
 .cart-item:hover {
   background-color: grey;
-}
-
-.cart-item img {
-  position: relative;
-  width: 80px;
-  height: 130px;
-  display: block;
-  left: 0;
-  object-position: top;
-  animation: fade-in 0.5s forwards;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
 }
 
 .item-product-title {
@@ -94,11 +102,11 @@ export default {
   color: #dedede;
 }
 
-.item-title {
+.item-header {
   text-decoration: none;
 }
 
-.cart-item .price {
+.price {
   display: flex;
   justify-content: right;
   margin-top: 1.3em;
@@ -125,15 +133,6 @@ export default {
 .size {
   margin-right: 10px;
   padding-left: 3px;
-}
-
-#size {
-  text-transform: uppercase;
-  font-size: 14px;
-  border-radius: 8px;
-  border: 1px solid black;
-  padding: 4px;
-  font-family: "ITC Cheltenham Std", sans-serif;
 }
 
 .quantity {

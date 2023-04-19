@@ -1,29 +1,26 @@
 <template>
-  <div class="reset-div">
-    <h3 class="reset-title text-uppercase">Reset your password</h3>
+  <div class="pass-reset-page">
+    <h3 class="title text-uppercase">Reset your password</h3>
     <div v-if="!isValid">
-      <div class="my-5 d-block m-auto ">
-        <p class="mb-5 ">Please enter your email address to receive an email with instructions to reset your
+      <div class="my-5 d-block m-auto">
+        <p class="mb-5">Enter your email address to receive an email with instructions to reset your
           password.</p>
         <input v-on:keyup.enter="resetPassword"
-               v-model="emailAddress" class="reset-input   w-25" placeholder="Email" type="email" required/>
-        <p v-if="alert" class="alert-message text-danger">{{ alertMessage }}</p>
+               v-model="emailAddress" class="pass-reset-input w-25" placeholder="Email" type="email" required/>
+        <p v-if="alert" class="alert-message w-25 d-block m-auto text-danger">{{ alertMessage }}</p>
       </div>
       <button class="send-button p-2" @click="resetPassword">Send</button>
     </div>
     <div v-else>
       <p>An email with instructions to reset your password has been sent.</p>
     </div>
-    <Service class="service-in-password"/>
   </div>
 </template>
 
 <script>
-import Service from "@/components/Footer";
 
 export default {
   name: "PasswordReset",
-  components: {Service},
   data() {
     return {
       emailAddress: '',
@@ -61,13 +58,19 @@ export default {
 
 <style scoped>
 
-.reset-title {
-  margin-top: 9%;
+.title {
+  margin-top: 8%;
   margin-bottom: 7%;
   font-family: "JetBrains Mono Light", sans-serif;
 }
 
-.reset-input {
+.pass-reset-page {
+  position: relative;
+  width: 100%;
+  height: 50em;
+}
+
+.pass-reset-input {
   border: none;
   border-bottom: 1px solid #000000;
   outline: none;
@@ -78,6 +81,7 @@ export default {
   border: 1px solid black;
   color: black;
   width: 200px;
+  margin-bottom: 20%;
 }
 
 
@@ -89,9 +93,7 @@ export default {
 
 .alert-message {
   font-size: 14px;
+  text-align: start;
 }
 
-.service-in-password {
-  margin-top: 20%;
-}
 </style>

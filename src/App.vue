@@ -1,15 +1,17 @@
 <template>
   <div id="app">
     <Navbar/>
-    <router-view/>
+    <router-view></router-view>
+    <Footer class="footer"/>
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export default {
-  components: {Navbar},
+  components: {Footer, Navbar},
   // created() {
   //   const men = localStorage.getItem('men');
   //   if (men) {
@@ -30,9 +32,13 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   width: 100%;
-  top: 0;
-  left: 0;
+}
+.footer {
+  bottom: 0;
+  z-index: 0;
 }
 </style>

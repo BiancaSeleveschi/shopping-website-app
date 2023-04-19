@@ -17,7 +17,6 @@
     </div>
     <AddressList :addresses="deliveryAddresses"/>
 
-
     <div v-if="showAddingBillingAddressForm  || !existAtLeastOneBillingAddressSaved">
       <AddressForm :addressInitial="address"
                    titleInitial="Billing address"
@@ -28,7 +27,7 @@
     </div>
 
     <div v-else-if="existAtLeastOneBillingAddressSaved ">
-      <h4 v-show="isLoggedIn">Choose a billing address<span class="d-block m-auto">or</span></h4>
+      <h4 class="mt-4" v-show="isLoggedIn">Choose a billing address<span class="d-block m-auto">or</span></h4>
       <button class="py-2 px-4 add-button " @click="addNewBillingAddress">
         Add billing address
       </button>
@@ -39,34 +38,28 @@
       <div class="p-4 m-auto shipping">
         <h4 class="mb-5 summary-title">Shipping method</h4>
         <p v-if="showShippingMethodAlert" class="shipping-method-alert">Please select a shipping method</p>
-        <div><input v-model="isCheckboxStandardChecked" @click="selectShippingMethod" type="checkbox" name="example"
-                    value="1"/>
-          STANDARD
-          <p class="shipping-method">4-5 working days <span class="shipping-price-standard">Free</span></p></div>
-        <div><input v-model="isCheckboxExpressChecked" @click="selectShippingMethod" type="checkbox" name="example"
-                    value="1"/>
+        <div>
+          <input v-model="isCheckboxStandardChecked" @click="selectShippingMethod" type="checkbox" name="example"
+                 value="1"/>STANDARD
+          <p class="shipping-method">4-5 working days <span class="shipping-standard">Free</span></p></div>
+        <div>
+          <input v-model="isCheckboxExpressChecked" @click="selectShippingMethod" type="checkbox" name="example"
+                 value="1"/>
           EXPRESS
-          <span class="shipping-method">2-3 working days
-          <span class="shipping-price-express"> ${{ expressShippingPrice }} </span></span>
+          <p class="shipping-method">2-3 working days<span class="shipping-express"> ${{ expressShippingPrice }} </span>
+          </p>
         </div>
       </div>
-      <div class="p-4 m-auto payment ">
+      <div class="p-4 m-auto payment">
         <h4 class="mb-5 summary-title">Payment method</h4>
         <p v-if="showPaymentMethodAlert" class="payment-method-alert">Please select a payment method</p>
-        <div>
-          <input v-model="isCheckboxAlipayChecked" @click="selectPaymentMethod" type="checkbox" name="example"
-                 value="1"/>
-          Alipay
-          <img src="https://www.dolcegabbana.com/on/demandware.static/-/Sites/default/dw825d10fa/images/alipay.png"
-               class="alipay-img"/>
-          <span class="payment-method ">FREE</span>
-        </div>
         <div class="my-2">
           <input v-model="isCheckboxCreditCardChecked" @click="selectPaymentMethod" type="checkbox" name="example"
                  value="1"/>
-          Credit Card <img
-            src="https://www.dolcegabbana.com/on/demandware.static/Sites-dolcegabbana-Site/-/default/dwb03681c3/images/master.png"
-            class="first-credit-card"/>
+          Credit Card
+          <img
+              src="https://www.dolcegabbana.com/on/demandware.static/Sites-dolcegabbana-Site/-/default/dwb03681c3/images/master.png"
+              class="first-credit-card"/>
           <img
               src="https://www.dolcegabbana.com/on/demandware.static/Sites-dolcegabbana-Site/-/default/dw14dc6ef9/images/visa.png"
               class="m-2"/>
@@ -79,40 +72,31 @@
           <span class="payment-method my-2">FREE </span>
         </div>
         <div>
-          <input v-model="isCheckboxAmazonPayChecked" @click="selectPaymentMethod" type="checkbox" name="example"
+          <input v-model="isCheckboxCashPaymentChecked" @click="selectPaymentMethod" type="checkbox" name="example"
                  value="1"/>
-          Amazon Pay
-          <img
-              src="https://www.dolcegabbana.com/on/demandware.static/-/Sites/default/dwf3851a2f/DG/AmazonPayM.png"
-              class="mx-5"/>
+          Cash Payment
           <span class="payment-method">FREE </span>
         </div>
       </div>
-      <div class="p-4 m-auto order-summary text">
-        <h4 class="fw-bold mb-5 ">ORDER SUMMARY</h4>
-        <div v-show="couponCode === couponCodeName">
-          <p class=" text-success">You saved: ${{ savedMoney }}</p>
+      <div class="p-4 m-auto order-summary">
+        <h4 class="fw-bold mb-5">ORDER SUMMARY</h4>
+        <div v-show="isCouponCodeValid">
+          <p class="text-success">You saved: ${{ savedMoney }}</p>
         </div>
-        <p>Subtotal:
-          <span :class="{'text-decoration-line-through' : couponCode === couponCodeName}">${{ subtotal }}  </span>
-          <span> {{ couponCode === couponCodeName ? subtotalAfterCouponCode : '' }}</span>
+        <p>Subtotal:<span :class="{'text-decoration-line-through' : isCouponCodeValid}">${{ subtotal }}</span>
+          <span> {{ isCouponCodeValid ? subtotalAfterCouponCode : '' }}</span>
         </p>
         <div class="mb-3">
-          <div v-if="!showEnterCouponCode">
-            <span class="coupon-code-span" @click="enterCouponCode">+ Enter coupon code</span>
-          </div>
-          <div v-else>
-            <span class="coupon-code-span" @click="enterCouponCode">- Enter coupon code</span>
-            <input v-model="couponCode" class="coupon-code-input " type="text" v-on:keyup.enter='applyCouponCode'/>
-            <button v-if="!isCouponCodeApplied" @click="applyCouponCode"
-                    class="coupon-code-button">Apply
-            </button>
-            <button v-else class="coupon-code-button" @click="removeCoupon">{{
-                couponCode !== "" ? 'Remove' : 'Apply'
-              }}
+          <p class="coupon-code-span d-inline-block" @click="enterCouponCode">
+            {{ !showEnterCouponCodeForm ? '+Enter coupon code' : '- Enter coupon code' }}</p>
+          <div v-if="showEnterCouponCodeForm" class="d-inline-block">
+            <input v-model="couponCode" class="coupon-code-input" type="text" v-on:keyup.enter='applyCouponCode'/>
+            <button v-if="!isCouponCodeApplied" @click="applyCouponCode" class="coupon-code-button">Apply</button>
+            <button v-else class="coupon-code-button" @click="removeCouponCode">
+              {{ isCouponCodeApplied ? 'Remove' : 'Apply' }}
             </button>
           </div>
-          <p v-if="isCouponCodeInvalid" class="coupon-code-alert">The coupon code is not valid.</p>
+          <p v-show="isCouponCodeInvalid" class="coupon-code-alert">The coupon code is not valid.</p>
         </div>
         <p>{{ isCheckboxExpressChecked ? ' Shipping: $' : 'Shipping:' }}
           <span :class="[ shippingFinalCost === 0 ? 'text-success' : 'text-dark']">
@@ -120,7 +104,7 @@
           </span>
         </p>
         <h5 class="fw-bold py-3 border-top border-bottom">Total: ${{ cartTotalPrice }} </h5>
-        <router-link to="/" class="footer-back">
+        <router-link to="/" class="back-link">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace"
                viewBox="0 0 16 16">
             <path
@@ -130,22 +114,20 @@
           </svg>
           Back to shopping
         </router-link>
-        <button class="p-1" id="footer-payment" @click="goToCheckout">Pay Now</button>
+        <button class="p-1" id="payment-button" @click="payNow">Pay Now</button>
       </div>
     </div>
-    <Footer class="service-comp "/>
   </div>
 </template>
 
 <script>
-import Footer from "@/components/Footer";
 import AddressForm from "@/components/AddressForm";
 import AddressList from "@/components/AddressList";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Checkout",
-  components: {AddressForm, AddressList, Footer},
+  components: {AddressForm, AddressList},
   data() {
     return {
       address: {
@@ -161,7 +143,11 @@ export default {
       subtotal: this.$store.getters.getCartTotalPrice,
       isLoggedIn: this.$store.state.user.isLoggedIn,
       cart: this.$store.state.user.cart,
-      showEnterCouponCode: false,
+      currentDeliveryAddressesIndex: this.$store.getters.getCurrentDeliveryAddressesIndex,
+      currentBillingAddressesIndex: this.$store.getters.getCurrentBillingAddressesIndex,
+      existAtLeastOneBillingAddressSaved: this.$store.getters.existAtLeastOneBillingAddressSaved,
+      existAtLeastOneDeliveryAddressSaved: this.$store.getters.existAtLeastOneDeliveryAddressSaved,
+      showEnterCouponCodeForm: false,
       isCouponCodeInvalid: false,
       showShippingMethodAlert: false,
       showPaymentMethodAlert: false,
@@ -169,41 +155,35 @@ export default {
       isCheckboxExpressChecked: false,
       isCheckboxAlipayChecked: false,
       isCheckboxCreditCardChecked: false,
-      isCheckboxAmazonPayChecked: false,
+      isCheckboxCashPaymentChecked: false,
       showAddingDeliveryAddressForm: false,
       showAddingBillingAddressForm: false,
       isCouponCodeApplied: false,
+      isCouponCodeValid: false,
       expressShippingCost: 35,
       couponCodeName: 'MED',
       couponCode: '',
     };
   },
   computed: {
-    areAllOrderConditionsMet() {
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.showShippingMethodAlert = !this.isCheckboxStandardChecked && !this.isCheckboxExpressChecked
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.showPaymentMethodAlert = !this.isCheckboxAlipayChecked && !this.isCheckboxCreditCardChecked && !this.isCheckboxAmazonPayChecked
-      return !this.showShippingMethodAlert && !this.showPaymentMethodAlert
-    },
-    currentDeliveryAddressesIndex() {
-      if (this.isLoggedIn) {
-        return this.deliveryAddresses.length
-      }
-      return this.$store.state.deliveryAddresses.length
-    },
-    currentBillingAddressesIndex() {
-      if (this.isLoggedIn) {
-        return this.$store.state.user.billingAddresses.length
-      }
-      return this.$store.state.billingAddresses.length
-    },
-    existAtLeastOneBillingAddressSaved() {
-      return this.currentBillingAddressesIndex > 0;
-    },
-    existAtLeastOneDeliveryAddressSaved() {
-      return this.currentDeliveryAddressesIndex > 0;
-    },
+    // currentDeliveryAddressesIndex() {
+    //   if (this.isLoggedIn) {
+    //     return this.deliveryAddresses.length
+    //   }
+    //   return this.$store.state.deliveryAddresses.length
+    // },
+    // currentBillingAddressesIndex() {
+    //   if (this.isLoggedIn) {
+    //     return this.$store.state.user.billingAddresses.length
+    //   }
+    //   return this.$store.state.billingAddresses.length
+    // },
+    // existAtLeastOneBillingAddressSaved() {
+    //   return this.currentBillingAddressesIndex > 0;
+    // },
+    // existAtLeastOneDeliveryAddressSaved() {
+    //   return this.currentDeliveryAddressesIndex > 0;
+    // },
     expressShippingPrice() {
       return this.expressShippingCost.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
     },
@@ -214,9 +194,14 @@ export default {
       return this.expressShippingPrice;
     },
     subtotalAfterCouponCode() {
+      let total
       let price = parseFloat(this.subtotal.replace('.', ''));
-      let total = price - parseFloat(this.savedMoney);
-      return '$' + total
+      if (this.isCouponCodeValid) {
+        total = price - parseFloat(this.savedMoney);
+      } else {
+        total = price;
+      }
+      return '$' + total.toLocaleString('pt-BR', {maximumFractionDigits: 2});
     },
     savedMoney() {
       let price = parseFloat(this.subtotal.replace('.', ''));
@@ -226,13 +211,13 @@ export default {
     cartTotalPrice() {
       let total;
       let price = parseFloat(this.subtotal.replace('.', ''));
-      if (this.isCheckboxStandardChecked || this.isCheckboxExpressChecked && !this.showEnterCouponCode) {
+      if (this.isCheckboxStandardChecked || this.isCheckboxExpressChecked && !this.showEnterCouponCodeForm) {
         total = price + parseFloat(this.shippingFinalCost);
-      } else if (this.couponCode !== this.couponCodeName && (this.isCheckboxStandardChecked || this.isCheckboxExpressChecked)) {
+      } else if (this.isCouponCodeInvalid && (this.isCheckboxStandardChecked || this.isCheckboxExpressChecked)) {
         total = price + parseFloat(this.shippingFinalCost);
-      } else if (this.couponCode === this.couponCodeName && (this.isCheckboxStandardChecked || this.isCheckboxExpressChecked)) {
+      } else if (this.isCouponCodeValid && (this.isCheckboxStandardChecked || this.isCheckboxExpressChecked)) {
         total = price - parseFloat(this.savedMoney) + parseFloat(this.shippingFinalCost);
-      } else if ((this.couponCode === this.couponCodeName) && (!this.isCheckboxStandardChecked && !this.isCheckboxExpressChecked)) {
+      } else if (this.isCouponCodeValid && (!this.isCheckboxStandardChecked && !this.isCheckboxExpressChecked)) {
         total = price - parseFloat(this.savedMoney);
       } else {
         total = price
@@ -275,64 +260,43 @@ export default {
       if (this.isCheckboxStandardChecked) {
         this.isCheckboxStandardChecked = !this.isCheckboxStandardChecked;
         this.isCheckboxExpressChecked = false;
-      } else {
+      }
+      if (this.isCheckboxExpressChecked) {
         this.isCheckboxExpressChecked = !this.isCheckboxExpressChecked;
         this.isCheckboxStandardChecked = false;
       }
     },
     selectPaymentMethod() {
-      if (this.isCheckboxAlipayChecked) {
-        this.isCheckboxAlipayChecked = !this.isCheckboxAlipayChecked
-        this.isCheckboxCreditCardChecked = false;
-        this.isCheckboxAmazonPayChecked = false;
-      }
       if (this.isCheckboxCreditCardChecked) {
         this.isCheckboxCreditCardChecked = !this.isCheckboxCreditCardChecked;
-        this.isCheckboxAmazonPayChecked = false;
-        this.isCheckboxAlipayChecked = false
+        this.isCheckboxCashPaymentChecked = false;
       }
-      if (this.isCheckboxAmazonPayChecked) {
-        this.isCheckboxAmazonPayChecked = !this.isCheckboxAmazonPayChecked;
+      if (this.isCheckboxCashPaymentChecked) {
+        this.isCheckboxCashPaymentChecked = !this.isCheckboxCashPaymentChecked;
         this.isCheckboxCreditCardChecked = false;
-        this.isCheckboxAlipayChecked = false
       }
-      // this.$store.dispatch('selectPaymentMethod', {
-      //   isCheckboxAlipayChecked: this.isCheckboxAlipayChecked,
-      //   isCheckboxCreditCardChecked: this.isCheckboxCreditCardChecked,
-      //   isCheckboxAmazonPayChecked: this.isCheckboxAmazonPayChecked
-      // })
-    },
-    removeProductFromCart(product) {
-      this.$store.dispatch("removeProductFromCart", product);
     },
     enterCouponCode() {
-      this.showEnterCouponCode = !this.showEnterCouponCode
+      this.showEnterCouponCodeForm = !this.showEnterCouponCodeForm
     },
     applyCouponCode() {
-      let total;
-      let price = parseFloat(this.subtotal.replace('.', ''));
-      if (!this.showEnterCouponCode) {
-        total = price
-      } else if (this.showEnterCouponCode && (this.couponCode !== 'MED' && this.couponCode !== '')) {
+      if (this.showEnterCouponCodeForm && (this.couponCode.toLowerCase() !== this.couponCodeName.toLowerCase())) {
         this.isCouponCodeInvalid = true;
-        total = price
       } else {
         this.isCouponCodeInvalid = false;
-        total = price - (price * 0.1)
       }
+      this.isCouponCodeValid = !this.isCouponCodeInvalid;
       this.isCouponCodeApplied = true;
-      return total
     },
-    removeCoupon() {
-      this.couponCode = "";
-      if (this.couponCode === "") {
-        this.isCouponCodeInvalid = false;
+    removeCouponCode() {
+      if (this.couponCode !== "") {
+        this.couponCode = '';
       }
       this.isCouponCodeApplied = false;
     },
-    goToCheckout() {
+    payNow() {
       this.showShippingMethodAlert = !this.isCheckboxStandardChecked && !this.isCheckboxExpressChecked
-      this.showPaymentMethodAlert = !this.isCheckboxAlipayChecked && !this.isCheckboxCreditCardChecked && !this.isCheckboxAmazonPayChecked
+      this.showPaymentMethodAlert = !this.isCheckboxCreditCardChecked && !this.isCheckboxCashPaymentChecked
       if (!this.showShippingMethodAlert && !this.showPaymentMethodAlert) {
         this.$router.push('/payment')
       }
@@ -342,16 +306,6 @@ export default {
 </script>
 
 <style scoped>
-.add-button {
-  border: 1px solid black;
-  background-color: white;
-  color: black;
-}
-
-.add-button:hover {
-  background-color: #000000;
-  color: #ffffff;
-}
 
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
@@ -364,8 +318,32 @@ input[type=number] {
   appearance: textfield;
 }
 
+#payment-button {
+  display: grid;
+  margin-left: 80%;
+  width: 20%;
+  border: 1px solid black;
+  text-decoration: none;
+  text-align: center;
+  color: #ffffff;
+  background-color: #000000;
+}
+
+.add-button {
+  border: 1px solid black;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.add-button:hover {
+  background-color: white;
+  color: black;
+}
+
+
 .checkout-page {
-  font-family: "Malgun Gothic Semilight";
+  font-family: "Malgun Gothic Semilight", sans-serif;
+  padding-bottom: 250px;
 }
 
 .title {
@@ -375,11 +353,11 @@ input[type=number] {
   font-weight: 100;
 }
 
-.shipping-price-standard {
+.shipping-standard {
   margin-left: 70px;
 }
 
-.shipping-price-express {
+.shipping-express {
   margin-left: 55px;
 }
 
@@ -419,6 +397,7 @@ input[type=number] {
   position: absolute;
   font-size: 14px;
   color: red;
+  margin-top: -13px;
   transform: translateX(118%);
 }
 
@@ -435,10 +414,6 @@ input[type=number] {
   margin-right: 8px;
 }
 
-.alipay-img {
-  margin-left: 80px;
-}
-
 .coupon-code-button {
   border: none;
   border-bottom: 1px solid black;
@@ -450,30 +425,15 @@ input[type=number] {
   color: #6c6c6c;
 }
 
-.footer-back {
+.back-link {
   text-decoration: none;
   color: black;
   width: max-content;
   transform: translateY(70%);
 }
 
-.footer-back:hover {
+.back-link:hover {
   color: #656565;
-}
-
-.service-comp {
-  margin-top: 12%;
-}
-
-#footer-payment {
-  display: grid;
-  margin-left: 80%;
-  width: 20%;
-  border: 1px solid black;
-  text-decoration: none;
-  text-align: center;
-  color: #ffffff;
-  background-color: #000000;
 }
 
 </style>

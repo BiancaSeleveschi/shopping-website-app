@@ -1,19 +1,18 @@
 <template>
-  <div>
-    <video autoplay loop muted>
-      <source
-        src="https://player.vimeo.com/external/396570197.hd.mp4?s=b31763e4f3b76f8c4fa6bd1d2be237ec6dc30442&profile_id=174&oauth2_token_id=57447761"
-        type="video/mp4"
-      />
+  <div class="home-page">
+    <video autoplay loop muted class="video-home">
+      <source src="https://player.vimeo.com/external/396570197.hd.mp4?s=b31763e4f3b76f8c4fa6bd1d2be237ec6dc30442&profile_id=174&oauth2_token_id=57447761" type="video/mp4"/>
     </video>
-    <div class="overlay"></div>
     <div class="content">
-      <div class="buttons">
-        <router-link class="nav-button" to="/wo23/collection">
-          <button class="home-button">WO23 Collection</button>
+      <h1 v-show="isAccountCreated" class="alert shadow text-light" role="alert">
+        Welcome, {{ $store.state.user.firstName }} {{ $store.state.user.lastName }}!
+      </h1>
+      <div>
+        <router-link to="/wo23/collection">
+          <button class="nav-button">WO23 Collection</button>
         </router-link>
-        <router-link class="nav-button" to="/me23/collection">
-          <button class="home-button">ME23 Collection</button>
+        <router-link to="/me23/collection">
+          <button class="nav-button">ME23 Collection</button>
         </router-link>
       </div>
     </div>
@@ -24,23 +23,43 @@
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Home",
+  computed: {
+    isAccountCreated() {
+      return this.$store.state.isAccountCreated && this.$store.state.user.isLoggedIn;
+    }
+  },
 };
 </script>
 <style>
-video {
+.video-home {
   position: absolute;
-  display: grid;
+  display: flex;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.overlay {
+.home-page {
+  position: relative;
+  width: 100vw;
+  height: 65em;
+  object-fit: cover;
+  display: block;
+  object-position: center;
+  animation: fade-in 0.5s forwards;
+  filter: brightness(50%) grayscale(30%);
+}
+
+.home-page::after {
   position: absolute;
-  display: grid;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  bottom: -100px;
+  left: 0;
+  right: 0;
+  height: 200px;
+}
+
+.alert {
+  bottom: 300px;
 }
 
 .content {
@@ -52,17 +71,17 @@ video {
   z-index: 1;
 }
 
-.home-button {
-  background: #252525;
+.nav-button {
+  background: #575757;
   color: white;
   margin: 10px;
   border: none;
   border-radius: 20px;
-  width: 200px;
-  padding: 7px;
+  width: 300px;
+  padding: 10px;
 }
 
-.home-button:hover {
+.nav-button:hover {
   background: #525252;
   opacity: 0.8;
 }

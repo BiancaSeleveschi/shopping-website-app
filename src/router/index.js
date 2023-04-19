@@ -16,15 +16,15 @@ import Checkout from "@/views/Checkout";
 import Register from "@/views/Register";
 import Login from "@/views/Login";
 import Favorites from "@/views/Favorites";
-import OrderSummary from "@/views/OrderSummary";
 import PasswordReset from "@/views/PasswordReset";
-import Order from "@/views/Order";
 import PaymentInformation from "@/views/PaymentInformation";
 import Settings from "@/views/Settings";
 import Cards from "@/views/Cards";
 import Orders from "@/views/Orders";
 import Returns from "@/views/Returns";
 import Addresses from "@/views/Addresses";
+import CartSummary from "@/views/CartSummary";
+import CheckoutGuest from "@/views/CheckoutGuest";
 
 
 Vue.use(VueRouter);
@@ -76,9 +76,9 @@ const routes = [
         component: PaymentInformation,
     },
     {
-        path: "/order/summary",
-        name: "OrderSummary",
-        component: OrderSummary,
+        path: "/cart/summary",
+        name: "CartSummary",
+        component: CartSummary,
     },
     {
         path: "/favorites",
@@ -137,9 +137,9 @@ const routes = [
         name: "Login",
         component: Login,
     }, {
-        path: "/order",
-        name: "Order",
-        component: Order,
+        path: "/checkout/guest",
+        name: "CheckoutGuest",
+        component: CheckoutGuest,
     },
     {
         path: "/register",

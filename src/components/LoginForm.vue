@@ -1,14 +1,14 @@
 <template>
-  <div class="outer-card-login " @click="toggleLoginButton">
-    <div class="card-login border border-dark" @click.stop>
-      <div class="card-close" @click="toggleLoginButton">X</div>
+  <div class="outer-card" @click="toggleLoginButton">
+    <div class="card border border-dark" @click.stop>
+      <div class="close" @click="toggleLoginButton">X</div>
       <router-link to="/login" class="card-body d-block m-auto">
-        <div class="p-2" id="sign-in-div" @click="toggleLoginButton">
+        <div class="p-2 login-div" @click="toggleLoginButton">
           Sign In
         </div>
       </router-link>
       <router-link to="/register" class="card-footer">
-        <div class="p-2" id="create-account" @click="toggleLoginButton">
+        <div class="p-2 create-account" @click="toggleLoginButton">
           Create account
         </div>
       </router-link>
@@ -30,36 +30,7 @@ export default {
 
 <style scoped>
 
-#create-account {
-  display: block;
-  bottom: 35px;
-  width: 200px;
-  position: fixed;
-  z-index: -1;
-  cursor: pointer;
-  border: none;
-  background-color: #000000;
-  color: #ffffff;
-}
-
-#create-account:hover {
-  background-color: #939393;
-  color: black;
-}
-
-#sign-in-div {
-  width: 150px;
-  margin-top: -7px;
-  background-color: #006b6e;
-  color: #ffffff;
-}
-
-#sign-in-div:hover {
-  background-color: #939393;
-  color: #000000;
-}
-
-.outer-card-login {
+.outer-card {
   position: fixed;
   display: flex;
   flex-wrap: wrap;
@@ -70,7 +41,7 @@ export default {
   z-index: 2;
 }
 
-.card-login {
+.card {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -85,7 +56,7 @@ export default {
   border: none;
 }
 
-.card-login:before {
+.card:before {
   content: "";
   position: fixed;
   height: 0px;
@@ -99,7 +70,36 @@ export default {
   z-index: -6;
 }
 
-.card-close {
+.login-div {
+  width: 150px;
+  margin-top: -20px;
+  background-color: #006b6e;
+  color: #ffffff;
+}
+
+.login-div:hover {
+  background-color: #939393;
+  color: #000000;
+}
+
+.create-account {
+  display: block;
+  bottom: 35px;
+  width: 200px;
+  position: fixed;
+  z-index: -1;
+  cursor: pointer;
+  border: none;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.create-account:hover {
+  background-color: #939393;
+  color: black;
+}
+
+.close {
   display: grid;
   font-size: 22px;
   position: relative;

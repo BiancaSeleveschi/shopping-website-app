@@ -1,19 +1,19 @@
 <template>
   <div class="m-auto my-4 border border-2 w-50 m-auto p-4 rounded rounded-4 bg-white">
-    <h4 v-if="isAddressSaved" class="py-4" id="address-title">Edit address</h4>
-    <h4 v-else class="py-4" id="address-title">
+    <h4 v-if="isAddressSaved" class="py-4 title">Edit address</h4>
+    <h4 v-else class="py-4 title">
       {{ title === 'Delivery address' ? 'Add delivery address' : 'Add billing address' }}</h4>
     <div class="w-50 col-div mb-5 d-block m-auto">
-      <span class=" address-pgf ">Country*</span>
+      <p class="address-pgf">Country*</p>
       <input
           v-model="address.country"
           type="text"
           class="w-100 address-input"
           required
       />
-      <span class="address-alert" v-show="isCountryIncomplete">Please enter a country</span>
+      <span class="address-alert" v-show="isCountryInputIncomplete ">Please enter a country</span>
     </div>
-    <div class=" w-50 col-div mb-5 d-block m-auto">
+    <div class="w-50 col-div mb-5 d-block m-auto">
       <p class="address-pgf">Town/City*</p>
       <input
           v-model="address.city"
@@ -21,7 +21,7 @@
           class="w-100 address-input"
           required
       />
-      <span class="address-alert" v-show="isCityIncomplete">Please enter a city/town</span>
+      <span class="address-alert" v-show="isCityInputIncomplete">Please enter a city/town</span>
     </div>
     <div class=" w-50 col-div mb-5 d-block m-auto">
       <p class="address-pgf">Street*</p>
@@ -31,7 +31,7 @@
           class="w-100 address-input"
           required
       />
-      <span class="address-alert" v-show="isStreetIncomplete">Enter a street</span>
+      <span class="address-alert" v-show="isStreetInputIncomplete">Enter a street</span>
     </div>
     <div class=" w-50 col-div mb-5 d-block m-auto">
       <p class="address-pgf">Number*</p>
@@ -41,7 +41,7 @@
           class="w-100 address-input"
           required
       />
-      <span class="address-alert" v-show="isNumberIncomplete">Enter a house/block number</span>
+      <span class="address-alert" v-show="isNumberInputIncomplete">Enter a house/block number</span>
     </div>
     <div class=" w-50 col-div mb-5 d-block m-auto">
       <p class="address-pgf">Block staircase, floor, apartment</p>
@@ -52,14 +52,14 @@
       />
     </div>
     <div class=" w-50 col-div mb-5 d-block m-auto">
-      <p class="address-pgf">Postcode*</p>
+      <p class="address-pgf">Zip Code*</p>
       <input
           v-model="address.postcode"
           type="number"
           class="w-100 address-input"
           required
       />
-      <span class="address-alert" v-show="isPostcodeIncomplete">Please enter a postcode</span>
+      <span class="address-alert" v-show="isPostcodeInputIncomplete">Please enter a postcode</span>
     </div>
     <button v-if="!isAddressSaved" @click="saveAddress" class="btn btn-primary mb-5">Save</button>
     <button v-else @click="updateAddress(index)" class="btn btn-primary mb-5">Save</button>
@@ -80,11 +80,11 @@ export default {
       isLoggedIn: this.$store.state.user.isLoggedIn,
       addressIndex: this.index,
       title: this.titleInitial,
-      isCountryIncomplete: false,
-      isCityIncomplete: false,
-      isStreetIncomplete: false,
-      isNumberIncomplete: false,
-      isPostcodeIncomplete: false,
+      isCountryInputIncomplete: false,
+      isCityInputIncomplete: false,
+      isStreetInputIncomplete: false,
+      isNumberInputIncomplete: false,
+      isPostcodeInputIncomplete: false,
       isAddressComplete: false,
     };
   },
@@ -107,13 +107,13 @@ export default {
         blockStaircase: '',
         postcode: '',
       }
-      this.isCountryIncomplete = address.country === "";
-      this.isCityIncomplete = address.city === "";
-      this.isStreetIncomplete = address.street === "";
-      this.isNumberIncomplete = address.number === "";
-      this.isPostcodeIncomplete = address.postcode === "";
-      this.isAddressComplete = !this.isCountryIncomplete && !this.isCityIncomplete
-          && !this.isStreetIncomplete && !this.isNumberIncomplete && !this.isPostcodeIncomplete;
+      this.isCountryInputIncomplete = address.country === "";
+      this.isCityInputIncomplete = address.city === "";
+      this.isStreetInputIncomplete = address.street === "";
+      this.isNumberInputIncomplete = address.number === "";
+      this.isPostcodeInputIncomplete = address.postcode === "";
+      this.isAddressComplete = !this.isCountryInputIncomplete && !this.isCityInputIncomplete
+          && !this.isStreetInputIncomplete && !this.isNumberInputIncomplete && !this.isPostcodeInputIncomplete;
       if (!this.isAddressSaved && this.isAddressComplete && this.isLoggedIn && this.title === 'Delivery address') {
         this.$store.dispatch('saveDeliveryAddress', address)
         this.address = newAddress
@@ -127,19 +127,19 @@ export default {
         this.address = newAddress
         this.$emit('closeAddressForm')
       } else if (!this.isAddressSaved && this.isAddressComplete && !this.isLoggedIn && this.title === 'Delivery address') {
-        this.$store.state.deliveryAddress.push(address)
+        this.$store.state.deliveryAddresses.push(address)
         this.address = newAddress
         this.$emit('closeAddressForm')
       }
     },
     updateAddress(address, index) {
-      this.isCountryIncomplete = address.country === "";
-      this.isCityIncomplete = address.city === "";
-      this.isStreetIncomplete = address.street === "";
-      this.isNumberIncomplete = address.number === "";
-      this.isPostcodeIncomplete = address.postcode === "";
-      this.isAddressComplete = !this.isCountryIncomplete && !this.isCityIncomplete
-          && !this.isStreetIncomplete && !this.isNumberIncomplete && !this.isPostcodeIncomplete;
+      this.isCountryInputIncomplete = address.country === "";
+      this.isCityInputIncomplete = address.city === "";
+      this.isStreetInputIncomplete = address.street === "";
+      this.isNumberInputIncomplete = address.number === "";
+      this.isPostcodeInputIncomplete = address.postcode === "";
+      this.isAddressComplete = !this.isCountryInputIncomplete && !this.isCityInputIncomplete
+          && !this.isStreetInputIncomplete && !this.isNumberInputIncomplete && !this.isPostcodeInputIncomplete;
       if (this.isAddressComplete && this.isAddressSaved && this.isLoggedIn && this.title === 'Delivery address') {
         this.$store.dispatch('updateDeliveryAddress', {address, index})
         this.$emit('closeAddressForm')
@@ -147,7 +147,7 @@ export default {
         this.$store.dispatch('updateBillingAddress', {address, index})
         this.$emit('closeAddressForm')
       } else if (this.isAddressComplete && this.isAddressSaved && !this.isLoggedIn && this.title === 'Billing address') {
-        this.$store.state.deliveryAddress[index] = address
+        this.$store.state.deliveryAddresses[index] = address
         this.$emit('closeAddressForm')
       } else if (this.isAddressComplete && this.isAddressSaved && !this.isLoggedIn && this.title === 'Delivery address') {
         this.$store.state.billingAddresses[index] = address
@@ -189,7 +189,7 @@ input[type=number] {
   font-family: "JetBrains Mono Light", sans-serif;
 }
 
-#address-title {
+#title {
   letter-spacing: 2px;
 }
 

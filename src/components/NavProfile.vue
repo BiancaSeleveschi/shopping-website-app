@@ -1,12 +1,12 @@
 <template>
   <div class="outer-card">
-    <div class="text-decoration-none text-dark ">
-      <router-link to="/settings" class="mt-4 px-2 body-pgf">Settings</router-link>
-      <router-link to="/cards" class="px-2  body-pgf">Saved Cards</router-link>
-      <router-link to="/orders" class="px-2 body-pgf">Orders</router-link>
-      <router-link to="/returns" class="px-2 body-pgf">Returns</router-link>
-      <router-link to="/addresses" class="px-2 body-pgf">Addresses</router-link>
-      <p @click="logout" class="px-2 body-pgf border-top pt-2 w-100">Logout</p>
+    <div class="text-decoration-none text-dark " @click="closeProfile">
+      <router-link to="/settings" class="mt-4 px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/settings' }">Settings</router-link>
+      <router-link to="/cards" class="px-2  body-pgf" :class="{ 'fw-bold': $route.path === '/cards' }">Saved Cards</router-link>
+      <router-link to="/orders" class="px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/orders' }">Orders</router-link>
+      <router-link to="/returns" class="px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/returns' }">Returns</router-link>
+      <router-link to="/addresses" class="px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/addresses' }">Addresses</router-link>
+      <p @click="logout"  class="body-pgf w-100">Logout</p>
     </div>
   </div>
 </template>
@@ -17,6 +17,10 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('logout')
+      this.$router.push('/')
+      this.closeProfile()
+    },
+    closeProfile() {
       this.$emit('closeProfile')
     }
   }
@@ -31,7 +35,7 @@ export default {
   letter-spacing: 2px;
   text-decoration: none;
   width: 100%;
-  z-index: 2;
+  z-index: 1;
   position: absolute;
 }
 

@@ -43,8 +43,7 @@ export default {
 
 <style scoped>
 #content-footer {
-  margin-left: 28%;
-  display: flex;
+  display: flow;
   position: relative;
 }
 

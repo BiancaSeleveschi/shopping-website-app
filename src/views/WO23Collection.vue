@@ -1,61 +1,53 @@
 <template>
   <div>
-    <h4 class="text-dark text-wo23">
+    <h4 class="shadow text">
       Experience the perfect blend of comfort and style with our new women's
       ready-to-wear collection,designed for modern, confident women.
     </h4>
-    <h1 class="title-wo23 text-dark fw-bold">WO23 Collection</h1>
-    <CardItem :products="womenCollection" :image="image"/>
-    <Footer/>
+    <h1 class="title fw-bold ">WO23 Collection</h1>
+    <CardItem :products="womenCollection" :image="image" class="card-item"/>
   </div>
 </template>
 
 <script>
 import CardItem from "@/components/CardItem";
-import Footer from "@/components/Footer";
 
 export default {
   name: "WCollection",
-  components: {Footer, CardItem},
+  components: {CardItem},
   data() {
     return {
-      image: "woo23.webp",
+      image: "wo23.avif",
     };
   },
   computed: {
     womenCollection() {
-      return this.$store.state.women.filter(
-          (p) => p.brand === "Dolce & Gabbana"
-      );
+      return this.$store.state.women.filter((p) => p.brand === "Dolce & Gabbana");
     },
   },
 };
 </script>
 
 <style scoped>
-.title-wo23,
-.text-wo23 {
+.text {
+  top: 20%;
+  left: 65%;
+  width: 500px;
+  height: 250px;
+  color: #000000;
+  padding: 60px;
+  border-radius: 1px 200px 1px 220px;
   position: absolute;
-  display: grid;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: "JetBrains Mono Light", sans-serif;
-  z-index: 1;
 }
 
-.text-wo23 {
-  top: 30%;
-  left: 75%;
-  background-color: #ecdada;
-  padding: 65px;
-  border-radius: 200px 1px 220px 1px;
-}
-
-.title-wo23 {
+.title {
   letter-spacing: 0.1em;
-  font-size: 50px;
   top: 30%;
-  left: 20%;
+  left: 5%;
+  font-size: 50px;
+  position: absolute;
   text-transform: uppercase;
+  color: #777777;
+  font-family: "Franklin Gothic Medium", sans-serif;
 }
 </style>

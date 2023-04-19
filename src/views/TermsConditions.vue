@@ -1,5 +1,5 @@
 <template>
-  <div class="text-terms">
+  <div class="text">
     <h3 class="fw-bold mb-5">General terms and conditions M.E.D.U.Z.Z.A</h3>
     <p>
       You can shop without any risks - below you will find important information
@@ -11,7 +11,7 @@
     <ul>
       <li>M.E.D.U.Z.Z.A.</li>
       <li>Mönchhofallee 1</li>
-      <li>D-65451 Kelsterbach Germany</li>
+      <li>D-65451 Lauterbach Germany</li>
     </ul>
     <p class="fw-bold mt-5">
       §2. Scope of application of general terms and conditions
@@ -80,7 +80,7 @@
     <p>
       The prices at the time of order shall apply. The prices listed on the shop
       page are inclusive of VAT. Shipping costs and, if applicable, cash on
-      delivery charges, Riverty service fee for invoice purchases or express
+      delivery charges, River service fee for invoice purchases or express
       delivery charges are charged additionally.
     </p>
     <p>
@@ -102,7 +102,7 @@
     </p>
     <p>
       You must return or hand over the goods to M.E.D.U.Z.Z.A GmbH (Returns
-      department, Mönchhofallee 1, 65451 Kelsterbach, Germany) without undue
+      department, Mönchhofallee 1, 65451 Lauterbach, Germany) without undue
       delay and, at all events, within fourteen days at the latest from the date
       on which you notified us of your withdrawal from the contract. The
       deadline shall be deemed to have been complied with if the goods are
@@ -125,7 +125,7 @@ export default {
 </script>
 
 <style scoped>
-.text-terms {
+.text {
   margin: 100px 150px 60px 25px;
   text-align: start;
 }

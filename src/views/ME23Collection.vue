@@ -1,26 +1,19 @@
 <template>
   <div>
-    <h4 class="shadow text-me23">
-      The spirit of the collection can be felt throughout the Men’s
-      Ready-to-Wear selection, with an array of styles channeling a similar
-      aesthetic.
-    </h4>
-    <h1 class="title-me23  fw-bold">ME23 Collection</h1>
-    <CardItem :products="menCollection" :image="image"/>
-    <Footer/>
+    <h1 class="title fw-bold">ME23 Collection</h1>
+    <CardItem :products="menCollection" :image="image" class="card-item"/>
   </div>
 </template>
 
 <script>
 import CardItem from "@/components/CardItem";
-import Footer from "@/components/Footer";
 
 export default {
   name: "MenCollection",
-  components: {Footer, CardItem},
+  components: { CardItem},
   data() {
     return {
-      image: "men23.webp",
+      image: "me23.avif",
     };
   },
   computed: {
@@ -34,28 +27,14 @@ export default {
 </script>
 
 <style scoped>
-.title-me23,
-.text-me23 {
-  position: absolute;
-  display: grid;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: "JetBrains Mono Light", sans-serif;
-  z-index: 1;
-}
-.text-me23 {
-  top: 30%;
-  left: 75%;
-  color: #522b1a;
-  padding: 60px;
-  border-radius: 1px 200px 1px 220px;
-}
-.title-me23 {
-  letter-spacing: 0.1em;
+.title {
+  top: 38%;
+  left: 15%;
   font-size: 50px;
-  top: 30%;
-  left: 23%;
+  letter-spacing: 0.1em;
+  position: absolute;
   text-transform: uppercase;
-  color: #522b1a;
+  font-family: "Franklin Gothic Medium", sans-serif;
+  color: #250d01;
 }
 </style>

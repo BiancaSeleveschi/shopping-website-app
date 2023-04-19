@@ -38,9 +38,9 @@
         </svg>
         Back to shopping
       </router-link>
-      <button class="py-2 px-4 " id="checkout-btn" @click="continueToCheckout">
-        Continue to checkout
-      </button>
+      <div>
+        <button class="py-2 px-4 " id="checkout-btn" @click="continueToCheckout">Continue to checkout</button>
+      </div>
     </div>
     <div v-show="!isLoggedIn && isContinueToCheckoutClicked" class="login-checkout mt-5 m-auto p-4">
       <div class="center">
@@ -50,21 +50,18 @@
         <router-link to="/register" class="text-decoration-none">
           <div class="login m-auto mb-4 mt-3 p-2 ">CREATE ACCOUNT</div>
         </router-link>
-        <router-link to="/order" class="text-decoration-none">
+        <router-link to="/checkout/guest" class="text-decoration-none">
           <div class="login m-auto mt-3 p-2 ">CONTINUE WITHOUT ACCOUNT</div>
         </router-link>
       </div>
     </div>
-    <Footer class="service-comp"/>
   </div>
 </template>
 
 <script>
-import Footer from "@/components/Footer";
 
 export default {
-  name: "OrderSummary",
-  components: {Footer},
+  name: "CartSummary",
   data() {
     return {
       cart: this.$store.state.user.cart,
@@ -96,11 +93,10 @@ export default {
 <style scoped>
 
 #checkout-btn {
-  display: grid;
   background-color: black;
   color: white;
   border-radius: 0;
-  margin-left: 70%;
+  float: right;
   width: max-content;
   border: 1px solid black;
 }
@@ -121,7 +117,7 @@ export default {
 .order-summary-page {
   font-family: "Malgun Gothic Semilight", sans-serif;
   position: relative;
-  display: grid;
+  padding-bottom: 250px;
 }
 
 .title {
@@ -142,10 +138,6 @@ export default {
 
 .cart-item:hover {
   background-color: #e3e3e3;
-}
-
-.service-comp {
-  margin-top: 30%;
 }
 
 .cart-item img {

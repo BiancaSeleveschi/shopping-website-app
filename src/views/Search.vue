@@ -1,13 +1,14 @@
 <template>
-  <div class="search-page">
+  <div class="bg-black">
     <h1 class="text-light title">Search</h1>
     <input
         v-model="searchWord"
         placeholder="Search"
         type="text"
-        class="p-1 rounded rounded-2 top input"
+        class="p-1 rounded rounded-2"
+        id="input-search"
     />
-    <CardItem :products="filteredProducts" :image="image"/>
+    <CardItem :products="filteredProducts" :image="image" class="card-item"/>
   </div>
 </template>
 
@@ -21,29 +22,27 @@ export default {
   data() {
     return {
       searchWord: "",
-      image: "Black_colour.jpg",
+      image: "black.jpg",
     };
   },
   computed: {
     filteredProducts() {
-      return this.$store.state.women
-          .concat(this.$store.state.men)
-          .filter((product) => {
-            return (
-                product.title.toLowerCase().includes(this.searchWord) ||
-                product.brand.toLowerCase().includes(this.searchWord) ||
-                product.color.toLowerCase().includes(this.searchWord) ||
-                product.gender.toLowerCase().includes(this.searchWord) ||
-                product.type.toLowerCase().includes(this.searchWord)
-            );
-          });
+      return this.$store.getters.getAllProducts.filter((product) => {
+        return (
+            product.title.toLowerCase().includes(this.searchWord) ||
+            product.brand.toLowerCase().includes(this.searchWord) ||
+            product.color.toLowerCase().includes(this.searchWord) ||
+            product.gender.toLowerCase().includes(this.searchWord) ||
+            product.type.toLowerCase().includes(this.searchWord)
+        );
+      });
     },
   },
 };
 </script>
 
 <style scoped>
-.search-page .input {
+#input-search {
   width: 100%;
   max-width: 280px;
   border: none;
@@ -61,11 +60,11 @@ export default {
   z-index: 1;
 }
 
-.search-page .input:focus {
+.input-search:focus {
   background-color: rgba(169, 164, 164, 0.5);
 }
 
-.search-page .title {
+.title {
   position: absolute;
   display: grid;
   top: 20%;
@@ -76,4 +75,9 @@ export default {
   font-size: 50px;
   text-transform: uppercase;
 }
+
+.card-item {
+  margin-top: -5%;
+}
+
 </style>

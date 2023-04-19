@@ -1,98 +1,87 @@
 <template>
-  <div class="account-div">
+  <div class="mb-5 p-5">
     <div class="container">
       <div class="row d-flex">
-        <h2 class="create-account-title col-6 col-div d-inline-block">
+        <h2 class="col-6 col-account d-inline-block title">
           CREATE ACCOUNT
         </h2>
-        <router-link to="/login" class="login col-4"
-        >I Already Have It
-        </router-link
-        >
-        <div class="col-12 col-div mb-5">
-          <p class="account-pgf">TITLE*</p>
-          <select
-              class="w-25  account-input"
-              v-model="account.title"
-              required
-          >
+        <router-link to="/login" class="login col-4">I Already Have It</router-link>
+        <div class="col-12 col-account mb-5">
+          <p class="col-account">TITLE*</p>
+          <select class="w-25 account-input" v-model="account.title" required>
             <option v-for="(title, index) in titles" :key="index">
               {{ title }}
             </option>
           </select>
-          <div v-if="alertMessageGenre" class="alert-message">Please choose a genre.</div>
+          <div v-if="isGenreNotSelected" class="alert-message">Please choose a genre.</div>
         </div>
-        <div class="col-6 col-div mb-5">
-          <p>FIRST NAME</p>
+        <div class="col-6 col-account mb-5">
+          <p>FIRST NAME*</p>
           <input
               v-model="account.firstName"
               type="text"
               class="w-75  account-input"
           />
+          <p v-show="!isFirstNameInputCompleted" class="alert-message">{{ firstNameMessageAlert }}</p>
         </div>
-        <div class="col-6 col-div mb-5">
-          <p>LAST NAME</p>
+        <div class="col-6 col-account mb-5">
+          <p>LAST NAME*</p>
           <input
               v-model="account.lastName"
               type="text"
               class="w-75  account-input"
           />
+          <p v-show="!isLastNameInputCompleted" class="alert-message">{{ lastNameMessageAlert }}</p>
         </div>
-        <div class="col-6 col-div mb-5">
+        <div class="col-6 col-account mb-5">
           <p>EMAIL*</p>
           <input
               v-model="account.emailAddress"
               type="email"
-              class="w-75  account-input"
+              class=" w-75 account-input"
               required
           />
-          <div v-if="alertMessageEmail" class="alert-message">Please enter a valid email address.</div>
+          <div v-show="isEmailAddressIncomplete" class="alert-message">Please enter a valid email address</div>
         </div>
-        <div class="col-6 col-div mb-5">
+        <div class="col-6 col-account mb-5">
           <p>PASSWORD*</p>
           <input
               v-model="account.password"
               placeholder="Password"
               name="password"
-              class="w-75  account-input"
+              class="  account-input w-75"
               :type="passwordFieldType"
               required
           />
           <span class="password-toggle" @click="togglePasswordVisibility">{{
               passwordToggleLabel
             }}</span>
-          <div v-if="alertMessagePassword" class="alert-message">Password must contain at least 8 characters including
-            uppercase
-            and lowercase letters, numbers, and special characters.
+          <div v-show="isPasswordIncomplete" class="alert-message">Password must contain at least 8 characters
+            including
+            uppercase and lowercase letters, numbers, and special characters
           </div>
         </div>
-        <p class="account-pgf fs-5 my-4">CONSENT TO PERSONAL DATA PROCESSING</p>
-        <div class="account-pgf">
+        <p class="col-account fs-5 my-4">CONSENT TO PERSONAL DATA PROCESSING</p>
+        <div class="col-7 col-account  mb-5">
           <input v-model="isCheckboxChecked" type="checkbox" name="example" value="1"/>
-          I agree to the collection and use of my personal data for marketing
-          purposes
-          <p v-if="alertMessageCheckbox" class="alert-message">Please agree to the terms and conditions to create an account.
+          I agree to the collection and use of my personal data for marketing purposes
+          <p v-show="isCheckboxNotClicked" class="alert-message">Please agree to the terms and conditions to create an
+            account
           </p>
         </div>
-        <button
-            class="mt-5 p-2"
-            id="create-account-button"
-            @click="createAccount"
-        >
-          Create account
-        </button>
+        <div class="col-4 col-account mb-5 create-button">
+          <button class="w-75 mt-5 col-4 p-2 create-account-button" @click="createAccount">Create account</button>
+        </div>
       </div>
     </div>
-    <Footer class="service-in-account"/>
   </div>
 </template>
 
 <script>
-import Footer from "@/components/Footer";
+
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Register",
-  components: {Footer},
   data() {
     return {
       titles: ["-", "MRS.", "MR."],
@@ -103,12 +92,16 @@ export default {
         emailAddress: "",
         password: "",
       },
+      firstNameMessageAlert: '',
+      lastNameMessageAlert: '',
       isCheckboxChecked: false,
       showPassword: false,
-      alertMessageGenre: false,
-      alertMessageEmail: false,
-      alertMessagePassword: false,
-      alertMessageCheckbox: false,
+      isGenreNotSelected: false,
+      isEmailAddressIncomplete: false,
+      isPasswordIncomplete: false,
+      isLastNameInputCompleted: false,
+      isFirstNameInputCompleted: false,
+      isCheckboxNotClicked: false,
     };
   },
   computed: {
@@ -124,23 +117,64 @@ export default {
       this.showPassword = !this.showPassword;
     },
     createAccount() {
-      this.alertMessageGenre = this.account.title === '';
-      this.alertMessageEmail = !this.account.emailAddress.includes("@");
-      const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*).{8,}$/;
-      this.alertMessagePassword = !passwordRegex.test(this.account.password);
-      this.alertMessageCheckbox = !this.isCheckboxChecked;
-      if (!this.alertMessageGenre && !this.alertMessageEmail && !this.alertMessagePassword && !this.alertMessageCheckbox) {
-        this.$router.push('/')
+      let user = {
+        title: this.account.title,
+        firstName: this.account.firstName,
+        lastName: this.account.lastName,
+        emailAddress: this.account.emailAddress,
+        password: this.account.password,
       }
+      this.isGenreNotSelected = this.account.title === '';
+      this.isFirstNameInputCompleted = this.verifyFirstName();
+      this.isLastNameInputCompleted = this.verifyLastName();
+      this.isEmailAddressIncomplete = !this.account.emailAddress.includes("@");
+      const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*).{8,}$/;
+      this.isPasswordIncomplete = !passwordRegex.test(this.account.password);
+      this.isCheckboxNotClicked = !this.isCheckboxChecked;
+      if (!this.isGenreNotSelected && this.isFirstNameInputCompleted && this.isLastNameInputCompleted &&
+          !this.isEmailAddressIncomplete && !this.isPasswordIncomplete && !this.isCheckboxNotClicked) {
+        this.$router.push('/')
+        this.$store.dispatch('setAccountCreated', user)
+      }
+    },
+    verifyFirstName() {
+      const regex = /^[a-zA-Z]+$/;
+      if (this.account.firstName === '') {
+        this.isFirstNameInputCompleted = false;
+        this.firstNameMessageAlert = 'This field is required'
+      } else if (!regex.test(this.account.firstName)) {
+        this.isFirstNameInputCompleted = false;
+        this.firstNameMessageAlert = 'Please enter only characters'
+      } else {
+        this.isFirstNameInputCompleted = true;
+      }
+      return this.isFirstNameInputCompleted
+    },
+    verifyLastName() {
+      const regex = /^[a-zA-Z]+$/;
+      if (this.account.lastName === '') {
+        this.isLastNameInputCompleted = false;
+        this.lastNameMessageAlert = 'This field is required'
+      } else if (!regex.test(this.account.lastName)) {
+        this.isLastNameInputCompleted = false;
+        this.lastNameMessageAlert = 'Please enter only characters'
+      } else {
+        this.isLastNameInputCompleted = true;
+      }
+      return this.isLastNameInputCompleted
     },
   },
 };
 </script>
 
 <style scoped>
-.create-account-title {
+#create-account-title {
   margin-top: 100px;
   font-family: "JetBrains Mono Light", sans-serif;
+}
+
+.create-button {
+  margin-left: 50px;
 }
 
 .login {
@@ -156,7 +190,20 @@ export default {
   color: #000000;
 }
 
-.account-pgf {
+.create-account-button {
+  background-color: black;
+  border: 1px solid black;
+  color: white;
+  width: 300px;
+  right: 50px;
+}
+
+.create-account-button:hover {
+  background-color: white;
+  color: black;
+}
+
+.col-account {
   justify-content: start;
   text-align: start;
   font-family: "JetBrains Mono Light", sans-serif;
@@ -164,14 +211,10 @@ export default {
 
 .account-input {
   border: none;
+  position: relative;
   border-bottom: 1px solid #000000;
   outline: none;
-}
-
-.col-div {
-  justify-content: start;
-  text-align: start;
-  font-family: "JetBrains Mono Light", sans-serif;
+  width: 400px;
 }
 
 .alert-message {
@@ -180,30 +223,12 @@ export default {
   width: 75%;
 }
 
-#create-account-button {
-  position: relative;
-  background-color: black;
-  color: white;
-  left: 64%;
-  width: 300px;
-}
-
-#create-account-button:hover {
-  background-color: white;
-  color: black;
-}
-
 .password-toggle {
-  position: absolute;
-  display: grid;
-  top: 53%;
-  right: 25%;
+  position: relative;
+  right: 45px;
   transform: translateY(-50%);
   font-size: 14px;
   color: #999;
   cursor: pointer;
-}
-.service-in-account {
-  margin-top: 11%;
 }
 </style>

@@ -1,48 +1,67 @@
 <template>
   <div class="m-auto my-4 border border-2 bg-secondary bg-opacity-10 m-auto p-4 rounded rounded-4 payment-page">
-    <p v-show="!isOneTimePayment" @click="closeCard" id="card-close">X</p>
+    <p v-show="!isDisposableCardInitial" @click="closeCardDetails" id="card-close">X</p>
     <h4 class=" p-4">Enter your card details</h4>
-    <div class="w-75 col-div mb-5 d-block m-auto">
-      <p class="card-info-pgf">Cardholder Name*</p>
+    <div class="w-75 mb-5 d-block m-auto">
+      <p class="card-info-pgf">Name on card*</p>
       <input
           v-model="cardholderName"
           type="text"
           class="w-100 card-input"
           required
       />
-      <span class="card-alert" v-show="isCardholderNameIncomplete">Please enter the cardholder name</span>
+      <span class="card-alert" v-show="isCardholderNameInputIncomplete">Please enter the cardholder name</span>
     </div>
-    <div class=" w-75 col-div mb-5 d-block m-auto">
-      <p class="card-info-pgf">Card Number*</p>
+    <div class=" w-75 mb-5 d-block m-auto">
+      <p class="card-info-pgf">Number*</p>
       <input
           v-model="cardNumber"
           type="number"
           class="w-100 card-input"
           required
       />
-      <span class="card-alert" v-show="isCardNumberIncomplete">Enter the card number</span>
+      <span class="card-alert" v-show="isCardNumberInputIncomplete">Enter the card number</span>
     </div>
-    <div id="exp-date-div" class=" px-3 mb-5 d-inline-block m-auto">
-      <p class="card-info-pgf">Expiration Date*</p>
-      <input
-          v-model="expirationDate"
-          name="expiration" pattern="[0-9]{2}/[0-9]{2}" required
-          class="w-100 card-input"
-      />
-      <span class="card-alert" v-show="isExpirationDateIncomplete">Enter the expiration date</span>
+
+    <p class="w-100 ms-5 ps-1 card-info-pgf">Expiration Date*</p>
+    <div class="w-50 mb-5 d-inline-block ">
+      <select v-model="month" class="p-1 w-50 card-input">
+        <option v-for="(month, index) in months" :key="index">
+          <p>{{ month }}</p>
+        </option>
+      </select>
+      <span v-show="isExpirationMonthInputIncomplete" class="card-alert ms-5 ps-1">
+       Enter a valid date</span>
     </div>
-    <div id="cvv-div" class=" px-3 d-inline-block m-auto">
-      <p class="card-info-pgf">CVV*</p>
+    <div class="w-50 mb-5 d-inline-block ">
+      <select v-model="year" class="w-75 p-1 card-input" id="year-select">
+        <option v-for="(year, index) in years" :key="index">
+          <p>{{ year }}</p>
+        </option>
+      </select>
+      <span class="card-alert" v-show="isExpirationYearInputIncomplete">This field is required</span>
+    </div>
+
+    <p class="w-100 ms-5 ps-1 card-info-pgf">CVV/CVC*</p>
+    <div class="w-50 mb-5 d-inline-block ">
       <input
           v-model="cvv"
           type="number"
           class="w-100 card-input"
           required
       />
-      <span class="card-alert" v-show="isCvvIncomplete">Enter a CVV</span>
+      <span class="card-alert" v-show="isCvvInputIncomplete">Enter a CVV/CVC</span>
     </div>
-    <button @click="save" class="py-1 px-3 d-block m-auto mb-4" id="place-order-button">
-      {{ isOneTimePayment ? 'Place Order' : 'Save' }}
+    <p @click="showCvvDetails = !showCvvDetails" id="cvv-pgf" class="d-inline-block me-3 ms-2">What is this?</p>
+    <div v-show="showCvvDetails" id="cvv-inf-card">
+      <p class="close-button pe-2" @click="showCvvDetails=false">X</p>
+      <img class="m-auto pb-3 d-block"
+           src="https://www.dolcegabbana.com/on/demandware.static/-/Library-Sites-Dolcegabbana/default/dw53bc0150/Checkout/cvnimage.png"/>
+      <p class="fw-bold px-1">What is a Card Verification Value/Code (CVV/CVC)?</p>
+      <p class="px-2">For MasterCard and Visa, enter last three digits on the signature strip.</p>
+    </div>
+    <button @click="saveCardDetails" class="py-1 px-4 d-block m-auto mb-4" id="place-order-button">
+      {{ isDisposableCardInitial ? 'Place Order' : 'Save' }}
     </button>
   </div>
 </template>
@@ -50,48 +69,71 @@
 <script>
 export default {
   name: "CardDetails",
-  props: ['isOneTimePayment'],
+  props: ['isDisposableCard'],
   data() {
     return {
       cardholderName: '',
       cardNumber: '',
-      expirationDate: '',
+      month: '',
+      year: '',
       cvv: '',
-      isCvvIncomplete: false,
-      isExpirationDateIncomplete: false,
-      isOneTimePaymentInitial: this.isOneTimePayment,
-      isCardNumberIncomplete: false,
-      isCardholderNameIncomplete: false,
+      isCvvInputIncomplete: false,
+      isExpirationMonthInputIncomplete: false,
+      isExpirationYearInputIncomplete: false,
+      isDisposableCardInitial: this.isDisposableCard,
+      isCardNumberInputIncomplete: false,
+      isCardholderNameInputIncomplete: false,
       isCardDetailsComplete: false,
+      showCvvDetails: false,
+    }
+  },
+  computed: {
+    months() {
+      let months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+      return months.map(m => m.toLocaleString('en-US', {minimumIntegerDigits: 2}));
+    },
+    years() {
+      const currentYear = new Date().getFullYear();
+      const years = [];
+      for (let i = 0; i < 13; i++) {
+        years.push(currentYear + i);
+      }
+      return years
     }
   },
   methods: {
-    save() {
+    saveCardDetails() {
       let card = {
         cardholderName: this.cardholderName,
         cardNumber: this.cardNumber,
-        expirationDate: this.expirationDate,
+        month: this.month,
+        year: this.year,
         cvv: this.cvv,
       }
       const regexCardholderName = /^[a-zA-Z\s]+$/;
-      this.isCardholderNameIncomplete = !regexCardholderName.test(this.cardholderName)
+      this.isCardholderNameInputIncomplete = !regexCardholderName.test(card.cardholderName)
+
       const regexCardNumber = /^(?:[0-9]{4}\s?){3}[0-9]{4}$/;
-      this.isCardNumberIncomplete = !regexCardNumber.test(this.cardNumber);
-      const regexExpiration = /^\d{2}\/\d{2}$/;
-      this.isExpirationDateIncomplete = !regexExpiration.test(this.expirationDate);
+      this.isCardNumberInputIncomplete = !regexCardNumber.test(card.cardNumber);
+
+      const currentYear = new Date().getFullYear();
+      const currentMonth = new Date().getMonth() + 1;
+      this.isExpirationMonthInputIncomplete = this.month === '' || (this.year == currentYear && parseInt(this.month) < currentMonth);
+      this.isExpirationYearInputIncomplete = card.year === '';
+
       const regexCVV = /^[0-9]{3,4}$/;
-      this.isCvvIncomplete = !regexCVV.test(this.cvv)
-      this.isCardDetailsComplete = !this.isCardholderNameIncomplete && !this.isCardNumberIncomplete &&
-          !this.isExpirationDateIncomplete && !this.isCvvIncomplete
-      if (this.isOneTimePaymentInitial && this.isCardDetailsComplete) {
+      this.isCvvInputIncomplete = !regexCVV.test(card.cvv)
+      this.isCardDetailsComplete = !this.isCardholderNameInputIncomplete && !this.isCardNumberInputIncomplete &&
+          !this.isExpirationYearInputIncomplete && !this.isExpirationYearInputIncomplete && !this.isCvvInputIncomplete
+      if (this.isDisposableCardInitial && this.isCardDetailsComplete) {
         // this.$store.dispatch('submitOrder', card)
         this.$emit('closeCardDetails')
-      } else if (!this.isOneTimePaymentInitial && this.isCardDetailsComplete) {
+      } else if (!this.isDisposableCardInitial && this.isCardDetailsComplete) {
         this.$store.dispatch('saveCard', card)
         this.$emit('closeCardDetails')
       }
     },
-    closeCard() {
+    closeCardDetails() {
       this.$emit('closeCardDetails')
     }
   },
@@ -99,26 +141,23 @@ export default {
 </script>
 
 <style scoped>
-
-#exp-date-div {
-  width: 190px;
-}
-
-#cvv-div {
-  width: 150px;
+#cvv-pgf {
+  font-size: 14px;
+  color: #3d3a3a;
+  cursor: pointer;
 }
 
 #place-order-button {
   border: 1px solid black;
   text-decoration: none;
   text-align: center;
-  color: #000000;
-  background-color: #ffffff;
+  color: #ffffff;
+  background-color: #000000;
 }
 
 #place-order-button:hover {
-  color: #ffffff;
-  background-color: #000000;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 #card-close {
@@ -129,6 +168,47 @@ export default {
   justify-content: end;
   color: black;
 }
+
+#year-select {
+  margin-left: -55px;
+}
+
+#cvv-inf-card {
+  font-family: "Malgun Gothic Semilight", sans-serif;
+  background-color: #ffffff;
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: right;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 350px;
+  height: 450px;
+  margin-top: -540px;
+  left: 49%;
+  z-index: 1;
+}
+
+#cvv-inf-card:before {
+  content: "";
+  position: absolute;
+  height: 0px;
+  width: 0px;
+  left: 29%;
+  top: 100%;
+  border-width: 15px;
+  border-color: transparent transparent transparent #000000;
+  border-style: solid;
+  transform: rotate(90deg);
+  z-index: -6;
+}
+
+.close-button {
+  cursor: pointer;
+  font-size: 20px;
+  margin-left: 200px;
+}
+
 .payment-page {
   font-family: "Malgun Gothic Semilight", sans-serif;
   width: 470px;
@@ -153,6 +233,7 @@ input[type=number] {
 }
 
 .card-alert {
+  position: relative;
   color: red;
   font-size: 14px;
   float: left
@@ -161,6 +242,7 @@ input[type=number] {
 .card-info-pgf {
   margin-bottom: 0;
   float: left;
+  text-align: start;
 }
 
 </style>

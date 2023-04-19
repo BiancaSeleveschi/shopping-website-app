@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="content-about">
-      <h1 class="p-5 fw-bolder about-title">About us</h1>
+      <h1 class="p-5 fw-bolder">About us</h1>
       <div class="about-text">
-        <p class="mt-4 fs-5">
+        <p class="mt-5 fs-5">
           Since our founding in 2006, we at dress-for-less strive to offer our
           customers new styles at the best prices day after day.
         </p>
@@ -28,20 +28,22 @@
         </p>
       </div>
     </div>
-    <Footer />
   </div>
 </template>
 
 <script>
-import Footer from "@/components/Footer";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "About",
-  components: {Footer},
 };
 </script>
 
 <style scoped>
+
+li {
+  text-align: start;
+}
+
 .content-about {
   margin-top: 4%;
   display: grid;
@@ -49,12 +51,9 @@ export default {
 
 .about-text {
   display: grid;
-  margin-bottom: 250px;
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-bottom: 330px;
+  margin-left: 100px;
+  margin-right: 100px;
 }
 
-li {
-  text-align: start;
-}
 </style>

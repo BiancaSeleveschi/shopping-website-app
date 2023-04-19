@@ -1,5 +1,5 @@
 <template>
-  <div class="outer-card card-container" @click="toggleCartButton">
+  <div class="outer-card" @click="toggleCartButton">
     <div class="cart border border-dark" @click.stop>
       <div class="cart-header">
         <div class="shopping-bag p-2">Shopping bag</div>
@@ -7,12 +7,12 @@
       </div>
       <div class="cart-body">
         <CartItem/>
-        <p class="p-2 fw-bold py-5 px-4 m-5 text-danger" v-show="showAlert">YOUR BAG IS EMPTY</p>
-        <p  class="p-5" v-show="this.$store.getters.getCartItemCount === 0 && !showAlert">YOUR BAG IS EMPTY</p>
+        <p class="fw-bold p-5 text-danger" v-show="isBagEmpty">YOUR BAG IS EMPTY</p>
+        <p class="p-5" v-show="this.$store.getters.getCartItemCount === 0 && !this.isBagEmpty">YOUR BAG IS EMPTY</p>
       </div>
       <div class="subtotal p-3">Subtotal: $ {{ this.$store.getters.getCartTotalPrice }}</div>
       <button @click="proceedToCheckout"
-              class=" checkout p-2  w-50 m-auto">Proceed to checkout
+              class="checkout p-2 w-50 m-auto">Proceed to checkout
       </button>
     </div>
   </div>
@@ -26,7 +26,7 @@ export default {
   components: {CartItem},
   data() {
     return {
-      showAlert: false,
+      isBagEmpty: false,
     }
   },
   methods: {
@@ -35,18 +35,16 @@ export default {
     },
     proceedToCheckout() {
       if (this.$store.getters.getCartItemCount === 0) {
-        this.showAlert = true;
+        this.isBagEmpty = true;
         setTimeout(() => {
-          this.showAlert = false;
+          this.isBagEmpty = false;
         }, 3000);
       } else {
-        this.$router.push('/order/summary')
+        this.$router.push('/cart/summary')
       }
     }
-  }
-  ,
-}
-;
+  },
+};
 </script>
 
 <style scoped>
@@ -61,7 +59,7 @@ export default {
   z-index: 2;
 }
 
-.outer-card .cart {
+.cart {
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -92,7 +90,7 @@ export default {
   right: 22px;
   top: -30px;
   border-width: 15px;
-  border-color: transparent white transparent transparent;
+  border-color: transparent #cccccc transparent transparent;
   border-style: solid;
   transform: rotate(90deg);
   z-index: -6;

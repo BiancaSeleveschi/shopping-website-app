@@ -1,26 +1,22 @@
 <template>
-  <div>
+  <div class="payment-page">
     <h1 id="title">{{ isOrderSuccessfulPlaced ? '' : 'Card Information' }}</h1>
     <div v-if="!isOrderSuccessfulPlaced">
-      <CardDetails :isOneTimePayment="true"
-                   @closeCardDetails="saveOrder"/>
+      <CardDetails :isDisposableCard="true" @closeCardDetails="saveOrder"/>
     </div>
-    <div v-else id="successful-div">
+    <div v-else id="order-successful-placed-div">
       <h4>Your order has been placed successfully. </h4>
       <h4>You will receive an email confirmation shortly.</h4>
     </div>
-    <Footer class="card-footer"/>
   </div>
 </template>
 
 <script>
-import Footer from "@/components/Footer";
 import CardDetails from "@/components/CardDetails";
 
 export default {
   name: "PaymentInformation",
-  components: {CardDetails, Footer},
-  props: ['isCardSavedForFuturePaymentsInitial'],
+  components: {CardDetails},
   data() {
     return {
       isOrderSuccessfulPlaced: false,
@@ -36,7 +32,8 @@ export default {
 
 <style scoped>
 
-#successful-div {
+
+#order-successful-placed-div {
   font-family: "Malgun Gothic Semilight", sans-serif;
   margin-top: 22%;
   margin-bottom: 26%;
@@ -49,25 +46,7 @@ export default {
   letter-spacing: 2px;
 }
 
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.payment-page {
+  padding-bottom: 200px;
 }
-
-input[type=number] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-
-
-.card-footer {
-  margin-top: 300px;
-  margin-left: -2px;
-  width: 100%;
-  position: relative;
-  display: flex;
-}
-
-
 </style>

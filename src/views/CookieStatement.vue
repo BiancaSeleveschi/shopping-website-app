@@ -32,7 +32,8 @@
       Learn more about who we are, how you can contact us and how we process
       personal data in our
       <router-link to="/privacy/policy" class="nav-link"
-        >Privacy Policy.</router-link
+      >Privacy Policy.
+      </router-link
       >
     </p>
     <p>
@@ -60,6 +61,7 @@ export default {
   margin: 130px 300px 150px;
   font-size: 17px;
 }
+
 .nav-link:hover {
   color: #8d8d8d;
 }

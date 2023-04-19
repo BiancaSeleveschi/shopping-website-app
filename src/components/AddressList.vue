@@ -1,11 +1,10 @@
 <template>
   <div>
     <div v-for="(address, index) in addressesInitial" :key="index">
-
-      <div v-if=" addressIndex !== index">
+      <div v-if="addressIndex !== index">
         <div id="address-saved-form"
-             :class="{ 'selected-address': index === selectedAddress }"
-             @click="selectedAddress = index"
+             :class="{ 'selected-address': index === selectedAddressIndex }"
+             @click="selectAddress(index)"
              class="px-5 pt-3 m-auto mt-4 border border-2 w-50 m-auto rounded rounded-4">
           <h5 class=" px-4 my-address"> {{
               addressesInitial === billingAddresses ?
@@ -26,7 +25,8 @@
                   d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
             </svg>
           </div>
-          <p class=" px-4 address">{{ address.city }}, {{ address.country }},{{address.street }},{{ address.number }} {{ address.blockStaircase }}</p>
+          <p class=" px-4 address">{{ address.city }}, {{ address.country }},{{ address.street }},{{ address.number }}
+            {{ address.blockStaircase }}</p>
           <p class=" px-4 address" id="postcode">{{ address.postcode }}</p>
         </div>
       </div>
@@ -45,6 +45,7 @@
 
 
 import AddressForm from "@/components/AddressForm";
+
 export default {
   name: "AddressesList",
   props: ['addresses'],
@@ -56,14 +57,13 @@ export default {
       billingAddresses: this.$store.state.user.billingAddresses,
       deliveryAddresses: this.$store.state.user.deliveryAddresses,
       addressesInitial: this.addresses,
-      selectedAddress: null,
       addressIndex: -1,
     };
   },
   computed: {
     titleAddress() {
       let title;
-      if (this.addressesInitial === this.deliveryAddresses || this.addressesInitial === this.$store.state.deliveryAddress) {
+      if (this.addressesInitial === this.deliveryAddresses || this.addressesInitial === this.$store.state.deliveryAddresses) {
         title = 'Delivery address';
       } else if (this.addressesInitial === this.billingAddresses || this.addressesInitial === this.$store.state.billingAddresses) {
         title = 'Billing address';
@@ -84,14 +84,11 @@ export default {
     removeAddress(index) {
       if (this.addressesInitial === this.deliveryAddresses) {
         this.$store.dispatch('removeDeliveryAddress', index)
-      }
-      if (this.addressesInitial === this.billingAddresses) {
+      } else if (this.addressesInitial === this.billingAddresses) {
         this.$store.dispatch('removeBillingAddress', index)
-      }
-      if (this.addressesInitial === this.$store.state.deliveryAddress) {
-        this.$store.state.deliveryAddress.splice(index, 1)
-      }
-      if (this.addressesInitial === this.$store.state.billingAddresses) {
+      } else if (this.addressesInitial === this.$store.state.deliveryAddresses) {
+        this.$store.state.deliveryAddresses.splice(index, 1)
+      } else if (this.addressesInitial === this.$store.state.billingAddresses) {
         this.$store.state.billingAddresses.splice(index, 1)
       }
     },
@@ -103,6 +100,19 @@ export default {
 
 <style scoped>
 
+#address-saved-form {
+  height: 115px;
+}
+
+#address-saved-form:hover {
+  background-color: #dcdcdc;
+  cursor: pointer;
+}
+
+#postcode {
+  margin-top: 50px;
+}
+
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -112,11 +122,6 @@ input[type=number]::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
   appearance: textfield;
-}
-
-
-#address-form {
-  height: 170px;
 }
 
 .my-address {
@@ -143,25 +148,12 @@ input[type=number] {
   font-size: 16px;
 }
 
-#address-saved-form {
-  height: 115px;
-}
-
-#address-saved-form:hover {
-  background-color: #dcdcdc;
-  cursor: pointer;
-}
-
 .selected-address {
   background-color: #bdbdbd;
 }
 
 .address {
   margin-top: 30px;
-}
-
-#postcode {
-  margin-top: 50px;
 }
 
 
