@@ -1,21 +1,23 @@
 <template>
   <div>
-    <div v-for="(address, index) in addressesInitial" :key="index">
-      <div v-if="addressIndex !== index">
+    <div v-for="(address, index) in addresses" :key="index">
+      <div v-if="index !== addressIndex">
         <div id="address-saved-form"
              :class="{ 'selected-address': index === selectedAddressIndex }"
              @click="selectAddress(index)"
              class="px-5 pt-3 m-auto mt-4 border border-2 w-50 m-auto rounded rounded-4">
           <h5 class=" px-4 my-address"> {{
-              addressesInitial === billingAddresses ?
+              title === 'Billing address' ?
                   'Billing address' : "Delivery address"
             }} </h5>
-          <div class="edit-delete ps-2 d-inline-block " @click="removeAddress(index)">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                 class="bi bi-trash3" viewBox="0 0 16 16">
-              <path
-                  d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-            </svg>
+          <div v-show="isLoggedIn">
+            <div class="edit-delete ps-2 d-inline-block " @click="removeAddress(index)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                   class="bi bi-trash3" viewBox="0 0 16 16">
+                <path
+                    d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+              </svg>
+            </div>
           </div>
           <div class="edit-delete d-inline-block"
                @click="editAddress(index)">
@@ -30,9 +32,9 @@
           <p class=" px-4 address" id="postcode">{{ address.postcode }}</p>
         </div>
       </div>
-      <div v-else-if="addressIndex === index ">
+      <div v-if="addressIndex === index">
         <AddressForm :addressInitial="address"
-                     :titleInitial="titleAddress"
+                     :titleInitial="title"
                      :isAddressSavedInitial="true"
                      :index="addressIndex"
                      @closeAddressForm="closeAddressForm"/>
@@ -47,9 +49,12 @@
 import AddressForm from "@/components/AddressForm";
 
 export default {
-  name: "AddressesList",
-  props: ['addresses'],
+  name: "AddressList",
+  props: ['addresses', 'title'],
   components: {AddressForm},
+  mounted() {
+    console.log(this.addresses)
+  },
   data() {
     return {
       selectedAddressIndex: null,
@@ -57,25 +62,17 @@ export default {
       billingAddresses: this.$store.state.user.billingAddresses,
       deliveryAddresses: this.$store.state.user.deliveryAddresses,
       addressesInitial: this.addresses,
+      // titleAddress: this.addresses,
+      isAddressSaved: false,
       addressIndex: -1,
     };
-  },
-  computed: {
-    titleAddress() {
-      let title;
-      if (this.addressesInitial === this.deliveryAddresses || this.addressesInitial === this.$store.state.deliveryAddresses) {
-        title = 'Delivery address';
-      } else if (this.addressesInitial === this.billingAddresses || this.addressesInitial === this.$store.state.billingAddresses) {
-        title = 'Billing address';
-      }
-      return title;
-    }
   },
   methods: {
     editAddress(index) {
       this.addressIndex = this.addressIndex !== index ? index : -1
     },
     closeAddressForm() {
+      this.isAddressSaved = true;
       this.addressIndex = -1;
     },
     selectAddress(index) {

@@ -2,11 +2,12 @@
   <div class="outer-card" @click="toggleLoginButton">
     <div class="card border border-dark" @click.stop>
       <div class="close" @click="toggleLoginButton">X</div>
-      <router-link to="/login" class="card-body d-block m-auto">
-        <div class="p-2 login-div" @click="toggleLoginButton">
-          Sign In
-        </div>
-      </router-link>
+      <!--      <router-link to="/login" class="card-body d-block m-auto">-->
+      <!--        <div class="p-2 login-div" @click="toggleLoginButton">-->
+      <!--          Sign In-->
+      <!--        </div>-->
+      <!--      </router-link>-->
+      <button @click="login">Log in</button>
       <router-link to="/register" class="card-footer">
         <div class="p-2 create-account" @click="toggleLoginButton">
           Create account
@@ -17,13 +18,19 @@
 </template>
 
 <script>
+// import {useAuth0} from '@auth0/auth0-vue';
+
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
-  name: "LoginForm",
+  name: "AuthDialog",
   methods: {
     toggleLoginButton() {
       this.$emit("toggleLoginButton");
     },
+    login() {
+      // const {loginWithRedirect} = useAuth0();
+      this.$auth.loginWithRedirect();
+
+    }
   },
 };
 </script>

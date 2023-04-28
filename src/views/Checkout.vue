@@ -1,23 +1,29 @@
 <template>
   <div class="checkout-page">
     <h1 class="title">Checkout</h1>
-
-    <div v-if="showAddingDeliveryAddressForm  || !existAtLeastOneDeliveryAddressSaved">
+    <div v-if="isLoggedIn && !existDeliveryAddresses">
+      <h4> Choose a delivery address<span class="d-block m-auto">or</span></h4>
+      <button class="py-2 px-4 add-button " @click="addNewDeliveryAddress">
+        {{isAddDeliveryAddressButtonClicked ? 'Close' : 'Add delivery address' }}
+      </button>
+    </div>
+    <div v-if="isAddDeliveryAddressButtonClicked || existDeliveryAddresses">
       <AddressForm :addressInitial="address"
                    titleInitial="Delivery address"
                    :isAddressSavedInitial="false"
                    :index="currentDeliveryAddressesIndex"
                    @closeAddressForm="closeAddingDeliveryAddressForm "/>
     </div>
-    <div v-else-if="existAtLeastOneDeliveryAddressSaved">
-      <h4 v-show="isLoggedIn"> Choose a delivery address<span class="d-block m-auto">or</span></h4>
-      <button class="py-2 px-4 add-button " @click="addNewDeliveryAddress">
-        Add delivery address
+
+    <AddressList :addresses="deliveryAddresses" title="Delivery address"/>
+
+    <div v-if="isLoggedIn && existBillingAddresses" class="mt-5">
+      <h4> Choose a billing address<span class="d-block m-auto">or</span></h4>
+      <button class="py-2 px-4 add-button " @click="addNewBillingAddress">
+        Add billing address
       </button>
     </div>
-    <AddressList :addresses="deliveryAddresses"/>
-
-    <div v-if="showAddingBillingAddressForm  || !existAtLeastOneBillingAddressSaved">
+    <div v-if="isAddBillingAddressButtonClicked || !existBillingAddresses">
       <AddressForm :addressInitial="address"
                    titleInitial="Billing address"
                    :isAddressSavedInitial="false"
@@ -26,13 +32,7 @@
 
     </div>
 
-    <div v-else-if="existAtLeastOneBillingAddressSaved ">
-      <h4 class="mt-4" v-show="isLoggedIn">Choose a billing address<span class="d-block m-auto">or</span></h4>
-      <button class="py-2 px-4 add-button " @click="addNewBillingAddress">
-        Add billing address
-      </button>
-    </div>
-    <AddressList :addresses="billingAddresses"/>
+    <AddressList :addresses="billingAddresses" title="Billing address"/>
 
     <div class="summary-card border border-2 m-auto w-50 pt-3 mt-5 px-5 rounded rounded-4">
       <div class="p-4 m-auto shipping">
@@ -138,26 +138,21 @@ export default {
         blockStaircase: '',
         postcode: '',
       },
-      deliveryAddresses: this.$store.state.user.deliveryAddresses,
-      billingAddresses: this.$store.state.user.billingAddresses,
       subtotal: this.$store.getters.getCartTotalPrice,
       isLoggedIn: this.$store.state.user.isLoggedIn,
       cart: this.$store.state.user.cart,
       currentDeliveryAddressesIndex: this.$store.getters.getCurrentDeliveryAddressesIndex,
       currentBillingAddressesIndex: this.$store.getters.getCurrentBillingAddressesIndex,
-      existAtLeastOneBillingAddressSaved: this.$store.getters.existAtLeastOneBillingAddressSaved,
-      existAtLeastOneDeliveryAddressSaved: this.$store.getters.existAtLeastOneDeliveryAddressSaved,
       showEnterCouponCodeForm: false,
       isCouponCodeInvalid: false,
       showShippingMethodAlert: false,
       showPaymentMethodAlert: false,
       isCheckboxStandardChecked: false,
       isCheckboxExpressChecked: false,
-      isCheckboxAlipayChecked: false,
       isCheckboxCreditCardChecked: false,
       isCheckboxCashPaymentChecked: false,
-      showAddingDeliveryAddressForm: false,
-      showAddingBillingAddressForm: false,
+      isAddDeliveryAddressButtonClicked: false,
+      isAddBillingAddressButtonClicked: false,
       isCouponCodeApplied: false,
       isCouponCodeValid: false,
       expressShippingCost: 35,
@@ -166,24 +161,24 @@ export default {
     };
   },
   computed: {
-    // currentDeliveryAddressesIndex() {
-    //   if (this.isLoggedIn) {
-    //     return this.deliveryAddresses.length
-    //   }
-    //   return this.$store.state.deliveryAddresses.length
-    // },
-    // currentBillingAddressesIndex() {
-    //   if (this.isLoggedIn) {
-    //     return this.$store.state.user.billingAddresses.length
-    //   }
-    //   return this.$store.state.billingAddresses.length
-    // },
-    // existAtLeastOneBillingAddressSaved() {
-    //   return this.currentBillingAddressesIndex > 0;
-    // },
-    // existAtLeastOneDeliveryAddressSaved() {
-    //   return this.currentDeliveryAddressesIndex > 0;
-    // },
+    existDeliveryAddresses() {
+      return this.currentDeliveryAddressesIndex === 0
+    },
+    existBillingAddresses() {
+      return this.currentBillingAddressesIndex !== 0
+    },
+    deliveryAddresses() {
+      if (this.isLoggedIn) {
+        return this.$store.state.user.deliveryAddresses
+      }
+      return this.$store.state.deliveryAddresses
+    },
+    billingAddresses() {
+      if (this.isLoggedIn) {
+        return this.$store.state.user.billingAddresses
+      }
+      return this.$store.state.billingAddresses
+    },
     expressShippingPrice() {
       return this.expressShippingCost.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
     },
@@ -226,16 +221,8 @@ export default {
     },
   },
   methods: {
-    closeAddingDeliveryAddressForm() {
-      this.existAtLeastOneDeliveryAddressSaved = true;
-      this.showAddingDeliveryAddressForm = false;
-    },
-    closeAddingBillingAddressForm() {
-      this.existAtLeastOneBillingAddressSaved = true;
-      this.showAddingBillingAddressForm = false;
-    },
     addNewDeliveryAddress() {
-      this.showAddingDeliveryAddressForm = !this.showAddingDeliveryAddressForm
+      this.isAddDeliveryAddressButtonClicked = !this.isAddDeliveryAddressButtonClicked
       this.address = {
         country: '',
         city: '',
@@ -246,7 +233,7 @@ export default {
       }
     },
     addNewBillingAddress() {
-      this.showAddingBillingAddressForm = !this.showAddingBillingAddressForm;
+      this.isAddBillingAddressButtonClicked = !this.isAddBillingAddressButtonClicked
       this.address = {
         country: '',
         city: '',
@@ -255,6 +242,14 @@ export default {
         blockStaircase: '',
         postcode: '',
       }
+    },
+    closeAddingDeliveryAddressForm() {
+      this.isAddDeliveryAddressButtonClicked = false;
+      this.currentDeliveryAddressesIndex = this.currentDeliveryAddressesIndex !== 0;
+    },
+    closeAddingBillingAddressForm() {
+      this.isAddBillingAddressButtonClicked = false;
+      this.currentBillingAddressesIndex = this.currentBillingAddressesIndex !== 0;
     },
     selectShippingMethod() {
       if (this.isCheckboxStandardChecked) {

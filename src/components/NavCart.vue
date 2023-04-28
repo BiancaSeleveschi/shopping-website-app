@@ -7,7 +7,7 @@
       </div>
       <div class="cart-body">
         <CartItem/>
-        <p class="fw-bold p-5 text-danger" v-show="isBagEmpty">YOUR BAG IS EMPTY</p>
+        <h5 class="fw-bold p-5 text-danger" v-show="isBagEmpty">YOUR BAG IS EMPTY</h5>
         <p class="p-5" v-show="this.$store.getters.getCartItemCount === 0 && !this.isBagEmpty">YOUR BAG IS EMPTY</p>
       </div>
       <div class="subtotal p-3">Subtotal: $ {{ this.$store.getters.getCartTotalPrice }}</div>
@@ -38,7 +38,7 @@ export default {
         this.isBagEmpty = true;
         setTimeout(() => {
           this.isBagEmpty = false;
-        }, 3000);
+        }, 5000);
       } else {
         this.$router.push('/cart/summary')
       }
@@ -68,7 +68,6 @@ export default {
   background-color: #dedede;
   transform: translateX(-4%);
   z-index: 2;
-
 }
 
 .cart-header {

@@ -3,10 +3,10 @@
     <h2 id="title">My account</h2>
     <div class="border-top pt-5 w-100"></div>
     <NavProfile class="outer-card"/>
-    <div class="d-inline-bloc bg-secondary bg-opacity-10 " id="address-card">
+    <div class="d-inline-bloc bg-secondary bg-opacity-10" id="address-card">
       <h4 class=" m-5 border border-1 bg-white p-3 address-title">My addresses</h4>
-      <AddressList :addresses="deliveryAddresses"/>
-      <AddressList :addresses="billingAddresses"/>
+      <AddressList :addresses="deliveryAddresses" title="Delivery address"/>
+      <AddressList :addresses="billingAddresses" title="Billing address"/>
 
       <div class="mt-5 pt-5">
         <button class="btn btn-dark d-inline-block w-25 p-4 mx-5 mb-3 mt-5 address-title"
@@ -15,21 +15,25 @@
         <button class="btn btn-dark d-inline-block w-25 p-4 mx-5 mb-3 mt-5 address-title"
                 @click="openBillingAddressForm">Add billing address
         </button>
-        <div v-show="showAddingDeliveryAddressForm">
+        <div v-if="showAddingDeliveryAddressForm">
           <AddressForm :addressInitial="address"
                        titleInitial="Delivery address"
                        :isAddressSavedInitial="false"
                        :index="currentDeliveryAddressesIndex"
                        @closeDeliveryAddressForm="closeAddingDeliveryAddressForm"/>
         </div>
-        <div class="my-4 p-2 m-auto bg-success bg-opacity-10 alert" v-show="isAddressSaved">
-          The address have been saved
+        <div v-else-if="isAddressSaved && !showAddingDeliveryAddressForm">
+          <transition name="fade">
+            <div class="p-4 alert alert-success bg-opacity-10">
+              The address have been saved
+            </div>
+          </transition>
         </div>
         <div v-show="showAddingBillingAddressForm">
           <AddressForm :addressInitial="address"
                        titleInitial="Billing address"
                        :isAddressSavedInitial="false"
-                       :index="currentDeliveryAddressesIndex"
+                       :index="currentBillingAddressesIndex"
                        @closeDeliveryAddressForm="closeAddingDeliveryAddressForm"/>
         </div>
       </div>
@@ -62,37 +66,25 @@ export default {
       isLoggedIn: this.$store.state.user.isLoggedIn,
       deliveryAddresses: this.$store.state.user.deliveryAddresses,
       billingAddresses: this.$store.state.user.billingAddresses,
+      currentDeliveryAddressesIndex: this.$store.getters.getCurrentDeliveryAddressesIndex,
+      currentBillingAddressesIndex: this.$store.getters.getCurrentBillingAddressesIndex,
     }
-  },
-  computed: {
-    currentDeliveryAddressesIndex() {
-      if (this.isLoggedIn) {
-        return this.deliveryAddresses.length
-      }
-      return this.$store.state.deliveryAddresses.length
-    },
-    currentBillingAddressesIndex() {
-      if (this.isLoggedIn) {
-        return this.$store.state.user.billingAddresses.length
-      }
-      return this.$store.state.billingAddresses.length
-    },
   },
   methods: {
     closeAddingDeliveryAddressForm() {
-      this.isAddressSaved = true
-      setTimeout(() => {
-        this.isAddressSaved = false;
-        this.showAddingDeliveryAddressForm = true;
-      }, 3000)
-      this.showAddingDeliveryAddressForm = !this.showAddingDeliveryAddressForm;
-
-    }, closeAddingBillingAddressForm() {
-      // this.isAddressSaved = true
+      this.showAddingDeliveryAddressForm = false;
+      this.isAddressSaved = true;
       let clear = () => (this.isAddressSaved = false)
-      this.isAddressSaved = true
-      setTimeout(clear, 3000)
-      this.showAddingBillingAddressForm = !this.showAddingBillingAddressForm;
+      if (this.isAddressSaved) {
+        setTimeout(clear, 3000);
+      }
+    }, closeAddingBillingAddressForm() {
+      this.showAddingBillingAddressForm = false;
+      this.isAddressSaved = true;
+      let clear = () => (this.isAddressSaved = false)
+      if (this.isAddressSaved) {
+        setTimeout(clear, 3000);
+      }
     },
     openAddressForm() {
       this.showAddingDeliveryAddressForm = !this.showAddingDeliveryAddressForm;
@@ -158,7 +150,10 @@ input[type=number] {
 }
 
 .alert {
-  width: 300px;
+  width: 400px;
+  display: flow;
+  transform: translateY(500%);
+  margin: auto;
 }
 
 </style>

@@ -1,13 +1,13 @@
 <template>
-  <div class="product-details-page">
+  <div class="item-details-page">
     <div v-if="product" class="product bg-black">
       <div class="d-inline-block mt-5 pt-5 w-100">
-        <div class="mx-3" id="image-div">
+        <div class="mx-3">
           <img @click="openModal" :src="product.img" alt="Image" class="img-fluid"/>
           <div v-if="isModalOpen" class="modal" @click="closeModal">
-            <div class="modal-content">
+            <div class="modal-content m-auto">
               <span @click="closeModal" class="close">X</span>
-              <img :src="product.img" alt="Image"/>
+              <img :src="product.img" alt="Image" id="modal-img"/>
             </div>
           </div>
         </div>
@@ -40,22 +40,21 @@
           <form class="product-details-bottom pt-5">
             <select class="select me-5 m-auto" v-model="size" :class="{ error: error }">
               <option value="Size" disabled>Size</option>
-              <option value="xs">xs</option>
-              <option value="s">s</option>
-              <option value="m">m</option>
-              <option value="l">l</option>
-              <option value="xl">xl</option>
-              <option value="xxl">xxl</option>
+              <option v-for="(size, index) in product.size" :key="index">
+                {{ size }}
+              </option>
             </select>
             <div class="add-cart ms-5 m-auto" @click="addToCart(product, size)">
               Add to cart
             </div>
           </form>
-          <transition name="fade">
-            <div v-show="showAlert" class="alert alert-success p-3" id="alert-cart" role="alert">
-              The product has been added to cart
-            </div>
-          </transition>
+          <div v-show="!showSuccessAlert" class="overlay">
+            <transition name="fade">
+              <div class="alert alert-success px-5 py-4" id="alert-cart" role="alert">
+                The product has been added to cart
+              </div>
+            </transition>
+          </div>
           <div v-show="showLoginMessageForFav" class="overlay">
             <transition name="fade">
               <div class="alert-log alert alert-warning py-4"
@@ -83,7 +82,7 @@ export default {
       error: false,
       isModalOpen: false,
       isFavorite: false,
-      showAlert: false,
+      showSuccessAlert: false,
       showLoginMessageForFav: false,
       quantity: 1,
     };
@@ -109,9 +108,9 @@ export default {
         quantity: 1,
         quantityPrice: product.price,
       };
-      let clear = () => (this.showAlert = false)
+      let clear = () => (this.showSuccessAlert = false)
       if (size !== "Size") {
-        this.showAlert = true;
+        this.showSuccessAlert = true;
         this.$store.dispatch("addToCart", item);
         setTimeout(clear, 3000);
       } else {
@@ -139,6 +138,10 @@ export default {
 };
 </script>
 <style scoped>
+#modal-img {
+  width: 180%;
+  margin-right: 200px;
+}
 
 #brand {
   display: flow;
@@ -152,8 +155,12 @@ export default {
 }
 
 #alert-cart {
-  float: right;
-  transform: translateY(-320%) translateX(60%);
+  display: flow;
+  position: relative;
+  top: 11%;
+  left: 75%;
+  height: max-content;
+  width: max-content;
 }
 
 .img-fluid {
@@ -209,8 +216,7 @@ export default {
   padding-bottom: 300px;
 }
 
-.product-details-page {
-  margin-bottom: 969px;
+.item-details-page {
   z-index: 1;
 }
 
@@ -270,26 +276,24 @@ export default {
 .modal {
   display: block;
   position: fixed;
+  padding-right: 15%;
+  padding-top: 3%;
   z-index: 1;
-  left: -8%;
-  top: 12%;
   width: 100%;
   height: 100%;
-  overflow: auto;
   background-color: rgba(0, 0, 0, 0.9);
 }
 
 .modal-content {
-  margin: auto;
+  padding-top: 5%;
   display: block;
-  width: 50%;
-  max-width: 500px;
+  max-width: 350px;
   background-color: transparent;
 }
 
 .close {
   position: absolute;
-  left: 154%;
+  left: 170%;
   z-index: 1;
   font-size: 30px;
   color: #000000;

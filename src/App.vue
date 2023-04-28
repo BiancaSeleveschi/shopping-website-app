@@ -6,18 +6,17 @@
   </div>
 </template>
 
+//Aplicatie SPA: Single Page Application - Vue
+//SPA = o singura pagina HTML in care continutul se schimba cu continutul paginii pe care navighezi din app vue
+//CSR: C.lient Side Rendering => Vue, Nuxt
+//SSR: server site rendering => Nuxt, Vue
+//SSG: static site generator: Hugo -> site portofoliu de proiecte
 <script>
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export default {
   components: {Footer, Navbar},
-  // created() {
-  //   const men = localStorage.getItem('men');
-  //   if (men) {
-  //     this.$store.commit('setMen', JSON.parse(men));
-  //   }
-  // },
   created() {
     this.$store.commit("INIT_STORE");
     this.$store.commit("UPDATE_STORE");

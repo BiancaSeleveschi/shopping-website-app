@@ -5,20 +5,19 @@
         v-model="searchWord"
         placeholder="Search"
         type="text"
-        class="p-1 rounded rounded-2"
-        id="input-search"
+        class="p-1 rounded rounded-2 input-search"
     />
-    <CardItem :products="filteredProducts" :image="image" class="card-item"/>
+    <ItemList :products="filteredProducts" :image="image" class="card-item"/>
   </div>
 </template>
 
 <script>
-import CardItem from "@/components/CardItem";
+import ItemList from "@/components/ItemList";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Search",
-  components: {CardItem},
+  components: {ItemList},
   data() {
     return {
       searchWord: "",
@@ -29,11 +28,11 @@ export default {
     filteredProducts() {
       return this.$store.getters.getAllProducts.filter((product) => {
         return (
-            product.title.toLowerCase().includes(this.searchWord) ||
-            product.brand.toLowerCase().includes(this.searchWord) ||
-            product.color.toLowerCase().includes(this.searchWord) ||
-            product.gender.toLowerCase().includes(this.searchWord) ||
-            product.type.toLowerCase().includes(this.searchWord)
+            product.title.toLowerCase().includes(this.searchWord.toLowerCase()) ||
+            product.brand.toLowerCase().includes(this.searchWord.toLowerCase()) ||
+            product.color.toLowerCase().includes(this.searchWord.toLowerCase()) ||
+            product.gender.toLowerCase().includes(this.searchWord.toLowerCase()) ||
+            product.type.toLowerCase().includes(this.searchWord.toLowerCase())
         );
       });
     },
@@ -42,7 +41,7 @@ export default {
 </script>
 
 <style scoped>
-#input-search {
+.input-search {
   width: 100%;
   max-width: 280px;
   border: none;

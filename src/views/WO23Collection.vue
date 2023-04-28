@@ -5,16 +5,16 @@
       ready-to-wear collection,designed for modern, confident women.
     </h4>
     <h1 class="title fw-bold ">WO23 Collection</h1>
-    <CardItem :products="womenCollection" :image="image" class="card-item"/>
+    <ItemList :products="womenCollection" :image="image" class="card-item"/>
   </div>
 </template>
 
 <script>
-import CardItem from "@/components/CardItem";
+import ItemList from "@/components/ItemList";
 
 export default {
   name: "WCollection",
-  components: {CardItem},
+  components: {ItemList},
   data() {
     return {
       image: "wo23.avif",

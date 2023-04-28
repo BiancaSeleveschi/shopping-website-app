@@ -5,7 +5,7 @@
       <div>
         <router-link
             :to="{
-                  name: 'ProductDetails',
+                  name: 'ItemDetails',
                   params: {
                     product: item.product,
                     id: item.product.id,

@@ -45,8 +45,9 @@
             </svg>
           </div>
         </div>
+<!--        Dynamic routing - routare spre o pagina cu path dinamic-->
         <router-link :to="{
-            name: 'ProductDetails',
+            name: 'ItemDetails',
             params: {
               product: product,
               id: product.id,
@@ -83,16 +84,17 @@ export default {
     this.$store.dispatch('setProductsIsFavorite');
   },
 
-  // rezolv compararea array-urilor favorites si products => <3 sau X
-  // refactorizare denumiri variabile, metode, fisiere + structura fisiere: pagini, componente
-  // refactorizare componente
+  // rezolv compararea array-urilor favorites si products => <3 sau X ✔️
+  // refactorizare denumiri variabile, metode, fisiere + structura fisiere: pagini, componente ✔️
+  // refactorizare componente ✔️
   // rezolvare bug stergere reteta
-  // fixare updateUserInformations
-  // schimbare din alert js in alert bootstrap
+  // fixare updateUserInformations ✔️
+  // schimbare din alert js in alert bootstrap ✔️
   // cv in engleza
   // about in engleza - linkedIn => 2 profile
   // portofoliu de proiecte
-  // raspuns intrabri behavioral + tehnice
+  // raspuns intrabri behavioral ✔
+  // raspun intrebari tehnice
   // revizuire teorie
   methods: {
     addToFavorite(product) {

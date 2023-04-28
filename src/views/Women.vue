@@ -1,17 +1,17 @@
 <template>
   <div>
     <h1 class="title text-black fw-bold">Women</h1>
-    <CardItem :products="women" :image="image" class="card-item"/>
+    <ItemList :products="women" :image="image" class="card-item"/>
   </div>
 </template>
 
 <script>
-import CardItem from "@/components/CardItem";
+import ItemList from "@/components/ItemList";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Women",
-  components: { CardItem},
+  components: { ItemList},
   data() {
     return {
       image: "women.avif",

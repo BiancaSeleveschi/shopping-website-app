@@ -1,16 +1,16 @@
 <template>
   <div>
     <h1 class="title fw-bold">ME23 Collection</h1>
-    <CardItem :products="menCollection" :image="image" class="card-item"/>
+    <ProductList :products="menCollection" :image="image" class="card-item"/>
   </div>
 </template>
 
 <script>
-import CardItem from "@/components/CardItem";
+import ProductList from "@/components/ItemList";
 
 export default {
   name: "MenCollection",
-  components: { CardItem},
+  components: { ProductList},
   data() {
     return {
       image: "me23.avif",

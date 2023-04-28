@@ -61,8 +61,9 @@
       />
       <span class="address-alert" v-show="isPostcodeInputIncomplete">Please enter a postcode</span>
     </div>
-    <button v-if="!isAddressSaved" @click="saveAddress" class="btn btn-primary mb-5">Save</button>
-    <button v-else @click="updateAddress(index)" class="btn btn-primary mb-5">Save</button>
+    <button @click="!isAddressSaved ? saveAddress() : updateAddress()" class="btn btn-primary mb-5">
+      {{ !isAddressSaved ? 'Save' : 'Update' }}
+    </button>
   </div>
 </template>
 
@@ -78,6 +79,8 @@ export default {
       address: this.addressInitial,
       isAddressSaved: this.isAddressSavedInitial,
       isLoggedIn: this.$store.state.user.isLoggedIn,
+      currentDeliveryAddressesIndex: this.$store.getters.getCurrentDeliveryAddressesIndex,
+      currentBillingAddressesIndex: this.$store.getters.getCurrentBillingAddressesIndex,
       addressIndex: this.index,
       title: this.titleInitial,
       isCountryInputIncomplete: false,
@@ -114,46 +117,50 @@ export default {
       this.isPostcodeInputIncomplete = address.postcode === "";
       this.isAddressComplete = !this.isCountryInputIncomplete && !this.isCityInputIncomplete
           && !this.isStreetInputIncomplete && !this.isNumberInputIncomplete && !this.isPostcodeInputIncomplete;
-      if (!this.isAddressSaved && this.isAddressComplete && this.isLoggedIn && this.title === 'Delivery address') {
-        this.$store.dispatch('saveDeliveryAddress', address)
-        this.address = newAddress
-        this.$emit('closeAddressForm')
-      } else if (!this.isAddressSaved && this.isAddressComplete && this.isLoggedIn && this.title === 'Billing address') {
-        this.$store.dispatch('saveBillingAddress', address)
-        this.address = newAddress
-        this.$emit('closeAddressForm')
-      } else if (!this.isAddressSaved && this.isAddressComplete && !this.isLoggedIn && this.title === 'Billing address') {
-        this.$store.state.billingAddresses.push(address)
-        this.address = newAddress
-        this.$emit('closeAddressForm')
-      } else if (!this.isAddressSaved && this.isAddressComplete && !this.isLoggedIn && this.title === 'Delivery address') {
-        this.$store.state.deliveryAddresses.push(address)
-        this.address = newAddress
-        this.$emit('closeAddressForm')
+      if (!this.isAddressSaved && this.isAddressComplete) {
+        if (this.isLoggedIn && this.title === 'Delivery address') {
+          this.$store.dispatch('saveDeliveryAddress', address)
+          this.address = newAddress
+          this.$emit('closeAddressForm')
+        } else if (this.isLoggedIn && this.title === 'Billing address') {
+          this.$store.dispatch('saveBillingAddress', address)
+          this.address = newAddress
+          this.$emit('closeAddressForm')
+        } else if (!this.isLoggedIn && this.title === 'Billing address') {
+          this.$store.dispatch('saveBillingAddress', address)
+          // this.address = newAddress
+          this.$emit('closeAddressForm')
+        } else if (!this.isLoggedIn && this.title === 'Delivery address') {
+          this.$store.dispatch('saveDeliveryAddress', address)
+          // this.address = newAddress
+          this.$emit('closeAddressForm')
+        }
       }
     },
-    updateAddress(address, index) {
-      this.isCountryInputIncomplete = address.country === "";
-      this.isCityInputIncomplete = address.city === "";
-      this.isStreetInputIncomplete = address.street === "";
-      this.isNumberInputIncomplete = address.number === "";
-      this.isPostcodeInputIncomplete = address.postcode === "";
+    updateAddress() {
+      this.isCountryInputIncomplete = this.address.country === "";
+      this.isCityInputIncomplete = this.address.city === "";
+      this.isStreetInputIncomplete = this.address.street === "";
+      this.isNumberInputIncomplete = this.address.number === "";
+      this.isPostcodeInputIncomplete = this.address.postcode === "";
       this.isAddressComplete = !this.isCountryInputIncomplete && !this.isCityInputIncomplete
           && !this.isStreetInputIncomplete && !this.isNumberInputIncomplete && !this.isPostcodeInputIncomplete;
-      if (this.isAddressComplete && this.isAddressSaved && this.isLoggedIn && this.title === 'Delivery address') {
-        this.$store.dispatch('updateDeliveryAddress', {address, index})
-        this.$emit('closeAddressForm')
-      } else if (this.isAddressComplete && this.isAddressSaved && this.isLoggedIn && this.title === 'Billing address') {
-        this.$store.dispatch('updateBillingAddress', {address, index})
-        this.$emit('closeAddressForm')
-      } else if (this.isAddressComplete && this.isAddressSaved && !this.isLoggedIn && this.title === 'Billing address') {
-        this.$store.state.deliveryAddresses[index] = address
-        this.$emit('closeAddressForm')
-      } else if (this.isAddressComplete && this.isAddressSaved && !this.isLoggedIn && this.title === 'Delivery address') {
-        this.$store.state.billingAddresses[index] = address
-        this.$emit('closeAddressForm')
+      if (this.isAddressComplete && this.isAddressSaved) {
+        if (this.isLoggedIn && this.title === 'Delivery address') {
+          this.$store.dispatch('updateDeliveryAddress', this.address, this.addressIndex)
+          this.$emit('closeAddressForm')
+        } else if (this.isLoggedIn && this.title === 'Billing address') {
+          this.$store.dispatch('updateBillingAddress', this.address, this.addressIndex)
+          this.$emit('closeAddressForm')
+        } else if (!this.isLoggedIn && this.title === 'Billing address') {
+          this.$store.state.deliveryAddresses[this.addressIndex] = this.address
+          this.$emit('closeAddressForm')
+        } else if (!this.isLoggedIn && this.title === 'Delivery address') {
+          this.$store.state.billingAddresses[this.addressIndex] = this.address
+          this.$emit('closeAddressForm')
+        }
       }
-    }
+    },
   },
 }
 </script>
@@ -187,10 +194,6 @@ input[type=number] {
   margin-bottom: 0;
   float: left;
   font-family: "JetBrains Mono Light", sans-serif;
-}
-
-#title {
-  letter-spacing: 2px;
 }
 
 </style>

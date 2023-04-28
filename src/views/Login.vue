@@ -3,7 +3,7 @@
     <div>
       <h1 id="signIn-title">SIGN IN</h1>
       <div v-show="isAuthInvalid"
-           class="alert-message">
+           class="alert-message mb-1 ">
         {{ message }}
       </div>
       <input

@@ -59,7 +59,7 @@
       </div>
     </nav>
     <div v-show="showLogin">
-      <LoginForm @toggleLoginButton="showLogin = false"/>
+      <AuthDialog @toggleLoginButton="showLogin = false"/>
     </div>
     <div v-show="showCartDetails">
       <NavCart @toggleCart="showCartDetails = false"/>
@@ -74,13 +74,13 @@
 
 <script>
 import NavCart from "@/components/NavCart";
-import LoginForm from "@/components/LoginForm";
+import AuthDialog from "@/components/AuthDialog";
 import NavProfile from "@/components/NavProfile";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Navbar",
-  components: {NavProfile, NavCart, LoginForm},
+  components: {NavProfile, NavCart, AuthDialog},
   data() {
     return {
       scrollPosition: null,
