@@ -48,7 +48,7 @@
               Add to cart
             </div>
           </form>
-          <div v-show="!showSuccessAlert" class="overlay">
+          <div v-show="showSuccessAlert" class="overlay">
             <transition name="fade">
               <div class="alert alert-success px-5 py-4" id="alert-cart" role="alert">
                 The product has been added to cart
