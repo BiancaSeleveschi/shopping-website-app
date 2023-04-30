@@ -194,7 +194,6 @@ export default {
   display: grid;
   width: 60%;
   border-bottom: solid 1px #333;
-  display: grid;
   background-color: #ffffff;
   text-align: start;
 }

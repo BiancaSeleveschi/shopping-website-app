@@ -1,7 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import {v4 as uuid} from 'uuid';
+import firebase from "../firebaseInit.js";
 
+const db = firebase.firestore();
 
 Vue.use(Vuex);
 
@@ -18,10 +20,9 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
-
             {
                 title: "Ribbed jersey dress with cut-out detail",
                 img: "https://media.gucci.com/style/HEXF1E9FB_Center_0_0_800x800/1666176358/731269_ZHS57_6490_001_100_0000_Light-Silk-chiffon-dress.jpg",
@@ -32,7 +33,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XXL'],
                 id: uuid(),
             },
             {
@@ -45,7 +46,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
                 isFavorite: false,
             },
@@ -59,7 +60,7 @@ export default new Vuex.Store({
                 brand: " Gucci",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','M','L','XL','XXL'],
+                size: ['XS', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -72,7 +73,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -85,7 +86,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -98,7 +99,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -111,7 +112,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','XL','XXL'],
+                size: ['XS', 'S', 'M', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -123,7 +124,7 @@ export default new Vuex.Store({
                 brand: "Dolce & Gabbana",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL'],
+                size: ['XS', 'S', 'M', 'L', 'XL'],
                 id: uuid(),
             },
             {
@@ -135,7 +136,7 @@ export default new Vuex.Store({
                 brand: "Dolce & Gabbana",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -147,7 +148,7 @@ export default new Vuex.Store({
                 brand: "Dolce & Gabbana",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -159,7 +160,7 @@ export default new Vuex.Store({
                 brand: "Dolce & Gabbana",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -171,7 +172,7 @@ export default new Vuex.Store({
                 brand: "Dolce & Gabbana",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -183,7 +184,7 @@ export default new Vuex.Store({
                 brand: "Valentino",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -195,7 +196,7 @@ export default new Vuex.Store({
                 brand: "Prada",
                 type: "Dress",
                 gender: "women",
-                size: ['S','M','L','XL','XXL'],
+                size: ['S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -207,7 +208,7 @@ export default new Vuex.Store({
                 brand: "Prada",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -231,7 +232,7 @@ export default new Vuex.Store({
                 brand: "Massimo Dutti",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -243,7 +244,7 @@ export default new Vuex.Store({
                 brand: "Massimo Dutti",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -255,7 +256,7 @@ export default new Vuex.Store({
                 brand: "Massimo Dutti",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -268,7 +269,7 @@ export default new Vuex.Store({
                 brand: "Versace",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -281,7 +282,7 @@ export default new Vuex.Store({
                 brand: "Versace",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: 22,
             },
             {
@@ -294,7 +295,7 @@ export default new Vuex.Store({
                 brand: "Versace",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','XL','XXL'],
+                size: ['XS', 'S', 'M', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -307,7 +308,7 @@ export default new Vuex.Store({
                 brand: "Versace",
                 type: "Dress",
                 gender: "women",
-                size: ['XS','S','M','L','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XXL'],
                 id: uuid(),
             },
         ],
@@ -321,7 +322,7 @@ export default new Vuex.Store({
                 brand: "Valentino",
                 type: "Jacket",
                 gender: "men",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -334,7 +335,7 @@ export default new Vuex.Store({
                 brand: "Valentino",
                 type: "Trousers",
                 gender: "men",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -347,7 +348,7 @@ export default new Vuex.Store({
                 brand: "Valentino",
                 type: "Shirt",
                 gender: "men",
-                size: ['XS','M','L','XL','XXL'],
+                size: ['XS', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -360,7 +361,7 @@ export default new Vuex.Store({
                 brand: "Valentino",
                 type: "Jacket",
                 gender: "men",
-                size: ['S','M','XL','XXL'],
+                size: ['S', 'M', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -373,7 +374,7 @@ export default new Vuex.Store({
                 brand: "Alexander Mqueen",
                 type: "Sweater",
                 gender: "men",
-                size: ['S','L','XL','XXL'],
+                size: ['S', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -386,7 +387,7 @@ export default new Vuex.Store({
                 brand: "BURBERRY",
                 type: "Trousers",
                 gender: "men",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -399,7 +400,7 @@ export default new Vuex.Store({
                 brand: "BURBERRY",
                 type: "Shirt",
                 gender: "men",
-                size: ['XS','S','L','XL','XXL'],
+                size: ['XS', 'S', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -412,7 +413,7 @@ export default new Vuex.Store({
                 brand: "BURBERRY",
                 type: "Overcoat",
                 gender: "men",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -425,7 +426,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Jacket",
                 gender: "men",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -438,7 +439,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Jacket",
                 gender: "men",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -451,7 +452,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Jacket",
                 gender: "men",
-                size: ['XS','S','M','L','XL','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
                 id: uuid(),
             },
             {
@@ -464,7 +465,7 @@ export default new Vuex.Store({
                 brand: "Gucci",
                 type: "Jacket",
                 gender: "men",
-                size: ['XS','S','M','L','XXL'],
+                size: ['XS', 'S', 'M', 'L', 'XXL'],
                 id: uuid(),
             },
             {
@@ -477,7 +478,7 @@ export default new Vuex.Store({
                 brand: "Alexander Mqueen",
                 type: "Shirt",
                 gender: "men",
-                size: ['XS','S','M','L','XL'],
+                size: ['XS', 'S', 'M', 'L', 'XL'],
                 id: uuid(),
             },
         ],
@@ -598,51 +599,50 @@ export default new Vuex.Store({
             localStorage.setItem("state", JSON.stringify(state));
         },
         ADD_PRODUCT_AS_ADMIN(state, item) {
+            console.log("item:", item)
             if (item.gender === 'women') {
                 state.women.push(item)
-            }
-            else if (item.gender === 'men') {
+            } else if (item.gender === 'men') {
                 state.men.push(item)
             }
+            this.commit("UPDATE_STORE");
         },
         REMOVE_PRODUCT(state, product) {
-          let index;
-          if(product.gender === 'women') {
-              index = state.women.findIndex((p) => p.id === product.id)
-              state.women.splice(index, 1)
-          }
-          else if(product.gender === 'men') {
-              index = state.men.findIndex((p) => p.id === product.id)
-              state.men.splice(index, 1)
-          }
+            let index;
+            if (product.gender === 'women') {
+                index = state.women.findIndex((p) => p.id === product.id)
+                state.women.splice(index, 1)
+            } else if (product.gender === 'men') {
+                index = state.men.findIndex((p) => p.id === product.id)
+                state.men.splice(index, 1)
+            }
         },
         UPDATE_PRODUCT(state, product) {
-          if(product.gender === 'women') {
-             let index = state.women.findIndex((p) => p.id === product.id)
-              state.women[index] = {
-                  title: product.title,
-                  img: product.img,
-                  price: 999,
-                  description: product.description,
-                  color:  product.color,
-                  brand:  product.brand,
-                  type:  product.type,
-                  id: uuid(),
-              }
-          }
-          else if(product.gender === 'men') {
-             let index = state.men.findIndex((p) => p.id === product.id)
-              state.men[index] = {
-                  title: product.title,
-                  img: product.img,
-                  price: 999,
-                  description: product.description,
-                  color:  product.color,
-                  brand:  product.brand,
-                  type:  product.type,
-                  id: uuid(),
-              }
-          }
+            if (product.gender === 'women') {
+                let index = state.women.findIndex((p) => p.id === product.id)
+                state.women[index] = {
+                    title: product.title,
+                    img: product.img,
+                    price: 999,
+                    description: product.description,
+                    color: product.color,
+                    brand: product.brand,
+                    type: product.type,
+                    id: uuid(),
+                }
+            } else if (product.gender === 'men') {
+                let index = state.men.findIndex((p) => p.id === product.id)
+                state.men[index] = {
+                    title: product.title,
+                    img: product.img,
+                    price: 999,
+                    description: product.description,
+                    color: product.color,
+                    brand: product.brand,
+                    type: product.type,
+                    id: uuid(),
+                }
+            }
         },
         ADD_TO_CART(state, item) {
             let itemCart = state.user.cart.find((i) => i.product.id === item.product.id && item.size === i.size);
@@ -786,8 +786,15 @@ export default new Vuex.Store({
     },
     actions: {
         addProductAsAdmin(context, item) {
-            context.commit("ADD_PRODUCT_AS_ADMIN", item);
-            context.commit("UPDATE_STORE");
+            db.collection("products")
+                .add(item)
+                .then((docRef) => {
+                    console.log("success", docRef)
+                    item.id = docRef.id
+                    context.commit("ADD_PRODUCT_AS_ADMIN", item);
+                })
+
+
         },
         removeProduct(context, product) {
             context.commit("REMOVE_PRODUCT", product);
