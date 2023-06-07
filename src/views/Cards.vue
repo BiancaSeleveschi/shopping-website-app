@@ -51,7 +51,7 @@ export default {
   components: {NavProfile, CardDetails},
   data() {
     return {
-      cards: this.$store.state.user.cards,
+      cards: this.$store.state.user?.cards,
       cardIndex: -1,
       showCardDetails: false,
     }

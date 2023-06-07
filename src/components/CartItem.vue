@@ -36,7 +36,7 @@ export default {
   name: "CartItem",
   data() {
     return {
-      cart: this.$store.state.user.cart,
+      cart: this.$store.state.user?.cart,
     }
   },
   methods: {

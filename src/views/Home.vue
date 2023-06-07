@@ -7,7 +7,7 @@
     </video>
     <div class="content">
       <h1 v-if="!hasLoggedInBefore" class="alert shadow text-light" role="alert">
-        Welcome, {{ $store.state.user.firstName }} {{ $store.state.user.lastName }}!
+        Welcome, {{ $store.state.user?.firstName }} {{ $store.state.user?.lastName }}!
       </h1>
       <h1 v-else class="alert shadow text-light" role="alert">
         Welcome back!

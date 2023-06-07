@@ -143,7 +143,7 @@ export default {
   data() {
     return {
       subtotal: this.$store.getters.getCartTotalPrice,
-      cart: this.$store.state.user.cart,
+      cart: this.$store.state.user?.cart,
       showEnterCouponCodeForm: false,
       isCouponCodeInvalid: false,
       showShippingMethodAlert: false,
@@ -217,10 +217,10 @@ export default {
       return this.currentBillingAddressesIndex !== 0
     },
     deliveryAddresses() {
-      return this.$store.state.user.deliveryAddresses
+      return this.$store.state.user?.deliveryAddresses
     },
     billingAddresses() {
-      return this.$store.state.user.billingAddresses
+      return this.$store.state.user?.billingAddresses
     },
     expressShippingPrice() {
       return this.expressShippingCost.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
@@ -395,7 +395,7 @@ export default {
         orderDate: this.getCurrentDate(),
         estimateArrivalDate: this.getEstimateArrivalDate(),
         amount: this.cartTotalPrice,
-        productList: this.$store.state.user.cart,
+        productList: this.$store.state.user?.cart,
         deliveryAddress: this.deliveryAddressSelected,
         billingAddress: this.billingAddressSelected,
         paymentMethod: 'Credit Card',

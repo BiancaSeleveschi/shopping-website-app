@@ -75,7 +75,7 @@ export default {
   props: ["products", 'image'],
   data() {
     return {
-      isLoggedIn: this.$store.state.user.isLoggedIn,
+      isLoggedIn: this.$store.state.user?.isLoggedIn,
       allProducts: this.products,
       isFavorite: false,
       showLoginMessageForFav: false,

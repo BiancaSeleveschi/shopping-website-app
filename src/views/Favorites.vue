@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       image: "black.jpg",
-      favorites: this.$store.state.user.favorites,
+      favorites: this.$store.state.user?.favorites,
     };
   },
 };

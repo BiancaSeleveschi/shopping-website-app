@@ -74,8 +74,8 @@ export default {
       isAddressSaved: false,
       showAddingDeliveryAddressForm: false,
       showAddingBillingAddressForm: false,
-      deliveryAddresses: this.$store.state.user.deliveryAddresses,
-      billingAddresses: this.$store.state.user.billingAddresses,
+      deliveryAddresses: this.$store.state.user?.deliveryAddresses,
+      billingAddresses: this.$store.state.user?.billingAddresses,
       currentDeliveryAddressesIndex: this.$store.getters.getCurrentDeliveryAddressesIndex,
       currentBillingAddressesIndex: this.$store.getters.getCurrentBillingAddressesIndex,
     }

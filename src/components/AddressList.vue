@@ -55,8 +55,8 @@ export default {
   data() {
     return {
       selectedAddressIndex: null,
-      billingAddresses: this.$store.state.user.billingAddresses,
-      deliveryAddresses: this.$store.state.user.deliveryAddresses,
+      billingAddresses: this.$store.state.user?.billingAddresses,
+      deliveryAddresses: this.$store.state.user?.deliveryAddresses,
       addressesInitial: this.addresses,
       isAddressSaved: false,
       addressIndex: -1,

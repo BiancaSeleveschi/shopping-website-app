@@ -78,7 +78,7 @@ export default {
     return {
       address: this.addressInitial,
       isAddressSaved: this.isAddressSavedInitial,
-      isLoggedIn: this.$store.state.user.isLoggedIn,
+      isLoggedIn: this.$store.state.user?.isLoggedIn,
       addressIndex: this.index,
       title: this.titleInitial,
       isCountryInputIncomplete: false,

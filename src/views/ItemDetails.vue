@@ -87,7 +87,7 @@ export default {
   props: ["id", "product"],
   data() {
     return {
-      favorites: this.$store.state.user.favorites,
+      favorites: this.$store.state.user?.favorites,
       image: require("@/assets/black.jpg"),
       size: "Size",
       error: false,

@@ -51,8 +51,8 @@ export default {
   name: "CartSummary",
   data() {
     return {
-      cart: this.$store.state.user.cart,
-      isLoggedIn: this.$store.state.user.isLoggedIn,
+      cart: this.$store.state.user?.cart,
+      isLoggedIn: this.$store.state.user?.isLoggedIn,
     };
   },
   computed: {
@@ -78,9 +78,10 @@ export default {
     removeProductFromCart(product) {
       this.$store.dispatch("removeProductFromCart", product);
     },
-   async  continueToCheckout() {
-      // const intent = await fetch("http://localhost:9999/.netlify/functions/stripe", {
-      const intent = await fetch("https://shopping-app-meduzza.netlify.app/.netlify/functions/stripe", {
+    async continueToCheckout() {
+      console.log("hostname", location.host)
+      const intent = await fetch("http://localhost:9999/.netlify/functions/stripe", {
+        // const intent = await fetch("https://shopping-app-meduzza.netlify.app/.netlify/functions/stripe", {
         method: 'POST',
         body: JSON.stringify({amount: this.cartTotalPrice, currency: "RON"})
       })

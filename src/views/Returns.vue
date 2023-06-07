@@ -5,7 +5,7 @@
       <NavProfile class="outer-card"/>
       <div class="bg-secondary bg-opacity-50" id="orders-card">
         <h4 class=" m-5 border border-1 bg-white p-3 order-title">My returns</h4>
-        <div v-for="(returnedOrder, index) in $store.state.user.returns" :key="index"
+        <div v-for="(returnedOrder, index) in $store.state.user?.returns" :key="index"
              class="border border-dark bg-light rounded-2 my-3 mx-5 p-4 ">
           <h5 class="return-number mb-1 d-block fw-bold">Return: #{{ returnedOrder.returnNumber }}</h5>
           <p class="details px-5" @click="showOrder(index)">
