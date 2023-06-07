@@ -45,7 +45,6 @@
             </svg>
           </div>
         </div>
-<!--        Dynamic routing - routare spre o pagina cu path dinamic-->
         <router-link :to="{
             name: 'ItemDetails',
             params: {
@@ -68,6 +67,9 @@
 </template>
 
 <script>
+
+import {firebase} from "@/firebaseInit";
+
 export default {
   name: "ItemList",
   props: ["products", 'image'],
@@ -84,34 +86,26 @@ export default {
     this.$store.dispatch('setProductsIsFavorite');
   },
 
-  // rezolv compararea array-urilor favorites si products => <3 sau X ✔️
-  // refactorizare denumiri variabile, metode, fisiere + structura fisiere: pagini, componente ✔️
-  // refactorizare componente ✔️
-  // rezolvare bug stergere reteta
-  // fixare updateUserInformations ✔️
-  // schimbare din alert js in alert bootstrap ✔️
-  // cv in engleza
-  // about in engleza - linkedIn => 2 profile
-  // portofoliu de proiecte
-  // raspuns intrabri behavioral ✔
-  // raspun intrebari tehnice
-  // revizuire teorie
   methods: {
-    addToFavorite(product) {
-      this.showLoginMessageForFav = !this.isLoggedIn
-      let clear = () => (this.showLoginMessageForFav = false)
-      if (this.showLoginMessageForFav) {
-        setTimeout(clear, 3000);
-      }
-      if (this.isLoggedIn && !product.isFavorite) {
+    async  addToFavorite(product) {
+      const user = firebase.auth().currentUser;
+      console.log(user)
+      if (user && !product.isFavorite) {
         this.$store.dispatch("toggleFavorite", product.id);
-        this.$store.dispatch("addToFavorites", product);
+        await this.$store.dispatch("addToFavorites", product);
         product.isFavorite = true;
       }
+      else {
+        this.showLoginMessageForFav = true;
+        let clear = () => (this.showLoginMessageForFav = false)
+        if (this.showLoginMessageForFav) {
+          setTimeout(clear, 3000);
+        }
+      }
     },
-    removeFromFavorite(product) {
+    async removeFromFavorite(product) {
       this.$store.dispatch("toggleFavorite", product.id);
-      this.$store.dispatch("removeFromFavorites", product.id);
+      await this.$store.dispatch("removeFromFavorites", product.id);
       product.isFavorite = false;
     },
   },

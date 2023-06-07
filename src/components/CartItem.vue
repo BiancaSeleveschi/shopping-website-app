@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(item, index) in this.$store.state.user.cart" :key="index" class="cart-item">
+    <div v-for="(item, index) in cart" :key="index" class="cart-item">
       <img :src="item.product.img"/>
       <div>
         <router-link
@@ -24,18 +24,29 @@
         <span class="price">${{ item.quantityPrice }}</span>
       </div>
       <div class="cancel px-2 ">
-        <span @click.prevent="removeProductFromCart(item)">X</span>
+        <span @click.prevent="removeProductFromCart(index)">X</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "CartItem",
+  data() {
+    return {
+      cart: this.$store.state.user.cart,
+    }
+  },
   methods: {
-    removeProductFromCart(item) {
-      this.$store.dispatch("removeProductFromCart", item);
+    async removeProductFromCart(index) {
+      let user = this.$store.getters.isUserLoggedIn;
+      if (user) {
+        await this.$store.dispatch("removeProductFromCart", index);
+      } else {
+        this.$store.commit('REMOVE_FROM_CART', index)
+      }
     },
     increaseQuantity(item) {
       this.$store.dispatch('increaseQuantity', item)

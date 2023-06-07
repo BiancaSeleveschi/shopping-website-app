@@ -2,6 +2,15 @@
   <div>
     <h1 class="title text-black fw-bold">Men</h1>
     <ItemList :products="men" :image="image" class="card-item"/>
+    <vue-blob-json-csv
+        @success="handleSuccess"
+        @error="handleError"
+        file-type="csv"
+        file-name="Products"
+        :data="men"
+    >
+      Download
+    </vue-blob-json-csv>
   </div>
 </template>
 
@@ -18,6 +27,14 @@ export default {
       men: this.$store.state.men,
     };
   },
+  methods: {
+    handleSuccess() {
+      console.log('success')
+    },
+    handleError() {
+      console.log('error')
+    },
+  }
 };
 </script>
 

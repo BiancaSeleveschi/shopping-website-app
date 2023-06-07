@@ -1,43 +1,47 @@
 <template>
   <div class="checkout-page">
     <h1 class="title">Checkout</h1>
-    <div v-if="isLoggedIn && !existDeliveryAddresses">
-      <h4> Choose a delivery address<span class="d-block m-auto">or</span></h4>
-      <button class="py-2 px-4 add-button " @click="addNewDeliveryAddress">
-        {{isAddDeliveryAddressButtonClicked ? 'Close' : 'Add delivery address' }}
+    <div v-if=" !existDeliveryAddresses">
+      <h4> Select a delivery address<span class="d-block m-auto">or</span></h4>
+      <button class="py-2 mb-4 px-4 add-button" @click="addNewDeliveryAddress">
+        {{ isAddDeliveryAddressButtonClicked ? 'Close' : 'Add delivery address' }}
       </button>
     </div>
     <div v-if="isAddDeliveryAddressButtonClicked || existDeliveryAddresses">
-      <AddressForm :addressInitial="address"
+      <AddressForm :addressInitial="deliveryAddress"
                    titleInitial="Delivery address"
                    :isAddressSavedInitial="false"
                    :index="currentDeliveryAddressesIndex"
-                   @closeAddressForm="closeAddingDeliveryAddressForm "/>
+                   @closeAddressForm="closeAddingDeliveryAddressForm"/>
     </div>
+    <p v-show="isDeliveryAddressNotSelected" class="w-50 m-auto address-alert">Select a delivery address</p>
 
-    <AddressList :addresses="deliveryAddresses" title="Delivery address"/>
+    <AddressList :addresses="deliveryAddresses"
+                 title="Delivery address"
+                 @selectDeliveryAddress="selectDeliveryAddress"
+    />
 
-    <div v-if="isLoggedIn && existBillingAddresses" class="mt-5">
-      <h4> Choose a billing address<span class="d-block m-auto">or</span></h4>
-      <button class="py-2 px-4 add-button " @click="addNewBillingAddress">
+    <div v-if="existBillingAddresses" class="mt-5">
+      <h4> Select a billing address<span class="d-block m-auto">or</span></h4>
+      <button class="py-2 mb-4 px-4 add-button " @click="addNewBillingAddress">
         Add billing address
       </button>
     </div>
     <div v-if="isAddBillingAddressButtonClicked || !existBillingAddresses">
-      <AddressForm :addressInitial="address"
+      <AddressForm :addressInitial="billingAddress"
                    titleInitial="Billing address"
                    :isAddressSavedInitial="false"
-                   :index="currentDeliveryAddressesIndex"
+                   :index="currentBillingAddressesIndex"
                    @closeAddressForm="closeAddingBillingAddressForm "/>
-
     </div>
-
-    <AddressList :addresses="billingAddresses" title="Billing address"/>
+    <p v-show="isBillingAddressNotSelected" class="w-50 m-auto pe-3 address-alert">Select a billing address</p>
+    <AddressList :addresses="billingAddresses" title="Billing address"
+                 @selectBillingAddress="selectBillingAddress"/>
 
     <div class="summary-card border border-2 m-auto w-50 pt-3 mt-5 px-5 rounded rounded-4">
       <div class="p-4 m-auto shipping">
         <h4 class="mb-5 summary-title">Shipping method</h4>
-        <p v-if="showShippingMethodAlert" class="shipping-method-alert">Please select a shipping method</p>
+        <p v-show="showShippingMethodAlert" class="shipping-method-alert">Please select a shipping method</p>
         <div>
           <input v-model="isCheckboxStandardChecked" @click="selectShippingMethod" type="checkbox" name="example"
                  value="1"/>STANDARD
@@ -46,7 +50,7 @@
           <input v-model="isCheckboxExpressChecked" @click="selectShippingMethod" type="checkbox" name="example"
                  value="1"/>
           EXPRESS
-          <p class="shipping-method">2-3 working days<span class="shipping-express"> ${{ expressShippingPrice }} </span>
+          <p class="shipping-method">1-2 working days<span class="shipping-express"> ${{ expressShippingPrice }} </span>
           </p>
         </div>
       </div>
@@ -70,12 +74,6 @@
               src="https://www.dolcegabbana.com/on/demandware.static/Sites-dolcegabbana-Site/-/default/dw30c08c97/images/amex.png"
               class="m-2"/>
           <span class="payment-method my-2">FREE </span>
-        </div>
-        <div>
-          <input v-model="isCheckboxCashPaymentChecked" @click="selectPaymentMethod" type="checkbox" name="example"
-                 value="1"/>
-          Cash Payment
-          <span class="payment-method">FREE </span>
         </div>
       </div>
       <div class="p-4 m-auto order-summary">
@@ -114,7 +112,18 @@
           </svg>
           Back to shopping
         </router-link>
-        <button class="p-1" id="payment-button" @click="payNow">Pay Now</button>
+        <div class="payment-button-div">
+          <button class="py-2 px-3 m-2 btn btn-dark" id="payment-button" @click="payNow">Pay Now</button>
+        </div>
+      </div>
+      <div>
+        <stripe-element-payment
+            ref="paymentRef"
+            :pk="pk"
+            :elements-options="elementsOptions"
+            :confirm-params="confirmParams"
+        />
+        <button @click="pay">Pay Now</button>
       </div>
     </div>
   </div>
@@ -123,26 +132,18 @@
 <script>
 import AddressForm from "@/components/AddressForm";
 import AddressList from "@/components/AddressList";
+import {v4 as uuid} from 'uuid';
+import {StripeElementPayment} from '@vue-stripe/vue-stripe';
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Checkout",
-  components: {AddressForm, AddressList},
+  components: {AddressForm, AddressList, StripeElementPayment},
+  props: ['clientSecret'],
   data() {
     return {
-      address: {
-        country: '',
-        city: '',
-        street: '',
-        number: '',
-        blockStaircase: '',
-        postcode: '',
-      },
       subtotal: this.$store.getters.getCartTotalPrice,
-      isLoggedIn: this.$store.state.user.isLoggedIn,
       cart: this.$store.state.user.cart,
-      currentDeliveryAddressesIndex: this.$store.getters.getCurrentDeliveryAddressesIndex,
-      currentBillingAddressesIndex: this.$store.getters.getCurrentBillingAddressesIndex,
       showEnterCouponCodeForm: false,
       isCouponCodeInvalid: false,
       showShippingMethodAlert: false,
@@ -155,12 +156,60 @@ export default {
       isAddBillingAddressButtonClicked: false,
       isCouponCodeApplied: false,
       isCouponCodeValid: false,
+      isDeliveryAddressNotSelected: false,
+      isBillingAddressNotSelected: false,
       expressShippingCost: 35,
-      couponCodeName: 'MED',
+      couponCodeName: 'EXTRA10',
       couponCode: '',
+      status: '',
+      shippingPrice: '',
+      deliveryAddressSelected: null,
+      billingAddressSelected: null,
+      pk: process.env.VUE_APP_STRIPE_PK,
+      elementsOptions: {
+        appearance: {}, // appearance options
+        clientSecret: this.clientSecret
+      },
+      confirmParams: {
+        return_url: 'http://localhost:8080/order-summary',
+      },
     };
   },
   computed: {
+    deliveryAddress() {
+      let address = {};
+      if (this.existDeliveryAddresses) {
+        address = {
+          country: '',
+          city: '',
+          street: '',
+          number: '',
+          blockStaircase: '',
+          postcode: '',
+        }
+      }
+      return address
+    },
+    billingAddress() {
+      let address = {};
+      if (this.existBillingAddresses) {
+        address = {
+          country: '',
+          city: '',
+          street: '',
+          number: '',
+          blockStaircase: '',
+          postcode: '',
+        }
+      }
+      return address
+    },
+    currentBillingAddressesIndex() {
+      return this.$store.getters.getCurrentBillingAddressesIndex
+    },
+    currentDeliveryAddressesIndex() {
+      return this.$store.getters.getCurrentDeliveryAddressesIndex
+    },
     existDeliveryAddresses() {
       return this.currentDeliveryAddressesIndex === 0
     },
@@ -168,16 +217,10 @@ export default {
       return this.currentBillingAddressesIndex !== 0
     },
     deliveryAddresses() {
-      if (this.isLoggedIn) {
-        return this.$store.state.user.deliveryAddresses
-      }
-      return this.$store.state.deliveryAddresses
+      return this.$store.state.user.deliveryAddresses
     },
     billingAddresses() {
-      if (this.isLoggedIn) {
-        return this.$store.state.user.billingAddresses
-      }
-      return this.$store.state.billingAddresses
+      return this.$store.state.user.billingAddresses
     },
     expressShippingPrice() {
       return this.expressShippingCost.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
@@ -219,6 +262,10 @@ export default {
       }
       return total.toLocaleString('pt-BR', {maximumFractionDigits: 2});
     },
+  },
+  mounted() {
+    console.log("ok", this.clientSecret)
+    console.log(this.$route.params.clientSecret);
   },
   methods: {
     addNewDeliveryAddress() {
@@ -262,14 +309,7 @@ export default {
       }
     },
     selectPaymentMethod() {
-      if (this.isCheckboxCreditCardChecked) {
-        this.isCheckboxCreditCardChecked = !this.isCheckboxCreditCardChecked;
-        this.isCheckboxCashPaymentChecked = false;
-      }
-      if (this.isCheckboxCashPaymentChecked) {
-        this.isCheckboxCashPaymentChecked = !this.isCheckboxCashPaymentChecked;
-        this.isCheckboxCreditCardChecked = false;
-      }
+      this.isCheckboxCreditCardChecked = !this.isCheckboxCreditCardChecked;
     },
     enterCouponCode() {
       this.showEnterCouponCodeForm = !this.showEnterCouponCodeForm
@@ -289,12 +329,89 @@ export default {
       }
       this.isCouponCodeApplied = false;
     },
-    payNow() {
-      this.showShippingMethodAlert = !this.isCheckboxStandardChecked && !this.isCheckboxExpressChecked
-      this.showPaymentMethodAlert = !this.isCheckboxCreditCardChecked && !this.isCheckboxCashPaymentChecked
-      if (!this.showShippingMethodAlert && !this.showPaymentMethodAlert) {
-        this.$router.push('/payment')
+    selectDeliveryAddress(selectedAddress) {
+      this.deliveryAddressSelected = selectedAddress;
+    },
+    selectBillingAddress(selectedAddress) {
+      this.billingAddressSelected = selectedAddress;
+    },
+    getCurrentDate() {
+      let currentDate = new Date();
+      let year = currentDate.getFullYear();
+      let month = String(currentDate.getMonth() + 1).padStart(2, '0');
+      let day = String(currentDate.getDate()).padStart(2, '0');
+      let formattedDate = `${year}-${month}-${day}`;
+      return formattedDate;
+    },
+    getEstimateArrivalDate() {
+      let currentDate = new Date();
+      let estimatedArrivalDate = new Date();
+      if (this.isCheckboxStandardChecked) {
+        estimatedArrivalDate.setDate(currentDate.getDate() + 4);
+        this.status = 'Received'
+      } else if(this.isCheckboxExpressChecked) {
+        estimatedArrivalDate.setDate(currentDate.getDate() + 1);
+        this.status = 'Received'
       }
+      let year = estimatedArrivalDate.getFullYear();
+      let month = String(estimatedArrivalDate.getMonth() + 1).padStart(2, '0');
+      let day = String(estimatedArrivalDate.getDate()).padStart(2, '0');
+      let formattedEstimatedArrivalDate = `${year}-${month}-${day}`;
+      return formattedEstimatedArrivalDate;
+    },
+    getStatus() {
+      let order = {
+        orderDate: new Date(this.getCurrentDate())
+      };
+      let currentDate = new Date();
+      let timeDifference = currentDate.getTime() - order.orderDate.getTime();
+      let daysDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
+      if (this.isCheckboxStandardChecked) {
+        if (daysDifference > 4) {
+          this.status = 'Received';
+        } else {
+          this.status = 'Processing';
+        }
+      } else {
+        if (daysDifference > 1) {
+          this.status = 'Received';
+        } else {
+          this.status = 'Processing';
+        }
+      }
+      return this.status;
+    },
+    async payNow() {
+      const randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+      if (this.deliveryAddressSelected === null) {
+        this.isDeliveryAddressNotSelected = true;
+      }
+      if (this.billingAddressSelected === null) {
+        this.isBillingAddressNotSelected = true;
+      }
+      let order = {
+        id: uuid(),
+        number: randomNum,
+        orderDate: this.getCurrentDate(),
+        estimateArrivalDate: this.getEstimateArrivalDate(),
+        amount: this.cartTotalPrice,
+        productList: this.$store.state.user.cart,
+        deliveryAddress: this.deliveryAddressSelected,
+        billingAddress: this.billingAddressSelected,
+        paymentMethod: 'Credit Card',
+        status: this.getStatus(),
+      }
+      this.showShippingMethodAlert = !this.isCheckboxStandardChecked && !this.isCheckboxExpressChecked
+      this.showPaymentMethodAlert = !this.isCheckboxCreditCardChecked
+      if (!this.showShippingMethodAlert && !this.showPaymentMethodAlert && this.billingAddressSelected !== null
+          && this.deliveryAddressSelected !== null) {
+        // this.$router.push('/payment')
+        await this.$store.dispatch('setOrder', order)
+        this.$router.push('/order/confirmation')
+      }
+    },
+    pay() {
+      this.$refs.paymentRef.submit();
     }
   },
 };
@@ -315,13 +432,12 @@ input[type=number] {
 
 #payment-button {
   display: grid;
+  width: max-content;
+  border-radius: 0;
+}
+
+.payment-button-div {
   margin-left: 80%;
-  width: 20%;
-  border: 1px solid black;
-  text-decoration: none;
-  text-align: center;
-  color: #ffffff;
-  background-color: #000000;
 }
 
 .add-button {
@@ -334,7 +450,6 @@ input[type=number] {
   background-color: white;
   color: black;
 }
-
 
 .checkout-page {
   font-family: "Malgun Gothic Semilight", sans-serif;
@@ -396,12 +511,23 @@ input[type=number] {
   transform: translateX(118%);
 }
 
+.address-alert,
 .payment-method-alert,
 .shipping-method-alert {
   position: absolute;
-  font-size: 14px;
   color: red;
+}
+
+.shipping-method-alert {
+  transform: translateY(190%);
+}
+
+.payment-method-alert {
   transform: translateY(230%);
+}
+
+.address-alert {
+  left: 165px;
 }
 
 .first-credit-card {

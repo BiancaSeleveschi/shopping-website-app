@@ -74,10 +74,19 @@
         </div>
       </div>
     </div>
+    <div v-show="accountExists" class="overlay">
+      <transition name="fade">
+        <div class="alert alert-danger py-4 alert-password"
+             role="alert">
+          The email address is already in use by another account.
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
 <script>
+import {firebase} from "@/firebaseInit";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -91,11 +100,19 @@ export default {
         lastName: "",
         emailAddress: "",
         password: "",
+        isLoggedIn: false,
+        cart: [],
+        favorites: [],
+        deliveryAddresses: [],
+        billingAddresses: [],
+        orders: [],
+        returns: [],
       },
       firstNameMessageAlert: '',
       lastNameMessageAlert: '',
       isCheckboxChecked: false,
       showPassword: false,
+      accountExists: false,
       isGenreNotSelected: false,
       isEmailAddressIncomplete: false,
       isPasswordIncomplete: false,
@@ -117,13 +134,7 @@ export default {
       this.showPassword = !this.showPassword;
     },
     createAccount() {
-      let user = {
-        title: this.account.title,
-        firstName: this.account.firstName,
-        lastName: this.account.lastName,
-        emailAddress: this.account.emailAddress,
-        password: this.account.password,
-      }
+      const auth = firebase.auth();
       this.isGenreNotSelected = this.account.title === '';
       this.isFirstNameInputCompleted = this.verifyFirstName();
       this.isLastNameInputCompleted = this.verifyLastName();
@@ -133,8 +144,20 @@ export default {
       this.isCheckboxNotClicked = !this.isCheckboxChecked;
       if (!this.isGenreNotSelected && this.isFirstNameInputCompleted && this.isLastNameInputCompleted &&
           !this.isEmailAddressIncomplete && !this.isPasswordIncomplete && !this.isCheckboxNotClicked) {
-        this.$router.push('/')
-        this.$store.dispatch('setAccountCreated', user)
+        auth.createUserWithEmailAndPassword(this.account.emailAddress, this.account.password)
+            .then(userCredential => {
+              console.log(userCredential)
+              this.account.uid = userCredential.user.uid
+              delete this.account.password
+              this.$store.dispatch('addUser', this.account)
+              this.$router.push("/login")
+            }).catch(e => {
+          console.log(e)
+          this.accountExists = true;
+          setTimeout(() => {
+            this.accountExists = false;
+          }, 5000);
+        })
       }
     },
     verifyFirstName() {
@@ -215,6 +238,27 @@ export default {
   border-bottom: 1px solid #000000;
   outline: none;
   width: 400px;
+}
+.overlay {
+  width: 100%;
+  border-bottom: solid 1px #333;
+  display: grid;
+  background-color: #a2a2a2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black background */
+  z-index: 1;
+}
+
+.alert {
+  position: absolute;
+  top: 35%;
+  left: 35%;
+  width: 30%;
+  height: max-content;
+  z-index: 2;
 }
 
 .alert-message {

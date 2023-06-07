@@ -1,12 +1,18 @@
 <template>
   <div class="home-page">
     <video autoplay loop muted class="video-home">
-      <source src="https://player.vimeo.com/external/396570197.hd.mp4?s=b31763e4f3b76f8c4fa6bd1d2be237ec6dc30442&profile_id=174&oauth2_token_id=57447761" type="video/mp4"/>
+      <source
+          src="https://player.vimeo.com/external/396570197.hd.mp4?s=b31763e4f3b76f8c4fa6bd1d2be237ec6dc30442&profile_id=174&oauth2_token_id=57447761"
+          type="video/mp4"/>
     </video>
     <div class="content">
-      <h1 v-show="isAccountCreated" class="alert shadow text-light" role="alert">
+      <h1 v-if="!hasLoggedInBefore" class="alert shadow text-light" role="alert">
         Welcome, {{ $store.state.user.firstName }} {{ $store.state.user.lastName }}!
       </h1>
+      <h1 v-else class="alert shadow text-light" role="alert">
+        Welcome back!
+      </h1>
+      <h2 class="coupon text-secondary">Get a 10% discount with code <span class="text-light">EXTRA10</span> </h2>
       <div>
         <router-link to="/wo23/collection">
           <button class="nav-button">WO23 Collection</button>
@@ -23,11 +29,11 @@
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Home",
-  computed: {
-    isAccountCreated() {
-      return this.$store.state.isAccountCreated && this.$store.state.user.isLoggedIn;
+  data() {
+    return {
+      hasLoggedInBefore: localStorage.getItem('hasLoggedIn'),
     }
-  },
+  }
 };
 </script>
 <style>
@@ -48,6 +54,10 @@ export default {
   object-position: center;
   animation: fade-in 0.5s forwards;
   filter: brightness(50%) grayscale(30%);
+}
+
+.coupon {
+  transform: translateY(-730%);
 }
 
 .home-page::after {

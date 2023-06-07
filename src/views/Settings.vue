@@ -35,7 +35,7 @@
             />
             <p v-show="isEmailAddressInvalid" class="alert-message">Enter a valid email address</p>
           </div>
-          <button class="btn btn-primary mb-5 save-button" @click="updateUserInformation">Save</button>
+          <button class="btn btn-primary mb-5 save-button" @click="updateProfile">Save</button>
           <div v-show="showInformationSavedAlert" class="overlay">
             <transition name="fade">
               <div class="alert alert-success py-4"
@@ -59,7 +59,10 @@
                 :type="currentPasswordFieldType"
                 required
             />
-            <div v-show="isCurrentPasswordMismatch" class="alert-message">{{ currentPasswordMismatchMessageAlert }}</div>
+            <div v-show="isCurrentPasswordMismatch" class="alert-message">{{
+                currentPasswordMismatchMessageAlert
+              }}
+            </div>
             <span class="password-toggle" @click="toggleCurrentPasswordVisibility">{{
                 currentPasswordToggleLabel
               }}</span>
@@ -69,11 +72,11 @@
             <input
                 v-model="newPassword"
                 name="password"
-                class="w-75  account-input"
+                class="w-75 account-input"
                 :type="newPasswordFieldType"
                 required
             />
-            <p v-show="isInvalidNewPassword" class="alert-message">{{ invalidNewPasswordMessageAlert  }}</p>
+            <p v-show="isInvalidNewPassword" class="alert-message">{{ invalidNewPasswordMessageAlert }}</p>
             <span class="password-toggle" @click="toggleNewPasswordVisibility">{{ newPasswordToggleLabel }}</span>
           </div>
           <div class="w-50 d-inline-block col-div mb-5">
@@ -93,9 +96,9 @@
           <button class="btn btn-primary mb-5 save-button" @click="changePassword">Save</button>
           <div v-show="showPasswordChangedSuccessfullyAlert" class="overlay">
             <transition name="fade">
-              <div class="alert alert-success py-4 alert-password"
+              <div class="alert alert-success py-4 "
                    role="alert">
-                Changes have been saved
+                Your password has been changed
               </div>
             </transition>
           </div>
@@ -108,6 +111,7 @@
 <script>
 
 import NavProfile from "@/components/NavProfile";
+import {firebase, EmailAuthProvider} from "@/firebaseInit";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -116,6 +120,9 @@ export default {
   data() {
     return {
       user: this.$store.state.user,
+      firstName: "",
+      lastName: "",
+      emailAddress: "",
       newEmail: "",
       password: "",
       newPassword: "",
@@ -133,16 +140,10 @@ export default {
       showPasswordChangedSuccessfullyAlert: false,
       firstNameMessageAlert: '',
       lastNameMessageAlert: '',
-      invalidNewPasswordMessageAlert : '',
+      invalidNewPasswordMessageAlert: '',
       currentPasswordMismatchMessageAlert: '',
       invalidConfirmedPasswordMessageAlert: '',
     }
-  },
-  mounted() {
-    console.log(this.password)
-    console.log(this.$store.state.user.password)
-    console.log(this.newPassword)
-    console.log(this.passwordConfirmed)
   },
   computed: {
     currentPasswordFieldType() {
@@ -174,21 +175,26 @@ export default {
     toggleConfirmedPasswordVisibility() {
       this.showConfirmedPassword = !this.showConfirmedPassword;
     },
-    updateUserInformation() {
-      this.user = {
-        firstName: this.user.firstName,
-        lastName: this.user.lastName,
-        emailAddress: this.user.emailAddress
-      }
+    async updateProfile() {
+      const user = this.$store.state.user
+      const db = firebase.firestore();
+
       this.isLastNameInputCompleted = this.verifyLastName();
       this.isFirstNameInputCompleted = this.verifyFirstName();
       this.isEmailAddressInvalid = !this.user.emailAddress.includes("@") || this.user.emailAddress === '';
       if (!this.isEmailAddressInvalid && this.isLastNameInputCompleted && this.isFirstNameInputCompleted) {
-        this.$store.dispatch('updateUserInformation', this.user)
-        this.showInformationSavedAlert = true
-        let clear = () => (this.showInformationSavedAlert = false)
-        if (this.showInformationSavedAlert) {
-          setTimeout(clear, 3000);
+        {
+          const docRef = db.collection("users").doc(user.id);
+          await docRef.update({
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            emailAddress: this.user.emailAddress,
+          });
+          console.log(docRef)
+          this.showInformationSavedAlert = true;
+          setTimeout(() => {
+            this.showInformationSavedAlert = false;
+          }, 3000);
         }
       }
     },
@@ -219,40 +225,56 @@ export default {
       return this.isLastNameInputCompleted
     },
     changePassword() {
-      this.isCurrentPasswordMismatch = this.verifyCurrentPassword();
-      this.isInvalidNewPassword = this.verifyNewPassword();
-      this.isInvalidConfirmedPassword = this.verifyConfirmedPassword();
-      if (!this.isCurrentPasswordMismatch && !this.isInvalidNewPassword && !this.isInvalidConfirmedPassword) {
-        this.$store.dispatch('changePassword', this.newPassword)
-        this.showPasswordChangedSuccessfullyAlert = true
-        let clear = () => (this.showPasswordChangedSuccessfullyAlert = false)
-        if (this.showPasswordChangedSuccessfullyAlert) {
-          setTimeout(clear, 3000);
-        }
-        this.newPassword = '';
-        this.passwordConfirmed = '';
+      const authUser = firebase.auth().currentUser;
+      console.log(authUser.email, this.password)
+      try {
+        const credential = EmailAuthProvider.credential(
+            authUser.email,
+            this.password
+        )
+        console.log(credential)
+        authUser.reauthenticateWithCredential(credential)
+            .then(u => {
+              console.log(u)
+                this.isInvalidNewPassword = this.verifyNewPassword();
+                if (!this.isInvalidNewPassword) {
+                  this.isInvalidConfirmedPassword = this.verifyConfirmedPassword();
+                } else {
+                  this.isInvalidConfirmedPassword = false;
+                }
+              // }
+              if (!this.isCurrentPasswordMismatch && !this.isInvalidNewPassword && !this.isInvalidConfirmedPassword) {
+
+              authUser.updatePassword(this.newPassword)
+                  .then(() => {
+                    console.log('Update successful.')
+                    console.log('Password changed successfully!')
+
+                    this.showPasswordChangedSuccessfullyAlert = true
+                    let clear = () => (this.showPasswordChangedSuccessfullyAlert = false)
+                    if (this.showPasswordChangedSuccessfullyAlert) {
+                      setTimeout(clear, 3000);
+                    }
+                  }).catch((error) => {
+                console.log('An error ocurred', error)
+              }); }
+            }).catch(e => {
+          console.log("Current password is invalid!", e)
+          this.isCurrentPasswordMismatch = true;
+          this.currentPasswordMismatchMessageAlert = 'Invalid password. Please try again'
+        })
+      } catch (error) {
+        console.error('Error changing password:', error)
       }
-    },
-    verifyCurrentPassword() {
-      if (this.password !== this.user.password) {
-        this.isCurrentPasswordMismatch = true;
-        this.currentPasswordMismatchMessageAlert = 'Invalid password. Please try again'
-      } else if (this.password === '') {
-        this.isCurrentPasswordMismatch = true;
-        this.currentPasswordMismatchMessageAlert = 'Enter you password'
-      } else {
-        this.isCurrentPasswordMismatch = false;
-      }
-      return this.isCurrentPasswordMismatch
     },
     verifyNewPassword() {
       const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*).{8,}$/;
       if (this.newPassword === this.password) {
         this.isInvalidNewPassword = true;
-        this.invalidNewPasswordMessageAlert  = 'New password cannot be the same as the old password'
+        this.invalidNewPasswordMessageAlert = 'New password cannot be the same as the old password'
       } else if (this.newPassword === '' || !passwordRegex.test(this.newPassword)) {
         this.isInvalidNewPassword = true;
-        this.invalidNewPasswordMessageAlert  = 'Please enter a valid password'
+        this.invalidNewPasswordMessageAlert = 'Please enter a valid password'
       } else {
         this.isInvalidNewPassword = false;
       }
@@ -270,8 +292,10 @@ export default {
       }
       return this.isInvalidConfirmedPassword
     }
-  },
-};
+  }
+  ,
+}
+;
 </script>
 
 <style scoped>
@@ -322,7 +346,7 @@ export default {
 .alert-message {
   position: absolute;
   color: red;
-  font-size: 12px;
+  font-size: 14px;
   width: 75%;
 }
 

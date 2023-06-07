@@ -39,20 +39,7 @@
         Back to shopping
       </router-link>
       <div>
-        <button class="py-2 px-4 " id="checkout-btn" @click="continueToCheckout">Continue to checkout</button>
-      </div>
-    </div>
-    <div v-show="!isLoggedIn && isContinueToCheckoutClicked" class="login-checkout mt-5 m-auto p-4">
-      <div class="center">
-        <router-link to="/login" class="text-decoration-none">
-          <div class="login m-auto mb-4 mt-3 p-2 ">SIGN IN</div>
-        </router-link>
-        <router-link to="/register" class="text-decoration-none">
-          <div class="login m-auto mb-4 mt-3 p-2 ">CREATE ACCOUNT</div>
-        </router-link>
-        <router-link to="/checkout/guest" class="text-decoration-none">
-          <div class="login m-auto mt-3 p-2 ">CONTINUE WITHOUT ACCOUNT</div>
-        </router-link>
+        <button class="py-2 px-4 " @click="continueToCheckout" id="checkout-btn">Continue to checkout</button>
       </div>
     </div>
   </div>
@@ -65,7 +52,6 @@ export default {
   data() {
     return {
       cart: this.$store.state.user.cart,
-      isContinueToCheckoutClicked: false,
       isLoggedIn: this.$store.state.user.isLoggedIn,
     };
   },
@@ -74,16 +60,37 @@ export default {
       return this.$store.getters.getCartTotalPrice
     }
   },
+  // beforeRouteUpdate(to, from, next) {
+  //   console.log(to, from)
+  //   if (to.name === "Checkout") {
+  //     console.log("cccc")
+  //     next({
+  //       path: 'Checkout',
+  //       params: {
+  //         clientSecret: "secretttttt",
+  //       }
+  //     })
+  //     return;
+  //   }
+  //   next()
+  // },
   methods: {
     removeProductFromCart(product) {
       this.$store.dispatch("removeProductFromCart", product);
     },
-    continueToCheckout() {
-      if (this.isLoggedIn) {
-        this.$router.push('/checkout')
-      } else {
-        this.isContinueToCheckoutClicked = true;
-      }
+   async  continueToCheckout() {
+      const intent = await fetch("http://localhost:9999/.netlify/functions/stripe", {
+        method: 'POST',
+        body: JSON.stringify({amount: this.cartTotalPrice, currency: "RON"})
+      })
+      const {paymentIntent} = await intent.json() //de vazut object destructuring
+      console.log(paymentIntent)
+      await this.$router.push({
+        name: 'Checkout',
+        params: {
+          clientSecret: paymentIntent?.client_secret,
+        }
+      })
     },
   },
 }

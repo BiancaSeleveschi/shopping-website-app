@@ -40,9 +40,12 @@
           <form class="product-details-bottom pt-5">
             <select class="select me-5 m-auto" v-model="size" :class="{ error: error }">
               <option value="Size" disabled>Size</option>
-              <option v-for="(size, index) in product.size" :key="index">
-                {{ size }}
-              </option>
+              <option value="xs">xs</option>
+              <option value="s">s</option>
+              <option value="m">m</option>
+              <option value="l">l</option>
+              <option value="xl">xl</option>
+              <option value="xxl">xxl</option>
             </select>
             <div class="add-cart ms-5 m-auto" @click="addToCart(product, size)">
               Add to cart
@@ -63,6 +66,14 @@
               </div>
             </transition>
           </div>
+          <div v-show="showLoginMessageForCart" class="overlay">
+            <transition name="fade">
+              <div class="alert-log alert alert-warning py-4"
+                   role="alert">
+                Please log in to add to cart
+              </div>
+            </transition>
+          </div>
         </div>
       </div>
     </div>
@@ -70,13 +81,13 @@
 </template>
 
 <script>
+
 export default {
-  name: "ProductDetails",
+  name: "ItemDetails",
   props: ["id", "product"],
   data() {
     return {
       favorites: this.$store.state.user.favorites,
-      isLoggedIn: this.$store.state.user.isLoggedIn,
       image: require("@/assets/black.jpg"),
       size: "Size",
       error: false,
@@ -84,7 +95,9 @@ export default {
       isFavorite: false,
       showSuccessAlert: false,
       showLoginMessageForFav: false,
+      showLoginMessageForCart: false,
       quantity: 1,
+      isUserLoggedIn: this.$store.getters.isUserLoggedIn,
     };
   },
   methods: {
@@ -94,7 +107,7 @@ export default {
     closeModal() {
       this.isModalOpen = !this.isModalOpen;
     },
-    addToCart(product, size) {
+    async addToCart(product, size) {
       let item = {
         product: {
           brand: product.brand,
@@ -109,29 +122,35 @@ export default {
         quantityPrice: product.price,
       };
       let clear = () => (this.showSuccessAlert = false)
-      if (size !== "Size") {
+      if (size !== "Size" && this.isUserLoggedIn) {
+          await this.$store.dispatch("addToCart", item);
         this.showSuccessAlert = true;
-        this.$store.dispatch("addToCart", item);
         setTimeout(clear, 3000);
       } else {
         this.error = true;
+        this.showLoginMessageForCart = true;
+        let clear = () => (this.showLoginMessageForCart = false)
+        if (this.showLoginMessageForCart) {
+          setTimeout(clear, 3000);
+        }
       }
     },
-    addToFavorite(product) {
-      this.showLoginMessageForFav = !this.isLoggedIn
-      let clear = () => (this.showLoginMessageForFav = false)
-      if (this.showLoginMessageForFav) {
-        setTimeout(clear, 3000);
-      }
-      if (this.isLoggedIn && !product.isFavorite) {
+    async addToFavorite(product) {
+      if (this.isUserLoggedIn && !product.isFavorite) {
         this.$store.dispatch("toggleFavorite", product.id);
-        this.$store.dispatch("addToFavorites", product);
+        await this.$store.dispatch("addToFavorites", product);
         product.isFavorite = true;
+      } else {
+        this.showLoginMessageForFav = true;
+        let clear = () => (this.showLoginMessageForFav = false)
+        if (this.showLoginMessageForFav) {
+          setTimeout(clear, 3000);
+        }
       }
     },
-    removeFromFavorite(product) {
+    async removeFromFavorite(product) {
       this.$store.dispatch("toggleFavorite", product.id);
-      this.$store.dispatch("removeFromFavorites", product.id);
+      await this.$store.dispatch("removeFromFavorites", product.id);
       product.isFavorite = false;
     },
   },

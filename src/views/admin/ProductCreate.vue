@@ -14,16 +14,24 @@
       <p v-show="showAlertBrandIncomplete" class="alert-input">This field is required</p>
       <input v-model="product.type" placeholder="Type" class="input-product d-block mb-3 m-auto">
       <p v-show="showAlertTypeIncomplete" class="alert-input">This field is required</p>
-      <input v-model="product.gender" placeholder="Gender" class="input-product d-block mb-3 m-auto">
+      <select v-model="product.gender" placeholder="Gender" class="input-product d-block mb-4 m-auto">Gender
+        <option> women</option>
+        <option> men</option>
+      </select>
       <p v-show="showAlertGenderIncomplete" class="alert-input">This field is required</p>
-
-      <button @click="addProductToArray" class="btn btn-primary mt-2">Add</button>
-      <!--      <input v-model="quantity" placeholder="Quantity" type="number" class="input-product d-block mb-3 m-auto">-->
+      <UploadImages
+          @changed="handleImages"
+          :max="5"
+          maxError="Max files exceed"
+          uploadMsg="upload product images"
+          fileError="images files only accepted"
+      />
+      <button @click="addProductToArray" class="btn btn-primary mt-5">Add</button>
     </div>
     <div v-show="showSuccessAlert" class="overlay">
       <transition name="fade">
         <div class="alert alert-success m-auto py-4" id="alert-cart" role="alert">
-          The product has been added to {{product.gender}}
+          The product has been added to {{ product.gender }}
         </div>
       </transition>
     </div>
@@ -32,9 +40,12 @@
 
 <script>
 import {v4 as uuid} from "uuid";
+import UploadImages from "vue-upload-drop-images";
+import {firebase} from "../../firebaseInit.js"
 
 export default {
-  name: "ProductForm",
+  name: "ProductCreate",
+  components: {UploadImages},
   data() {
     return {
       product: {
@@ -45,9 +56,10 @@ export default {
         color: '',
         brand: '',
         type: '',
-        gender: '',
+        gender: 'women',
         id: uuid(),
       },
+      productImageFile: {},
       quantity: '',
       showAlertTitleIncomplete: false,
       showAlertPriceIncomplete: false,
@@ -60,7 +72,7 @@ export default {
     }
   },
   methods: {
-    addProductToArray() {
+    async addProductToArray() {
       this.showAlertTitleIncomplete = this.product.title === '';
       this.showAlertPriceIncomplete = this.product.price === '';
       this.showAlertDescriptionIncomplete = this.product.description === '';
@@ -73,10 +85,28 @@ export default {
           !this.showAlertDescriptionIncomplete && !this.showAlertColorIncomplete
           && !this.showAlertBrandIncomplete && !this.showAlertTypeIncomplete
           && !this.showAlertGenderIncomplete) {
-        this.$store.dispatch('addProductAsAdmin', this.product)
+        const storage = firebase.storage();
+        // Create a root reference
+        let storageRef = storage.ref();
+        //salvam imaginea cu nume unic
+        //folosium uuid ca sa generam un uuic unic si il apenduim la numele imagini
+        //`images/${files[0].name+uuid()}`
+        const imgPath = "images/" + this.productImageFile.name;
+        const imgRef = storageRef.child(imgPath)
+        await imgRef.put(this.productImageFile);
+        // Get the download URL
+        const imgUrl = await imgRef.getDownloadURL();
+        this.product.img = imgUrl
+        await this.$store.dispatch('addProductAsAdmin', this.product)
         this.showSuccessAlert = true;
         setTimeout(clear, 3000);
       }
+    },
+    handleImages(files) {
+      console.log("files");
+      console.log(files);
+      console.log(files[0].name);
+      this.productImageFile = files[0]
     },
   },
 }
@@ -114,6 +144,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black background */
   z-index: 1;
 }
+
 .alert {
   transform: translateY(250px);
   width: 500px;

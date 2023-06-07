@@ -25,14 +25,13 @@ import Returns from "@/views/Returns";
 import Addresses from "@/views/Addresses";
 import CartSummary from "@/views/CartSummary";
 import CheckoutGuest from "@/views/CheckoutGuest";
-import ProductForm from "@/views/admin/ProductForm";
+import ProductCreate from "@/views/admin/ProductCreate";
 import Products from "@/views/admin/Products";
-import ProductList from "@/views/admin/ProductList";
 import ProductDetails from "@/views/admin/ProductDetails";
-import MenProducts from "@/views/admin/MenProducts";
-import WomenProducts from "@/views/admin/WomenProducts";
-import CategoryList from "@/views/admin/CategoryList";
-
+import Contact from "@/views/Contact";
+import ReturnItem from "@/views/ReturnItem";
+import OrderConfirmation from "@/views/OrderConfirmation";
+import ReturnConfirmation from "@/views/ReturnConfirmation";
 
 Vue.use(VueRouter);
 
@@ -56,10 +55,6 @@ const routes = [
         path: "/men",
         name: "Men",
         component: Men,
-    },  {
-        path: "/men/products",
-        name: "MenProducts",
-        component: MenProducts,
     },
     {
         path: "/me23/collection",
@@ -70,24 +65,19 @@ const routes = [
         path: "/wo23/collection",
         name: "WO23Collection",
         component: WO23Collection,
-    },
-    {
-        path: "/women/products",
-        name: "WomenProducts",
-        component: WomenProducts,
-    },   {
+    }, {
         path: "/women",
         name: "Women",
         component: Women,
-    },{
-        path: "/category/list",
-        name: "CategoryList",
-        component: CategoryList,
+    }, {
+        path: "/contact",
+        name: "Contact",
+        component: Contact,
     },
     {
-        path: "/admin/products/form",
-        name: "ProductForm",
-        component: ProductForm,
+        path: "/admin/product/create",
+        name: "ProductCreate",
+        component: ProductCreate,
     },
     {
         path: "/admin/products",
@@ -95,16 +85,11 @@ const routes = [
         component: Products,
     },
     {
-        path: "/admin/product/list",
-        name: "ProductList",
-        component: ProductList,
-    },
-    {
         path: "/prod/:id",
         name: "ProductDetails",
         component: ProductDetails,
         props: true,
-    },  {
+    }, {
         path: "/shop/:id",
         name: "ItemDetails",
         component: ItemDetails,
@@ -134,7 +119,18 @@ const routes = [
         path: "/settings",
         name: "Settings",
         component: Settings,
-    }, {
+    },
+    {
+        path: "/order/confirmation",
+        name: "OrderConfirmation",
+        component: OrderConfirmation,
+    },
+    {
+        path: "/return/confirmation",
+        name: "ReturnConfirmation",
+        component: ReturnConfirmation,
+    },
+    {
         path: "/cards",
         name: "Cards",
         component: Cards,
@@ -146,6 +142,11 @@ const routes = [
         path: "/returns",
         name: "Returns",
         component: Returns,
+    }, {
+        path: "/return/item",
+        name: "ReturnItem",
+        component: ReturnItem,
+        props: true,
     }, {
         path: "/addresses",
         name: "Addresses",

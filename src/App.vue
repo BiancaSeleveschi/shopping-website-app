@@ -19,7 +19,9 @@ export default {
   components: {Footer, Navbar},
   created() {
     this.$store.commit("INIT_STORE");
-    this.$store.commit("UPDATE_STORE");
+    // this.$store.dispatch('saveWomenProducts');
+    // this.$store.dispatch('saveMenProducts');
+
   },
 };
 </script>
@@ -36,6 +38,7 @@ export default {
   min-height: 100vh;
   width: 100%;
 }
+
 .footer {
   bottom: 0;
   z-index: 0;

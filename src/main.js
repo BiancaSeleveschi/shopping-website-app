@@ -3,6 +3,9 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "bootstrap/dist/css/bootstrap.css";
+import VueBlobJsonCsv from 'vue-blob-json-csv';
+
+Vue.use(VueBlobJsonCsv)
 
 // Import the Auth0 configuration
 import { domain, clientId } from '../auth_config.json';

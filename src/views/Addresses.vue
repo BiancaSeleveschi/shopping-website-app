@@ -16,7 +16,7 @@
                 @click="openBillingAddressForm">Add billing address
         </button>
         <div v-if="showAddingDeliveryAddressForm">
-          <AddressForm :addressInitial="address"
+          <AddressForm :addressInitial="deliveryAddress"
                        titleInitial="Delivery address"
                        :isAddressSavedInitial="false"
                        :index="currentDeliveryAddressesIndex"
@@ -30,7 +30,7 @@
           </transition>
         </div>
         <div v-show="showAddingBillingAddressForm">
-          <AddressForm :addressInitial="address"
+          <AddressForm :addressInitial="billingAddress"
                        titleInitial="Billing address"
                        :isAddressSavedInitial="false"
                        :index="currentBillingAddressesIndex"
@@ -45,6 +45,7 @@
 import AddressForm from "@/components/AddressForm";
 import AddressList from "@/components/AddressList";
 import NavProfile from "@/components/NavProfile";
+import {v4 as uuid} from "uuid";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -52,18 +53,27 @@ export default {
   components: {NavProfile, AddressList, AddressForm},
   data() {
     return {
-      address: {
+      deliveryAddress: {
         country: '',
         city: '',
         street: '',
         number: '',
         blockStaircase: '',
         postcode: '',
+        id: uuid(),
+      },
+      billingAddress: {
+        country: '',
+        city: '',
+        street: '',
+        number: '',
+        blockStaircase: '',
+        postcode: '',
+        id: uuid(),
       },
       isAddressSaved: false,
       showAddingDeliveryAddressForm: false,
       showAddingBillingAddressForm: false,
-      isLoggedIn: this.$store.state.user.isLoggedIn,
       deliveryAddresses: this.$store.state.user.deliveryAddresses,
       billingAddresses: this.$store.state.user.billingAddresses,
       currentDeliveryAddressesIndex: this.$store.getters.getCurrentDeliveryAddressesIndex,

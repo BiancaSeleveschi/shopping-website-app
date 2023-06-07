@@ -2,12 +2,7 @@
   <div class="outer-card" @click="toggleLoginButton">
     <div class="card border border-dark" @click.stop>
       <div class="close" @click="toggleLoginButton">X</div>
-      <!--      <router-link to="/login" class="card-body d-block m-auto">-->
-      <!--        <div class="p-2 login-div" @click="toggleLoginButton">-->
-      <!--          Sign In-->
-      <!--        </div>-->
-      <!--      </router-link>-->
-      <button @click="login">Log in</button>
+      <button class="login-div px-1 py-2" @click="login">Log in</button>
       <router-link to="/register" class="card-footer">
         <div class="p-2 create-account" @click="toggleLoginButton">
           Create account
@@ -18,7 +13,6 @@
 </template>
 
 <script>
-// import {useAuth0} from '@auth0/auth0-vue';
 
 export default {
   name: "AuthDialog",
@@ -27,9 +21,7 @@ export default {
       this.$emit("toggleLoginButton");
     },
     login() {
-      // const {loginWithRedirect} = useAuth0();
-      this.$auth.loginWithRedirect();
-
+      this.$router.push("/login")
     }
   },
 };
@@ -58,10 +50,6 @@ export default {
   transform: translateX(-4%);
 }
 
-.card-body {
-  text-decoration: none;
-  border: none;
-}
 
 .card:before {
   content: "";
@@ -79,9 +67,10 @@ export default {
 
 .login-div {
   width: 150px;
-  margin-top: -20px;
+  border: none;
   background-color: #006b6e;
   color: #ffffff;
+  margin-left: 70px;
 }
 
 .login-div:hover {

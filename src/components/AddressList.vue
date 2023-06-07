@@ -4,14 +4,14 @@
       <div v-if="index !== addressIndex">
         <div id="address-saved-form"
              :class="{ 'selected-address': index === selectedAddressIndex }"
-             @click="selectAddress(index)"
+             @click="selectAddress(index, address)"
              class="px-5 pt-3 m-auto mt-4 border border-2 w-50 m-auto rounded rounded-4">
           <h5 class=" px-4 my-address"> {{
               title === 'Billing address' ?
                   'Billing address' : "Delivery address"
             }} </h5>
-          <div v-show="isLoggedIn">
-            <div class="edit-delete ps-2 d-inline-block " @click="removeAddress(index)">
+          <div v-show="userIsLoggedIn">
+            <div class="edit-delete ps-2 d-inline-block " @click="removeAddress(address, index)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                    class="bi bi-trash3" viewBox="0 0 16 16">
                 <path
@@ -52,19 +52,15 @@ export default {
   name: "AddressList",
   props: ['addresses', 'title'],
   components: {AddressForm},
-  mounted() {
-    console.log(this.addresses)
-  },
   data() {
     return {
       selectedAddressIndex: null,
-      isLoggedIn: this.$store.state.user.isLoggedIn,
       billingAddresses: this.$store.state.user.billingAddresses,
       deliveryAddresses: this.$store.state.user.deliveryAddresses,
       addressesInitial: this.addresses,
-      // titleAddress: this.addresses,
       isAddressSaved: false,
       addressIndex: -1,
+      userIsLoggedIn: this.$store.getters.isUserLoggedIn,
     };
   },
   methods: {
@@ -75,22 +71,24 @@ export default {
       this.isAddressSaved = true;
       this.addressIndex = -1;
     },
-    selectAddress(index) {
+    async selectAddress(index, address) {
       this.selectedAddressIndex = index;
+      if (this.title === 'Delivery address') {
+      this.$emit('selectDeliveryAddress', address)
+        } else {
+        this.$emit('selectBillingAddress', address)
+        }
     },
-    removeAddress(index) {
+    async removeAddress(address, index) {
       if (this.addressesInitial === this.deliveryAddresses) {
-        this.$store.dispatch('removeDeliveryAddress', index)
+        await this.$store.dispatch('removeDeliveryAddress', address.id, index)
       } else if (this.addressesInitial === this.billingAddresses) {
-        this.$store.dispatch('removeBillingAddress', index)
-      } else if (this.addressesInitial === this.$store.state.deliveryAddresses) {
-        this.$store.state.deliveryAddresses.splice(index, 1)
-      } else if (this.addressesInitial === this.$store.state.billingAddresses) {
-        this.$store.state.billingAddresses.splice(index, 1)
+        await this.$store.dispatch('removeBillingAddress', address.id, index)
       }
     },
 
-  },
+  }
+  ,
 }
 </script>
 

@@ -4,7 +4,7 @@
     <div v-if="!isOrderSuccessfulPlaced">
       <CardDetails :isDisposableCard="true" @closeCardDetails="saveOrder"/>
     </div>
-    <div v-else id="order-successful-placed-div">
+    <div v-else class="order-successful-placed-div">
       <h4>Your order has been placed successfully. </h4>
       <h4>You will receive an email confirmation shortly.</h4>
     </div>
@@ -24,6 +24,7 @@ export default {
   },
   methods: {
     saveOrder() {
+      this.$store.commit('saveOrder')
       this.isOrderSuccessfulPlaced = true;
     },
   }
@@ -33,7 +34,7 @@ export default {
 <style scoped>
 
 
-#order-successful-placed-div {
+.order-successful-placed-div {
   font-family: "Malgun Gothic Semilight", sans-serif;
   margin-top: 22%;
   margin-bottom: 26%;

@@ -11,7 +11,7 @@
           class="w-100 address-input"
           required
       />
-      <span class="address-alert" v-show="isCountryInputIncomplete ">Please enter a country</span>
+      <span class="address-alert" v-show="isCountryInputIncomplete">Please enter a country</span>
     </div>
     <div class="w-50 col-div mb-5 d-block m-auto">
       <p class="address-pgf">Town/City*</p>
@@ -79,8 +79,6 @@ export default {
       address: this.addressInitial,
       isAddressSaved: this.isAddressSavedInitial,
       isLoggedIn: this.$store.state.user.isLoggedIn,
-      currentDeliveryAddressesIndex: this.$store.getters.getCurrentDeliveryAddressesIndex,
-      currentBillingAddressesIndex: this.$store.getters.getCurrentBillingAddressesIndex,
       addressIndex: this.index,
       title: this.titleInitial,
       isCountryInputIncomplete: false,
@@ -92,16 +90,7 @@ export default {
     };
   },
   methods: {
-    saveAddress() {
-      let address = {
-        country: this.address.country,
-        city: this.address.city,
-        street: this.address.street,
-        number: this.address.number,
-        blockStaircase: this.address.blockStaircase,
-        postcode: this.address.postcode,
-        id: uuid(),
-      }
+    async saveAddress() {
       let newAddress = {
         country: '',
         city: '',
@@ -109,35 +98,28 @@ export default {
         number: '',
         blockStaircase: '',
         postcode: '',
+        id: uuid(),
       }
-      this.isCountryInputIncomplete = address.country === "";
-      this.isCityInputIncomplete = address.city === "";
-      this.isStreetInputIncomplete = address.street === "";
-      this.isNumberInputIncomplete = address.number === "";
-      this.isPostcodeInputIncomplete = address.postcode === "";
+      this.isCountryInputIncomplete = this.address.country === "";
+      this.isCityInputIncomplete = this.address.city === "";
+      this.isStreetInputIncomplete = this.address.street === "";
+      this.isNumberInputIncomplete = this.address.number === "";
+      this.isPostcodeInputIncomplete = this.address.postcode === "";
       this.isAddressComplete = !this.isCountryInputIncomplete && !this.isCityInputIncomplete
           && !this.isStreetInputIncomplete && !this.isNumberInputIncomplete && !this.isPostcodeInputIncomplete;
-      if (!this.isAddressSaved && this.isAddressComplete) {
-        if (this.isLoggedIn && this.title === 'Delivery address') {
-          this.$store.dispatch('saveDeliveryAddress', address)
+      if (this.isAddressComplete && !this.isAddressSaved) {
+        if (this.title === 'Delivery address') {
+          await this.$store.dispatch('saveDeliveryAddress', this.address)
+          this.$emit('closeAddressForm')
           this.address = newAddress
+        } else if (this.title === 'Billing address') {
+          await this.$store.dispatch('saveBillingAddress', this.address)
           this.$emit('closeAddressForm')
-        } else if (this.isLoggedIn && this.title === 'Billing address') {
-          this.$store.dispatch('saveBillingAddress', address)
           this.address = newAddress
-          this.$emit('closeAddressForm')
-        } else if (!this.isLoggedIn && this.title === 'Billing address') {
-          this.$store.dispatch('saveBillingAddress', address)
-          // this.address = newAddress
-          this.$emit('closeAddressForm')
-        } else if (!this.isLoggedIn && this.title === 'Delivery address') {
-          this.$store.dispatch('saveDeliveryAddress', address)
-          // this.address = newAddress
-          this.$emit('closeAddressForm')
         }
       }
     },
-    updateAddress() {
+    async updateAddress() {
       this.isCountryInputIncomplete = this.address.country === "";
       this.isCityInputIncomplete = this.address.city === "";
       this.isStreetInputIncomplete = this.address.street === "";
@@ -146,17 +128,11 @@ export default {
       this.isAddressComplete = !this.isCountryInputIncomplete && !this.isCityInputIncomplete
           && !this.isStreetInputIncomplete && !this.isNumberInputIncomplete && !this.isPostcodeInputIncomplete;
       if (this.isAddressComplete && this.isAddressSaved) {
-        if (this.isLoggedIn && this.title === 'Delivery address') {
-          this.$store.dispatch('updateDeliveryAddress', this.address, this.addressIndex)
+        if (this.title === 'Delivery address') {
+          await this.$store.dispatch('updateDeliveryAddress', this.address, this.addressIndex)
           this.$emit('closeAddressForm')
-        } else if (this.isLoggedIn && this.title === 'Billing address') {
-          this.$store.dispatch('updateBillingAddress', this.address, this.addressIndex)
-          this.$emit('closeAddressForm')
-        } else if (!this.isLoggedIn && this.title === 'Billing address') {
-          this.$store.state.deliveryAddresses[this.addressIndex] = this.address
-          this.$emit('closeAddressForm')
-        } else if (!this.isLoggedIn && this.title === 'Delivery address') {
-          this.$store.state.billingAddresses[this.addressIndex] = this.address
+        } else if (this.title === 'Billing address') {
+          await this.$store.dispatch('updateBillingAddress', this.address, this.addressIndex)
           this.$emit('closeAddressForm')
         }
       }

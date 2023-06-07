@@ -9,9 +9,10 @@
             <router-link class="nav-link" to="/women">Women</router-link>
             <router-link class="nav-link" to="/men">Men</router-link>
             <router-link class="nav-link" to="/about">About</router-link>
+            <router-link class="nav-link" to="/contact">Contact</router-link>
           </div>
           <div class="right">
-            <div v-if="!this.$store.state.user.isLoggedIn" @click="showLoginBox" class="navbar-login">Login</div>
+            <div v-if="!this.$store.getters.isUserLoggedIn" @click="showLoginBox" class="navbar-login ms-4"> Login</div>
             <div v-else @click="openProfile" id="profile-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="16"
                    height="16" fill="currentColor" class="bi bi-person-lines-fill"
@@ -59,15 +60,13 @@
       </div>
     </nav>
     <div v-show="showLogin">
-      <AuthDialog @toggleLoginButton="showLogin = false"/>
+      <AuthDialog @toggleLoginButton="showLogin = !showLogin"/>
     </div>
     <div v-show="showCartDetails">
       <NavCart @toggleCart="showCartDetails = false"/>
     </div>
-    <div @mouseenter="showProfile = true" @mouseleave="showProfile = false">
-      <div v-show="showProfile">
-        <NavProfile id="profile-div" @closeProfile="closeProfile"/>
-      </div>
+    <div v-show="showProfile">
+      <NavProfile id="profile-div" @closeProfile="closeProfile"/>
     </div>
   </div>
 </template>
@@ -76,6 +75,7 @@
 import NavCart from "@/components/NavCart";
 import AuthDialog from "@/components/AuthDialog";
 import NavProfile from "@/components/NavProfile";
+
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -87,8 +87,10 @@ export default {
       showCartDetails: false,
       showLogin: false,
       showProfile: false,
+      showWrote: false,
       productName: "",
       profile: '',
+      user: this.$store.getters.isUserLoggedIn,
     };
   },
   mounted() {
@@ -104,15 +106,23 @@ export default {
       this.showProfile = false;
     },
     showLoginBox() {
-      this.showLogin = !this.showLogin;
-      this.showCartDetails = false;
+      if (this.user) {
+        this.showLogin = false
+        this.showProfile = !this.showProfile;
+        this.showCartDetails = false;
+      } else {
+        this.showLogin = !this.showLogin;
+        this.showProfile = false;
+        this.showCartDetails = false;
+      }
     },
     openProfile() {
-      this.showProfile = !this.showProfile
+      this.showProfile = !this.showProfile;
       this.showCartDetails = false;
     },
     closeProfile() {
-      this.showProfile = !this.showProfile
+      this.showProfile = !this.showProfile;
+      this.showCartDetails = false;
     },
   },
 };
@@ -148,13 +158,12 @@ export default {
   cursor: pointer;
   display: flex;
   flex-wrap: wrap;
-  border: 1px solid #5b5b5b;
-  top: 65px;
+  top: 74px;
   right: 30px;
   z-index: 2;
   flex-direction: column;
   width: 300px;
-  height: 280px;
+  height: 250px;
   background-color: #ffffff;
 }
 
@@ -164,7 +173,7 @@ export default {
   height: 0;
   width: 0;
   right: 148px;
-  top: 36px;
+  top: 44px;
   border-width: 15px;
   border-color: transparent #ffffff transparent transparent;
   border-style: solid;
