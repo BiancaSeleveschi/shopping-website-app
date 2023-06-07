@@ -13,6 +13,7 @@
     "@vue-stripe/vue-stripe": "^4.5.0",
     "bootstrap": "^5.2.3",
     "core-js": "^3.8.3",
+    "dotenv": "^16.1.4",
     "emailjs-com": "^3.2.0",
     "firebase": "^7.24.0",
     "stripe": "^12.7.0",

@@ -7,14 +7,17 @@ import firebase from "firebase";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
+// Import the environment variables directly
+const apiKey = process.env.VUE_APP_FIREBASE_API_KEY;
+const appId = process.env.VUE_APP_FIREBASE_API_ID;
 
 const firebaseConfig = {
-    apiKey: "process.env.VUE_APP_FIREBASE_API_KEY",
+    apiKey: apiKey,
     authDomain: "shopping-app1-b686e.firebaseapp.com",
     projectId: "shopping-app1-b686e",
     storageBucket: "shopping-app1-b686e.appspot.com",
     messagingSenderId: "976720044389",
-    appId: "process.env.VUE_APP_FIREBASE_API_ID",
+    appId: appId,
     measurementId: "G-GH1415LYBG"
 };
 const firebase1 = firebase.initializeApp(firebaseConfig)
