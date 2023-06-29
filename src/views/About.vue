@@ -45,7 +45,7 @@ li {
 }
 
 .content-about {
-  margin-top: 4%;
+  margin-top: 7%;
   display: grid;
 }
 

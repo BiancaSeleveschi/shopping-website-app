@@ -1,7 +1,7 @@
 <template>
   <div class="bg-black">
     <h1 class="title text-light">Favorite products</h1>
-    <ItemList :products="favorites" :image="image" class="card-item"/>
+    <ItemList :products="this.$store.state.user?.favorites" :image="image" class="card-item"/>
   </div>
 </template>
 
@@ -15,7 +15,6 @@ export default {
   data() {
     return {
       image: "black.jpg",
-      favorites: this.$store.state.user?.favorites,
     };
   },
 };
@@ -25,7 +24,7 @@ export default {
 .title {
   letter-spacing: 7px;
   font-size: 50px;
-  z-index: 2;
+  z-index: 1;
   left: 50%;
   top: 20%;
   text-transform: uppercase;

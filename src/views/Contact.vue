@@ -22,8 +22,7 @@
           cols="30" rows="5"
           placeholder="Message">
           </textarea>
-
-      <button @click="sendEmail">Send</button>
+      <button class="btn btn-dark px-4 mt-2" @click="sendEmail">Send</button>
     </div>
   </div>
 </template>
@@ -70,12 +69,14 @@ export default {
 
 .container {
   display: block;
-  margin: auto;
+  margin-top: 10%;
+  margin-bottom: 10%;
   text-align: center;
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
-  width: 50%;
+  width: 40%;
+  height: 500px;
 }
 
 label {

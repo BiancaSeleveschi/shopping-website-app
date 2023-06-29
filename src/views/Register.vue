@@ -100,7 +100,6 @@ export default {
         lastName: "",
         emailAddress: "",
         password: "",
-        isLoggedIn: false,
         cart: [],
         favorites: [],
         deliveryAddresses: [],
@@ -191,11 +190,6 @@ export default {
 </script>
 
 <style scoped>
-#create-account-title {
-  margin-top: 100px;
-  font-family: "JetBrains Mono Light", sans-serif;
-}
-
 .create-button {
   margin-left: 50px;
 }

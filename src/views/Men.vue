@@ -1,16 +1,15 @@
 <template>
   <div>
     <h1 class="title text-black fw-bold">Men</h1>
-    <ItemList :products="men" :image="image" class="card-item"/>
-    <vue-blob-json-csv
-        @success="handleSuccess"
-        @error="handleError"
-        file-type="csv"
-        file-name="Products"
-        :data="men"
-    >
-      Download
-    </vue-blob-json-csv>
+    <ItemList :products="this.$store.state.men" :image="image" class="card-item"/>
+<!--    <vue-blob-json-csv-->
+<!--        @success="handleSuccess"-->
+<!--        @error="handleError"-->
+<!--        file-type="csv"-->
+<!--        file-name="Products"-->
+<!--    >-->
+<!--      Download-->npm
+<!--    </vue-blob-json-csv>-->
   </div>
 </template>
 
@@ -24,7 +23,6 @@ export default {
   data() {
     return {
       image: "men2.avif",
-      men: this.$store.state.men,
     };
   },
   methods: {
@@ -43,7 +41,7 @@ export default {
   letter-spacing: 0.2em;
   z-index: 1;
   left: 32%;
-  top: 24%;
+  top: 30%;
   font-size: 50px;
   text-transform: uppercase;
   position: absolute;

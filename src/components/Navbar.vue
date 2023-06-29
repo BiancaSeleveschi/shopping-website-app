@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <h1 class="navbar-brand text-light">M.E.D.U.Z.Z.A</h1>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav fw-bold">
+          <div class="navbar-nav fw-bold ">
             <router-link class="nav-link" to="/">Home</router-link>
             <router-link class="nav-link" to="/women">Women</router-link>
             <router-link class="nav-link" to="/men">Men</router-link>
@@ -15,7 +15,7 @@
             <div v-if="!this.$store.getters.isUserLoggedIn" @click="showLoginBox" class="navbar-login ms-4"> Login</div>
             <div v-else @click="openProfile" id="profile-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                   height="16" fill="currentColor" class="bi bi-person-lines-fill"
+                   height="16" fill="currentColor" class="bi bi-person-lines-fill text-white"
                    viewBox="0 0 16 16">
                 <path
                     d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
@@ -133,20 +133,14 @@ export default {
   display: grid;
   align-items: center;
   grid-template-columns: 3fr 1fr 1fr;
-  background-color: transparent;
+  background: #3f3f3f;
   width: 100%;
   top: 0;
   left: 0;
   position: fixed;
   margin: 0;
   padding: 0;
-  transition: 0.3s all linear;
   z-index: 2;
-}
-
-#navbar:hover {
-  background: #000000;
-  color: white;
 }
 
 #profile-icon {

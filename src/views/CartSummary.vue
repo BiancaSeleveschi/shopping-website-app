@@ -52,7 +52,6 @@ export default {
   data() {
     return {
       cart: this.$store.state.user?.cart,
-      isLoggedIn: this.$store.state.user?.isLoggedIn,
     };
   },
   computed: {
@@ -60,20 +59,6 @@ export default {
       return this.$store.getters.getCartTotalPrice
     }
   },
-  // beforeRouteUpdate(to, from, next) {
-  //   console.log(to, from)
-  //   if (to.name === "Checkout") {
-  //     console.log("cccc")
-  //     next({
-  //       path: 'Checkout',
-  //       params: {
-  //         clientSecret: "secretttttt",
-  //       }
-  //     })
-  //     return;
-  //   }
-  //   next()
-  // },
   methods: {
     removeProductFromCart(product) {
       this.$store.dispatch("removeProductFromCart", product);
@@ -85,7 +70,7 @@ export default {
         method: 'POST',
         body: JSON.stringify({amount: this.cartTotalPrice, currency: "RON"})
       })
-      const {paymentIntent} = await intent.json() //de vazut object destructuring
+      const {paymentIntent} = await intent.json()
       console.log(paymentIntent)
       await this.$router.push({
         name: 'Checkout',

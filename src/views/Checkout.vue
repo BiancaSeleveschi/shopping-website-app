@@ -75,6 +75,16 @@
               class="m-2"/>
           <span class="payment-method my-2">FREE </span>
         </div>
+        <div v-show="isCheckboxCreditCardChecked" class="my-4 border border-secondary rounded-2">
+          <stripe-element-payment
+              class="p-5"
+              ref="paymentRef"
+              :pk="pk"
+              :elements-options="elementsOptions"
+              :confirm-params="confirmParams"
+              @error="displayStripeError"
+          />
+        </div>
       </div>
       <div class="p-4 m-auto order-summary">
         <h4 class="fw-bold mb-5">ORDER SUMMARY</h4>
@@ -113,17 +123,8 @@
           Back to shopping
         </router-link>
         <div class="payment-button-div">
-          <button class="py-2 px-3 m-2 btn btn-dark" id="payment-button" @click="payNow">Pay Now</button>
+          <button class="py-2 px-3 m-2 btn btn-dark" id="payment-button" @click="pay">Pay Now</button>
         </div>
-      </div>
-      <div>
-        <stripe-element-payment
-            ref="paymentRef"
-            :pk="pk"
-            :elements-options="elementsOptions"
-            :confirm-params="confirmParams"
-        />
-        <button @click="pay">Pay Now</button>
       </div>
     </div>
   </div>
@@ -134,6 +135,7 @@ import AddressForm from "@/components/AddressForm";
 import AddressList from "@/components/AddressList";
 import {v4 as uuid} from 'uuid';
 import {StripeElementPayment} from '@vue-stripe/vue-stripe';
+import {firebase} from "@/firebaseInit";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -165,13 +167,14 @@ export default {
       shippingPrice: '',
       deliveryAddressSelected: null,
       billingAddressSelected: null,
+      isFormValid: false,
       pk: process.env.VUE_APP_STRIPE_PK,
       elementsOptions: {
-        appearance: {}, // appearance options
+        appearance: {},
         clientSecret: this.clientSecret
       },
       confirmParams: {
-        return_url: 'http://localhost:8080/order-summary',
+        return_url: 'http://localhost:8080/order/confirmation',
       },
     };
   },
@@ -266,8 +269,13 @@ export default {
   mounted() {
     console.log("ok", this.clientSecret)
     console.log(this.$route.params.clientSecret);
+    console.log(this.$refs.paymentRef)
   },
   methods: {
+    displayStripeError(e) {
+      console.log("error sytripe")
+      console.log(e)
+    },
     addNewDeliveryAddress() {
       this.isAddDeliveryAddressButtonClicked = !this.isAddDeliveryAddressButtonClicked
       this.address = {
@@ -348,10 +356,8 @@ export default {
       let estimatedArrivalDate = new Date();
       if (this.isCheckboxStandardChecked) {
         estimatedArrivalDate.setDate(currentDate.getDate() + 4);
-        this.status = 'Received'
-      } else if(this.isCheckboxExpressChecked) {
+      } else if (this.isCheckboxExpressChecked) {
         estimatedArrivalDate.setDate(currentDate.getDate() + 1);
-        this.status = 'Received'
       }
       let year = estimatedArrivalDate.getFullYear();
       let month = String(estimatedArrivalDate.getMonth() + 1).padStart(2, '0');
@@ -359,29 +365,7 @@ export default {
       let formattedEstimatedArrivalDate = `${year}-${month}-${day}`;
       return formattedEstimatedArrivalDate;
     },
-    getStatus() {
-      let order = {
-        orderDate: new Date(this.getCurrentDate())
-      };
-      let currentDate = new Date();
-      let timeDifference = currentDate.getTime() - order.orderDate.getTime();
-      let daysDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
-      if (this.isCheckboxStandardChecked) {
-        if (daysDifference > 4) {
-          this.status = 'Received';
-        } else {
-          this.status = 'Processing';
-        }
-      } else {
-        if (daysDifference > 1) {
-          this.status = 'Received';
-        } else {
-          this.status = 'Processing';
-        }
-      }
-      return this.status;
-    },
-    async payNow() {
+    async pay() {
       const randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
       if (this.deliveryAddressSelected === null) {
         this.isDeliveryAddressNotSelected = true;
@@ -389,6 +373,14 @@ export default {
       if (this.billingAddressSelected === null) {
         this.isBillingAddressNotSelected = true;
       }
+      let statusOrder;
+      let currentDate = new Date();
+      if (currentDate > this.getEstimateArrivalDate()) {
+        statusOrder = 'Received'
+      } else {
+        statusOrder = "Processing"
+      }
+
       let order = {
         id: uuid(),
         number: randomNum,
@@ -399,20 +391,39 @@ export default {
         deliveryAddress: this.deliveryAddressSelected,
         billingAddress: this.billingAddressSelected,
         paymentMethod: 'Credit Card',
-        status: this.getStatus(),
+        status: statusOrder,
       }
+      console.log("payyyy1")
       this.showShippingMethodAlert = !this.isCheckboxStandardChecked && !this.isCheckboxExpressChecked
       this.showPaymentMethodAlert = !this.isCheckboxCreditCardChecked
       if (!this.showShippingMethodAlert && !this.showPaymentMethodAlert && this.billingAddressSelected !== null
           && this.deliveryAddressSelected !== null) {
-        // this.$router.push('/payment')
+        // if (isFormValid) {
+        console.log("payyyy2")
+        try {
+          const res1 = await this.$refs.paymentRef.submit();
+          console.log("res:", res1)
+        } catch (e) {
+          console.log("error:", e)
+        }
         await this.$store.dispatch('setOrder', order)
-        this.$router.push('/order/confirmation')
+        // this.$router.push('/order/confirmation')
+        const db = firebase.firestore();
+        let HTMLmessage = this.form.message.replace(/\n/g, '<br/>');
+        db.collection('email').add({
+          to: 'example@domain.com',
+          template: {
+            name: "template_name",
+            data: {
+              email: this.$store.state.user.emailAddress,
+              message: HTMLmessage
+            }
+          },
+          replyTo: this.form.email,
+          from: this.form.email,
+        })
       }
     },
-    pay() {
-      this.$refs.paymentRef.submit();
-    }
   },
 };
 </script>

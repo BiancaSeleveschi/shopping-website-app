@@ -4,8 +4,6 @@
       <router-link to="/settings" class="mt-4 px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/settings' }">
         Settings
       </router-link>
-<!--      <router-link to="/cards" class="px-2  body-pgf" :class="{ 'fw-bold': $route.path === '/cards' }">Saved Cards-->
-<!--      </router-link>-->
       <router-link to="/orders" class="px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/orders' }">Orders
       </router-link>
       <router-link to="/returns" class="px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/returns' }">Returns

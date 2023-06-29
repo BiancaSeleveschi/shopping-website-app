@@ -1,6 +1,6 @@
 <template>
   <div class="settings-page">
-    <h2 id="title">My account</h2>
+    <h2 class="title">My account</h2>
     <div class="border-top pt-5 w-100">
       <NavProfile class="outer-card"/>
       <div class="d-inline-bloc bg-secondary bg-opacity-10 " id="settings-card">
@@ -236,28 +236,27 @@ export default {
         authUser.reauthenticateWithCredential(credential)
             .then(u => {
               console.log(u)
-                this.isInvalidNewPassword = this.verifyNewPassword();
-                if (!this.isInvalidNewPassword) {
-                  this.isInvalidConfirmedPassword = this.verifyConfirmedPassword();
-                } else {
-                  this.isInvalidConfirmedPassword = false;
-                }
-              // }
+              this.isCurrentPasswordMismatch = false;
+              this.isInvalidNewPassword = this.verifyNewPassword();
+              if (!this.isInvalidNewPassword) {
+                this.isInvalidConfirmedPassword = this.verifyConfirmedPassword();
+              } else {
+                this.isInvalidConfirmedPassword = false;
+              }
               if (!this.isCurrentPasswordMismatch && !this.isInvalidNewPassword && !this.isInvalidConfirmedPassword) {
-
-              authUser.updatePassword(this.newPassword)
-                  .then(() => {
-                    console.log('Update successful.')
-                    console.log('Password changed successfully!')
-
-                    this.showPasswordChangedSuccessfullyAlert = true
-                    let clear = () => (this.showPasswordChangedSuccessfullyAlert = false)
-                    if (this.showPasswordChangedSuccessfullyAlert) {
-                      setTimeout(clear, 3000);
-                    }
-                  }).catch((error) => {
-                console.log('An error ocurred', error)
-              }); }
+                authUser.updatePassword(this.newPassword)
+                    .then(() => {
+                      console.log('Update successful.')
+                      console.log('Password changed successfully!')
+                      this.showPasswordChangedSuccessfullyAlert = true
+                      let clear = () => (this.showPasswordChangedSuccessfullyAlert = false)
+                      if (this.showPasswordChangedSuccessfullyAlert) {
+                        setTimeout(clear, 3000);
+                      }
+                    }).catch((error) => {
+                  console.log('An error ocurred', error)
+                });
+              }
             }).catch(e => {
           console.log("Current password is invalid!", e)
           this.isCurrentPasswordMismatch = true;
@@ -299,13 +298,6 @@ export default {
 </script>
 
 <style scoped>
-#title {
-  margin-top: 90px;
-  margin-bottom: 90px;
-  letter-spacing: 2px;
-}
-
-
 #settings-card {
   display: flow;
   float: right;
@@ -315,6 +307,12 @@ export default {
   margin-right: 60px;
   border: 1px solid grey;
   margin-bottom: 300px;
+}
+
+.title {
+  margin-top: 130px;
+  margin-bottom: 50px;
+  letter-spacing: 2px;
 }
 
 .overlay {

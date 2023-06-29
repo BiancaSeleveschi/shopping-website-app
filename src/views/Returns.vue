@@ -1,6 +1,6 @@
 <template>
   <div class="returns-page">
-    <h2 id="title">My account</h2>
+    <h2 class="title">My account</h2>
     <div class="border-top pt-5 w-100">
       <NavProfile class="outer-card"/>
       <div class="bg-secondary bg-opacity-50" id="orders-card">
@@ -8,22 +8,22 @@
         <div v-for="(returnedOrder, index) in $store.state.user?.returns" :key="index"
              class="border border-dark bg-light rounded-2 my-3 mx-5 p-4 ">
           <h5 class="return-number mb-1 d-block fw-bold">Return: #{{ returnedOrder.returnNumber }}</h5>
-          <p class="details px-5" @click="showOrder(index)">
+          <p class="details px-5" @click="showOrder(index, order)">
             {{ index === indexOrder ? 'close' : 'view details' }}
           </p>
           <p class="w-100 content-body">Data: <span class="fw-bold">{{ returnedOrder.returnDate }}</span></p>
           <p class="w-100 content-body">Returned products from the order:
             <span class="fw-bold">#{{ returnedOrder.orderNumber }}</span></p>
           <div v-show="index === indexOrder" class="my-5 pt-5">
-              <p class="return-type w-100 content-body">Return type:
-                <span class="fw-bold">Courier</span></p>
-              <p class="refund-type w-100 content-body">Money refund option:
-                <span class="fw-bold">Refund to the card</span></p>
+            <p class="return-type w-100 content-body">Return type:
+              <span class="fw-bold">Courier</span></p>
+            <p class="refund-type w-100 content-body">Money refund option:
+              <span class="fw-bold">Refund to the card</span></p>
             <p class="refund-type w-100 content-body">Status:
-                <span class="fw-bold">{{returnedOrder.status}}</span></p>
-              <p v-show="returnedOrder.status === 'Pending'" class="pickup-date w-100 content-body">Estimate pickup date:
-                <span class="fw-bold">{{ returnedOrder.estimatedPickupDate }}</span></p>
-              <p class="message content-body">Message: {{ returnedOrder.message }}</p>
+              <span class="fw-bold">{{ returnedOrder.status }}</span></p>
+            <p v-show="returnedOrder.status === 'Pending'" class="pickup-date w-100 content-body">Estimate pickup date:
+              <span class="fw-bold">{{ returnedOrder.estimatedPickupDate }}</span></p>
+            <p class="message content-body">Message: {{ returnedOrder.message }}</p>
             <h4 class="products-header m-auto">Returned products</h4>
             <div v-for="(item,index) in returnedOrder.productList"
                  :key="index" class="cart-item m-auto ">
@@ -54,10 +54,11 @@ export default {
     }
   },
   methods: {
-    showOrder(index) {
+    showOrder(index,order) {
       this.indexOrder = this.indexOrder !== index ? index : -1;
+      this.getReturnDate(order.orderDate)
     },
-    isReturnEligible(orderDate) {
+    getReturnDate(orderDate) {
       const currentDate = new Date();
       const thirtyDaysInMilliseconds = 30 * 24 * 60 * 60 * 1000;
       const difference = currentDate.getTime() - orderDate.getTime();
@@ -68,11 +69,7 @@ export default {
 </script>
 
 <style scoped>
-#title {
-  margin-top: 90px;
-  margin-bottom: 90px;
-  letter-spacing: 2px;
-}
+
 
 #orders-card {
   display: grid;
@@ -94,6 +91,12 @@ export default {
 
 .returns-page {
   padding-bottom: 150px;
+}
+
+.title {
+  margin-top: 130px;
+  margin-bottom: 50px;
+  letter-spacing: 2px;
 }
 
 .return-number {

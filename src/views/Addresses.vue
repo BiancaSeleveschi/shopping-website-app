@@ -1,6 +1,6 @@
 <template>
   <div class="addresses-page">
-    <h2 id="title">My account</h2>
+    <h2 class="title">My account</h2>
     <div class="border-top pt-5 w-100"></div>
     <NavProfile class="outer-card"/>
     <div class="d-inline-bloc bg-secondary bg-opacity-10" id="address-card">
@@ -121,11 +121,6 @@ input[type=number] {
   appearance: textfield;
 }
 
-#title {
-  margin-top: 90px;
-  margin-bottom: 90px;
-  letter-spacing: 2px;
-}
 
 #address-card {
   display: grid;
@@ -135,6 +130,12 @@ input[type=number] {
   margin-bottom: 100px;
   border: 1px solid grey;
   float: right;
+}
+
+.title {
+  margin-top: 130px;
+  margin-bottom: 50px;
+  letter-spacing: 2px;
 }
 
 .addresses-page {

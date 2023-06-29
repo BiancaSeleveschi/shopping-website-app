@@ -17,9 +17,7 @@ import Register from "@/views/Register";
 import Login from "@/views/Login";
 import Favorites from "@/views/Favorites";
 import PasswordReset from "@/views/PasswordReset";
-import PaymentInformation from "@/views/PaymentInformation";
 import Settings from "@/views/Settings";
-import Cards from "@/views/Cards";
 import Orders from "@/views/Orders";
 import Returns from "@/views/Returns";
 import Addresses from "@/views/Addresses";
@@ -94,10 +92,6 @@ const routes = [
         name: "ItemDetails",
         component: ItemDetails,
         props: true,
-    }, {
-        path: "/payment",
-        name: "PaymentInformation",
-        component: PaymentInformation,
     },
     {
         path: "/cart/summary",
@@ -129,12 +123,7 @@ const routes = [
         path: "/return/confirmation",
         name: "ReturnConfirmation",
         component: ReturnConfirmation,
-    },
-    {
-        path: "/cards",
-        name: "Cards",
-        component: Cards,
-    }, {
+    },{
         path: "/orders",
         name: "Orders",
         component: Orders,

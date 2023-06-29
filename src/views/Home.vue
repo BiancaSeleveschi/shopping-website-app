@@ -6,12 +6,6 @@
           type="video/mp4"/>
     </video>
     <div class="content">
-      <h1 v-if="!hasLoggedInBefore" class="alert shadow text-light" role="alert">
-        Welcome, {{ $store.state.user?.firstName }} {{ $store.state.user?.lastName }}!
-      </h1>
-      <h1 v-else class="alert shadow text-light" role="alert">
-        Welcome back!
-      </h1>
       <h2 class="coupon text-secondary">Get a 10% discount with code <span class="text-light">EXTRA10</span> </h2>
       <div>
         <router-link to="/wo23/collection">
@@ -29,11 +23,6 @@
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Home",
-  data() {
-    return {
-      hasLoggedInBefore: localStorage.getItem('hasLoggedIn'),
-    }
-  }
 };
 </script>
 <style>
@@ -88,7 +77,7 @@ export default {
   border: none;
   border-radius: 20px;
   width: 300px;
-  padding: 10px;
+  padding: 12px;
 }
 
 .nav-button:hover {

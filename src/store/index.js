@@ -493,6 +493,7 @@ export default new Vuex.Store({
         getCart: (state) => state.user?.cart,
         isUserLoggedIn: (state) => state.user?.emailAddress !== undefined,
         getAllProducts: (state) => state.women.concat(state.men),
+        getFavorites: (state) => (product) => state.user.favorites.find(p=> p === product.id),
         getCartTotalPrice: (state) => {
             let total = 0;
             if (state.user && state.user?.cart) {
@@ -605,7 +606,7 @@ export default new Vuex.Store({
             localStorage.setItem("user", JSON.stringify(state.user));
         },
         UPDATE_CART(state, cart) {
-            if(state.user) {
+            if (state.user) {
                 state.user.cart = cart;
                 localStorage.setItem("user", JSON.stringify(state.user));
             }
@@ -621,19 +622,20 @@ export default new Vuex.Store({
             }
             localStorage.setItem("user", JSON.stringify(state.user));
         },
-        REMOVE_FROM_CART(state, index) {
-            state.cart.splice(index, 1);
-            localStorage.setItem("cart", JSON.stringify(state.cart));
-        },
         SET_PRODUCTS(state) {
             state.women.concat(state.men).forEach(product => {
-                state.$set(product, 'isFavorite', false);
+                Vue.set(product, 'isFavorite', false);
             })
+            localStorage.setItem("men", JSON.stringify(state.men));
+            localStorage.setItem("women", JSON.stringify(state.women));
         },
         SET_PRODUCTS_IS_FAVORITE(state, {productId, isFavorite}) {
-            const product = state.women.find(p => p.id === productId) || state.men.find(p => p.id === productId);
-            if (product) {
-                product.isFavorite = isFavorite;
+            if (state.user?.emailAddress !== undefined) {
+                const product = state.women.find(p => p.id === productId) || state.men.find(p => p.id === productId);
+                if (product) {
+                    product.isFavorite = isFavorite;
+                }
+                localStorage.setItem("user", JSON.stringify(state.user));
             }
         },
         UPDATE_PRODUCTS(state) {
@@ -671,21 +673,22 @@ export default new Vuex.Store({
             localStorage.setItem('user', JSON.stringify(state.user))
         },
         CHANGE_PASSWORD(state, newPassword) {
-            if(state.user) {
+            if (state.user) {
                 state.user.password = newPassword
 
-            }},
+            }
+        },
         REMOVE_CARD(state, index) {
             state.user?.cards.splice(index, 1)
         },
         REMOVE_DELIVERY_ADDRESS(state, addresses) {
-            if(state.user) {
+            if (state.user) {
                 state.user.deliveryAddresses = addresses
                 localStorage.setItem("user", JSON.stringify(state.user));
             }
         },
         REMOVE_BILLING_ADDRESS(state, addresses) {
-            if(state.user) {
+            if (state.user) {
                 state.user.billingAddresses = addresses;
                 localStorage.setItem("user", JSON.stringify(state.user));
             }
@@ -694,24 +697,19 @@ export default new Vuex.Store({
             state.user?.cards.push(card)
         },
         UPDATE_BILLING_ADDRESS(state, {address, index}) {
-            if(state.user) {
+            if (state.user) {
                 state.user.billingAddresses[index] = address;
                 localStorage.setItem("user", JSON.stringify(state.user));
             }
         },
         UPDATE_DELIVERY_ADDRESS(state, {address, index}) {
-            if(state.user) {
+            if (state.user) {
                 state.user.deliveryAddresses[index] = address;
                 localStorage.setItem("user", JSON.stringify(state.user));
             }
         },
-        LOGOUT(state) {
-            if(state.user) {
-                state.user.isLoggedIn = false;
-            }
-        },
         SET_USER_EMAIL(state, email) {
-            if(state.user) {
+            if (state.user) {
                 state.user.email = email;
             }
         },
@@ -818,15 +816,21 @@ export default new Vuex.Store({
             context.commit("UPDATE_STORE");
         },
         toggleFavorite(context, productId) {
+            if (this.state.user?.emailAddress !== undefined) {
             let isFavorite = localStorage.getItem(`favorite_${productId}`) === 'true';
             localStorage.setItem(`favorite_${productId}`, String(!isFavorite));
             context.commit('SET_PRODUCTS_IS_FAVORITE', {productId, isFavorite: !isFavorite});
+            localStorage.setItem("user", JSON.stringify(this.state.user));
+            }
+            else {
+                context.commit('SET_PRODUCTS' );
+            }
         },
         async addToFavorites(context, product) {
             try {
                 const userId = this.state.user?.id
                 const docRef = db.collection('users').doc(userId);
-                docRef.update({favorites: FieldValue.arrayUnion(product.id)})
+                docRef.update({favorites: this.state.user?.favorites})
                     .then(() => {
                         console.log('Product removed from favorites successfully');
                         context.commit("ADD_TO_FAVORITES", product);
@@ -867,8 +871,8 @@ export default new Vuex.Store({
             }
         },
 
-        setProducts(context, products) {
-            context.commit("SET_PRODUCTS", products);
+        setProducts(context) {
+            context.commit("SET_PRODUCTS");
             context.commit("UPDATE_STORE");
         },
         updateProductsIsFavorite(context) {
@@ -880,10 +884,6 @@ export default new Vuex.Store({
         },
         decreaseQuantity(context, item) {
             context.commit("DECREASE_QUANTITY", item);
-        },
-        logout(context) {
-            context.commit("LOGOUT");
-            context.commit("UPDATE_STORE");
         },
         changePassword(context, newPassword) {
             context.commit("CHANGE_PASSWORD", newPassword);
@@ -897,7 +897,7 @@ export default new Vuex.Store({
             context.commit("REMOVE_CARD", index);
             context.commit("UPDATE_STORE");
         },
-        async setOrder(context, order) {
+        async setOrder(order) {
             try {
                 const userId = this.state.user?.id
                 const docRef = db.collection('users').doc(userId);
@@ -905,7 +905,8 @@ export default new Vuex.Store({
                 docRef.update({orders: this.state.user?.orders})
                     .then(() => {
                         console.log('Product added to orders successfully');
-                        localStorage.setItem("user", JSON.stringify(this.state.user));
+                        this.state.user.cart = [],
+                            localStorage.setItem("user", JSON.stringify(this.state.user));
                     }).catch(e => console.log(e))
             } catch (error) {
                 console.error('Error adding order to orders in Firestore: ', error);

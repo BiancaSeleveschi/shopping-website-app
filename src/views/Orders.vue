@@ -1,6 +1,6 @@
 <template>
   <div class="orders-page">
-    <h2 id="title">My account</h2>
+    <h2 class="title">My account</h2>
     <div class="border-top pt-5 w-100">
       <NavProfile class="outer-card"/>
       <div class="bg-secondary bg-opacity-50" id="orders-card">
@@ -9,22 +9,21 @@
              class="border border-dark bg-light rounded-2 my-3 mx-5 p-3">
           <h5 class="order-id py-2 fw-bold">Order: #{{ order.number }}</h5>
           <button class="btn btn-dark px-5" @click="showOrder(index)">
-            {{ index === indexOrder ? 'Close' : 'BROWSE' }}
+            {{ index === indexOrder ? 'Close' : 'See more' }}
           </button>
           <p class="border border-dark border-pgf"></p>
           <p class="date-status my-3">Data: <span class="fw-bold">{{ order.orderDate }}</span></p>
           <p class="amount m-3">Total: <span class="text-danger">${{ order.amount }}</span></p>
-          <p class="date-status w-100">Status: <span class="fw-bold">{{ order.status  }}</span></p>
-            <router-link v-if="order.status === 'Received'"
-                :to="{
+          <p class="date-status w-100">Status: <span class="fw-bold">{{ order.status }}</span></p>
+          <router-link v-if="order.status === 'Received'"
+                       :to="{
             name: 'ReturnItem',
             params: {
               order: order,
-
             },
           }"
-                id="return" class="text-decoration-none w-100 fw-bold">Return
-            </router-link>
+                       id="return" class="text-decoration-none w-100 fw-bold">Return
+          </router-link>
           <div v-show="index === indexOrder" class="my-5 pt-5">
             <h5 class="products-header d-block m-auto">Products ordered</h5>
             <div v-for="(item,index) in order.productList"
@@ -72,6 +71,7 @@ export default {
   data() {
     return {
       indexOrder: -1,
+      currentDate: new Date(),
     }
   },
   methods: {
@@ -83,9 +83,9 @@ export default {
 </script>
 
 <style scoped>
-#title {
-  margin-top: 90px;
-  margin-bottom: 90px;
+.title {
+  margin-top: 130px;
+  margin-bottom: 50px;
   letter-spacing: 2px;
 }
 

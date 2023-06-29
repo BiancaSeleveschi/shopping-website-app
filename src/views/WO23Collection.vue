@@ -42,7 +42,8 @@ export default {
 
 .title {
   letter-spacing: 0.1em;
-  top: 30%;
+  z-index: 1;
+  top: 32%;
   left: 5%;
   font-size: 50px;
   position: absolute;

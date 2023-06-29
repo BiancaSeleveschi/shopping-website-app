@@ -94,12 +94,11 @@ export default {
             const user = result.user;
             console.log(token, user, "sign in succesfully", result.additionalUserInfo.isNewUser)
             if (result.additionalUserInfo.isNewUser) {
-              const account = {
+              let account = {
                 title: "",
                 firstName: user.displayName,
                 lastName: "",
                 emailAddress: user.email,
-                isLoggedIn: false,
                 cart: [],
                 favorites: [],
                 deliveryAddresses: [],

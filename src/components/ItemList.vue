@@ -13,7 +13,11 @@
       <div v-for="(product, index) in products" :key="index"
            class="item">
         <div class="favorite-icon">
-          <div v-if="!product.isFavorite" @click="addToFavorite(product)">
+<!--          <div v-if="($store.getters.isUserLoggedIn  && !product.isFavorite ) || !$store.getters.isUserLoggedIn "-->
+<!--          <div v-if="!product.isFavorite"-->
+          <div v-if="!$store.getters.getFavorites(product)"
+               @click="addToFavorite(product)">
+<!--               @click="$store.state.user.favorites.push(product.id)">-->
             <svg
 
                 xmlns="http://www.w3.org/2000/svg"
@@ -28,6 +32,7 @@
               />
             </svg>
           </div>
+<!--          <div v-else-if="product.isFavorite " @click="removeFromFavorite(product)">-->
           <div v-else @click="removeFromFavorite(product)">
             <svg
 
@@ -68,15 +73,12 @@
 
 <script>
 
-import {firebase} from "@/firebaseInit";
 
 export default {
   name: "ItemList",
   props: ["products", 'image'],
   data() {
     return {
-      isLoggedIn: this.$store.state.user?.isLoggedIn,
-      allProducts: this.products,
       isFavorite: false,
       showLoginMessageForFav: false,
       productIndex: -1,
@@ -85,17 +87,14 @@ export default {
   created() {
     this.$store.dispatch('setProductsIsFavorite');
   },
-
   methods: {
-    async  addToFavorite(product) {
-      const user = firebase.auth().currentUser;
-      console.log(user)
-      if (user && !product.isFavorite) {
+    async addToFavorite(product) {
+      if (this.$store.getters.isUserLoggedIn && !product.isFavorite) {
         this.$store.dispatch("toggleFavorite", product.id);
         await this.$store.dispatch("addToFavorites", product);
         product.isFavorite = true;
-      }
-      else {
+      } else {
+        this.$store.dispatch("setProducts");
         this.showLoginMessageForFav = true;
         let clear = () => (this.showLoginMessageForFav = false)
         if (this.showLoginMessageForFav) {
@@ -105,6 +104,7 @@ export default {
     },
     async removeFromFavorite(product) {
       this.$store.dispatch("toggleFavorite", product.id);
+      // this.$store.commit("SET_PRODUCTS_IS_FAVORITE", product.id);
       await this.$store.dispatch("removeFromFavorites", product.id);
       product.isFavorite = false;
     },
@@ -120,7 +120,7 @@ export default {
 .hero-image {
   position: relative;
   width: 100%;
-  height: 65em;
+  height: 73em;
   object-fit: cover;
   display: block;
   z-index: 0;
@@ -180,8 +180,7 @@ export default {
   justify-content: center;
   height: fit-content;
   width: 100%;
-  margin-top: -500px;
-  padding-top: 50px;
+  margin-top: -550px;
   padding-bottom: 300px;
 }
 

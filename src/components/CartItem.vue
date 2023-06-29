@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(item, index) in cart" :key="index" class="cart-item">
+    <div v-for="(item, index) in this.$store.state.user?.cart" :key="index" class="cart-item">
       <img :src="item.product.img"/>
       <div>
         <router-link
@@ -34,19 +34,9 @@
 
 export default {
   name: "CartItem",
-  data() {
-    return {
-      cart: this.$store.state.user?.cart,
-    }
-  },
   methods: {
     async removeProductFromCart(index) {
-      let user = this.$store.getters.isUserLoggedIn;
-      if (user) {
         await this.$store.dispatch("removeProductFromCart", index);
-      } else {
-        this.$store.commit('REMOVE_FROM_CART', index)
-      }
     },
     increaseQuantity(item) {
       this.$store.dispatch('increaseQuantity', item)
