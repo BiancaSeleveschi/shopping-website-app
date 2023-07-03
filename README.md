@@ -15,6 +15,7 @@ Furthermore, the app provides a smooth and secure checkout process. Users can ma
 
 Overall, the shopping app aims to create an enjoyable and hassle-free online shopping experience for users. With its user-friendly interface, convenient features like authentication and favorites, as well as efficient browsing, searching, and payment options, the app strives to meet users' needs and enhance their satisfaction while shopping online.
 
+Demo: https://shopping-app-meduzza.netlify.app/
 ## Project setup
 ```
 npm install
