@@ -11,7 +11,6 @@ The favorites feature allows users to save and bookmark their preferred products
 
 The app also prioritizes efficient browsing and searching. Users can explore a wide range of products, filter them based on different criteria, and access detailed information about each item. This empowers users to find the desired products quickly and make well-informed purchasing decisions.
 
-Furthermore, the app provides a smooth and secure checkout process. Users can make online purchases, select preferred payment methods, and add multiple addresses for shipping flexibility. Additionally, the app supports easy returns, ensuring a hassle-free experience if users need to exchange or refund their purchases.
 
 Demo: https://shopping-app-meduzza.netlify.app/
 ## Project setup
