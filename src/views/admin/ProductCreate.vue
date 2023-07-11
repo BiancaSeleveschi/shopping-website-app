@@ -88,6 +88,8 @@ export default {
         const storage = firebase.storage();
         // Create a root reference
         let storageRef = storage.ref();
+        console.log('imageeeeee', storageRef)
+        console.log('IMG', storage)
         //salvam imaginea cu nume unic
         //folosium uuid ca sa generam un uuic unic si il apenduim la numele imagini
         //`images/${files[0].name+uuid()}`

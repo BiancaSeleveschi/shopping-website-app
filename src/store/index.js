@@ -493,7 +493,7 @@ export default new Vuex.Store({
         getCart: (state) => state.user?.cart,
         isUserLoggedIn: (state) => state.user?.emailAddress !== undefined,
         getAllProducts: (state) => state.women.concat(state.men),
-        getFavorites: (state) => (product) => state.user.favorites.find(p=> p === product.id),
+        getFavorites: (state) => (product) => state.user?.favorites?.find(p=> p === product.id),
         getCartTotalPrice: (state) => {
             let total = 0;
             if (state.user && state.user?.cart) {
@@ -910,6 +910,8 @@ export default new Vuex.Store({
                     }).catch(e => console.log(e))
             } catch (error) {
                 console.error('Error adding order to orders in Firestore: ', error);
+                throw new Error('Error adding order')
+                //alert.showError(error)
             }
         },
         async setReturn(context, orderToReturn) {

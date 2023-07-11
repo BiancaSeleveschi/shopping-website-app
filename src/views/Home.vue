@@ -20,6 +20,7 @@
 </template>
 
 <script>
+
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Home",
@@ -55,10 +56,6 @@ export default {
   left: 0;
   right: 0;
   height: 200px;
-}
-
-.alert {
-  bottom: 300px;
 }
 
 .content {

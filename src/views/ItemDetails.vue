@@ -200,7 +200,7 @@ export default {
   top: 0;
   left: 0;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black background */
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
 

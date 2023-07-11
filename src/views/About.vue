@@ -32,9 +32,14 @@
 </template>
 
 <script>
+import {firebase} from "@/firebaseInit";
+
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "About",
+  mounted(){
+    console.log(firebase.auth().currentUser)
+  }
 };
 </script>
 

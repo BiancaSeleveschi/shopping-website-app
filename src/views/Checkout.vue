@@ -406,22 +406,27 @@ export default {
         } catch (e) {
           console.log("error:", e)
         }
-        await this.$store.dispatch('setOrder', order)
-        // this.$router.push('/order/confirmation')
-        const db = firebase.firestore();
-        let HTMLmessage = this.form.message.replace(/\n/g, '<br/>');
-        db.collection('email').add({
-          to: 'example@domain.com',
-          template: {
-            name: "template_name",
-            data: {
-              email: this.$store.state.user.emailAddress,
-              message: HTMLmessage
-            }
-          },
-          replyTo: this.form.email,
-          from: this.form.email,
-        })
+        try {
+          await this.$store.dispatch('setOrder', order)
+          // this.$router.push('/order/confirmation')
+          const db = firebase.firestore();
+          let HTMLmessage = this.form.message.replace(/\n/g, '<br/>');
+          db.collection('email').add({
+            to: 'example@domain.com',
+            template: {
+              name: "template_name",
+              data: {
+                email: this.$store.state.user.emailAddress,
+                message: HTMLmessage
+              }
+            },
+            replyTo: this.form.email,
+            from: this.form.email,
+          })
+        } catch (error) {
+        //alert.showError(error)
+          console.log(error)
+        }
       }
     },
   },
