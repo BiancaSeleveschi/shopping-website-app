@@ -3,9 +3,8 @@ This application was created for a delightful shopping experience. Its purpose i
 
 ## Features
 As a user, I can:
-  - view all products
+  - view product list
   - search product
-  - create account
   - authentication
   - add product to favorite list
   - remove product from favorite list
