@@ -33,6 +33,9 @@ As an admin, I can:
 ## Demo
 https://shopping-app-meduzza.netlify.app/
   
+## UI
+<img src="src/assets/shopp-app.jpg" width="500" alt="ShoppApp">
+
 ## Project setup
 ```
 npm install
