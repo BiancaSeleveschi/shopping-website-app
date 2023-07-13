@@ -6,8 +6,10 @@ As a user, I can:
   - view product list
   - search product
   - authentication
-  - add product to favorite list
-  - remove product from favorite list
+  - update profile
+  - change password
+  - add product to favorites 
+  - remove product from favorites
   - view all favorites products
   - add product to cart
   - delete product from cart
@@ -17,8 +19,6 @@ As a user, I can:
   - make a payment
   - place an order
   - make a return
-  - update profile
-  - change password
   - contact assistance
   
 As an admin, I can:
