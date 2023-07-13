@@ -26,14 +26,8 @@ As an admin, I can:
 - update product
 
 ## Built with
-<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png" target="blank">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png" alt="Javascript"style="max-width: 10%;">
-</a>
-<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png" target="blank">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png" alt="Javascript"style="max-width: 10%;">
-</a>
-<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png" target="blank">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png" alt="Javascript"style="max-width: 10%;">
+<a href="https://etnbyixar3c.exactdn.com/wp-content/uploads/2014/10/javascript_logo_300x300.png?strip=all&lossy=1&resize=150%2C150&ssl=1" target="blank">
+<img src="https://etnbyixar3c.exactdn.com/wp-content/uploads/2014/10/javascript_logo_300x300.png?strip=all&lossy=1&resize=150%2C150&ssl=1" alt="Javascript"style="max-width: 10%;">
 </a>
 ## Project setup
 ```
