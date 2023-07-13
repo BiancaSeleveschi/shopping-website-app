@@ -31,10 +31,6 @@ As an admin, I can:
 ### Demo
 https://shopping-app-meduzza.netlify.app/
 
-### UI
-<img src="![Screenshot 2023-07-13 144526](https://github.com/BiancaSeleveschi/shopping-website-app/assets/108749991/b4dc3206-35b8-46be-9dd0-b21a85367965)" alt="ShoppingApp" width="35"/>
-
-<p><a href="https://shopping-app-meduzza.netlify.app/" target="_blank" rel="noreferrer"> <img src="![Screenshot 2023-07-13 144526](https://github.com/BiancaSeleveschi/shopping-website-app/assets/108749991/94ebc95b-1fda-4d44-88aa-aa5f3bd41894)" alt="ShoppingApp" width="40" height="40"/> </a> </p>
   
 ## Project setup
 ```
