@@ -27,7 +27,7 @@ As an admin, I can:
 
 ## Built with
 <a href="https://etnbyixar3c.exactdn.com/wp-content/uploads/2014/10/javascript_logo_300x300.png?strip=all&lossy=1&resize=150%2C150&ssl=1" target="blank">
-<img src="https://etnbyixar3c.exactdn.com/wp-content/uploads/2014/10/javascript_logo_300x300.png?strip=all&lossy=1&resize=150%2C150&ssl=1" alt="Javascript" width="20">
+<img src="https://etnbyixar3c.exactdn.com/wp-content/uploads/2014/10/javascript_logo_300x300.png?strip=all&lossy=1&resize=150%2C150&ssl=1" alt="Javascript" width="80">
 </a>
 ## Project setup
 ```
