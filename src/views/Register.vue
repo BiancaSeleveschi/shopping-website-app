@@ -145,7 +145,6 @@ export default {
           !this.isEmailAddressIncomplete && !this.isPasswordIncomplete && !this.isCheckboxNotClicked) {
         auth.createUserWithEmailAndPassword(this.account.emailAddress, this.account.password)
             .then(userCredential => {
-              console.log(userCredential)
               this.account.uid = userCredential.user.uid
               delete this.account.password
               this.$store.dispatch('addUser', this.account)

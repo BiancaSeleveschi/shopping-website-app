@@ -88,7 +88,8 @@ export default {
       if (this.isAddressSaved) {
         setTimeout(clear, 3000);
       }
-    }, closeAddingBillingAddressForm() {
+    },
+    closeAddingBillingAddressForm() {
       this.showAddingBillingAddressForm = false;
       this.isAddressSaved = true;
       let clear = () => (this.isAddressSaved = false)

@@ -273,7 +273,7 @@ export default {
   },
   methods: {
     displayStripeError(e) {
-      console.log("error sytripe")
+      console.log("error stripe")
       console.log(e)
     },
     addNewDeliveryAddress() {
@@ -366,7 +366,7 @@ export default {
       return formattedEstimatedArrivalDate;
     },
     async pay() {
-      const randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+      let randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
       if (this.deliveryAddressSelected === null) {
         this.isDeliveryAddressNotSelected = true;
       }
@@ -380,10 +380,9 @@ export default {
       } else {
         statusOrder = "Processing"
       }
-
       let order = {
         id: uuid(),
-        number: randomNum,
+        orderNumber: randomNum,
         orderDate: this.getCurrentDate(),
         estimateArrivalDate: this.getEstimateArrivalDate(),
         amount: this.cartTotalPrice,
@@ -393,13 +392,10 @@ export default {
         paymentMethod: 'Credit Card',
         status: statusOrder,
       }
-      console.log("payyyy1")
       this.showShippingMethodAlert = !this.isCheckboxStandardChecked && !this.isCheckboxExpressChecked
       this.showPaymentMethodAlert = !this.isCheckboxCreditCardChecked
       if (!this.showShippingMethodAlert && !this.showPaymentMethodAlert && this.billingAddressSelected !== null
           && this.deliveryAddressSelected !== null) {
-        // if (isFormValid) {
-        console.log("payyyy2")
         try {
           const res1 = await this.$refs.paymentRef.submit();
           console.log("res:", res1)
@@ -408,7 +404,7 @@ export default {
         }
         try {
           await this.$store.dispatch('setOrder', order)
-          // this.$router.push('/order/confirmation')
+          this.$router.push('/order/confirmation')
           const db = firebase.firestore();
           let HTMLmessage = this.form.message.replace(/\n/g, '<br/>');
           db.collection('email').add({
@@ -424,7 +420,6 @@ export default {
             from: this.form.email,
           })
         } catch (error) {
-        //alert.showError(error)
           console.log(error)
         }
       }

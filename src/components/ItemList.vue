@@ -104,7 +104,6 @@ export default {
     },
     async removeFromFavorite(product) {
       this.$store.dispatch("toggleFavorite", product.id);
-      // this.$store.commit("SET_PRODUCTS_IS_FAVORITE", product.id);
       await this.$store.dispatch("removeFromFavorites", product.id);
       product.isFavorite = false;
     },

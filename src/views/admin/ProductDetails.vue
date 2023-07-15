@@ -101,12 +101,8 @@ export default {
       showSuccessAlert: false,
     }
   },
-  mounted() {
-    console.log(this.prod.title)
-  },
   methods: {
     async updateProduct() {
-
       this.showAlertTitleIncomplete = this.prod.title === '';
       this.showAlertPriceIncomplete = this.prod.price === '';
       this.showAlertDescriptionIncomplete = this.prod.description === '';
@@ -117,16 +113,12 @@ export default {
       if (!this.showAlertTitleIncomplete && !this.showAlertPriceIncomplete &&
           !this.showAlertDescriptionIncomplete && !this.showAlertColorIncomplete
           && !this.showAlertBrandIncomplete && !this.showAlertTypeIncomplete) {
-        console.log(this.productImageFile)
-        console.log(this.isImageChanged)
         if (this.isImageChanged) {
           const storage = firebase.storage();
           let storageRef = storage.ref();
-
           const imgPath = "images/" + this.productImageFile.name;
           const imgRef = storageRef.child(imgPath)
           await imgRef.put(this.productImageFile);
-          // Get the download URL
           const imgUrl = await imgRef.getDownloadURL();
           this.prod.img = imgUrl
         }

@@ -114,7 +114,6 @@ export default {
                   .get()
                   .then((querySnapshot) => {
                     const actualUser = {id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data()}
-                    console.log(actualUser)
                     this.$store.commit("SET_LOGGED_USER", actualUser)
                     this.$router.push('/');
                   })
@@ -141,7 +140,6 @@ export default {
                 .get()
                 .then((querySnapshot) => {
                   const actualUser = {id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data()}
-                  console.log(actualUser)
                   this.$store.commit("SET_LOGGED_USER", actualUser)
                   this.$router.push('/');
                 })

@@ -13,7 +13,8 @@
       <transition name="fade">
         <div class="alert-log alert alert-success py-4"
              role="alert">
-          An email has been sent to your account. Please check your inbox and follow the instructions to reset your password.
+          An email has been sent to your account. Please check your inbox and follow the instructions to reset your
+          password.
         </div>
       </transition>
     </div>

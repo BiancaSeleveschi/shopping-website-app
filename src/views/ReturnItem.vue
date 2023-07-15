@@ -113,8 +113,6 @@ export default {
             if (this.showImportantAlert) {
               setTimeout(clear, 5000);
             }
-            console.log('PRODUCTS TO RETURN', this.selectedProducts)
-            console.log('RETURNED ORDER', orderToReturn)
           } else {
             await this.$store.dispatch('setReturn', orderToReturn);
             this.$router.push('/return/confirmation')

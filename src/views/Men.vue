@@ -2,14 +2,6 @@
   <div>
     <h1 class="title text-black fw-bold">Men</h1>
     <ItemList :products="this.$store.state.men" :image="image" class="card-item"/>
-<!--    <vue-blob-json-csv-->
-<!--        @success="handleSuccess"-->
-<!--        @error="handleError"-->
-<!--        file-type="csv"-->
-<!--        file-name="Products"-->
-<!--    >-->
-<!--      Download-->npm
-<!--    </vue-blob-json-csv>-->
   </div>
 </template>
 
@@ -25,14 +17,6 @@ export default {
       image: "men2.avif",
     };
   },
-  methods: {
-    handleSuccess() {
-      console.log('success')
-    },
-    handleError() {
-      console.log('error')
-    },
-  }
 };
 </script>
 

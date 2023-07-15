@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-// import {v4 as uuid} from 'uuid';
 import {firebase, FieldValue} from "../firebaseInit.js";
 import 'firebase/firestore';
 
@@ -10,8 +9,6 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        womenProductsAddedToFirestore: false,
-        menProductsAddedToFirestore: false,
         women: [],
         men: [],
         // women: [
@@ -24,8 +21,7 @@ export default new Vuex.Store({
         //         color: "Black",
         //         brand: "Gucci",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: uuid(),
         //     },
         //     {
@@ -38,7 +34,6 @@ export default new Vuex.Store({
         //         brand: "Gucci",
         //         type: "Dress",
         //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XXL'],
         //         id: uuid(),
         //     },
         //     {
@@ -50,8 +45,7 @@ export default new Vuex.Store({
         //         color: "Green",
         //         brand: "Gucci",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: uuid(),
         //         isFavorite: false,
         //     },
@@ -65,7 +59,6 @@ export default new Vuex.Store({
         //         brand: " Gucci",
         //         type: "Dress",
         //         gender: "women",
-        //         size: ['XS', 'M', 'L', 'XL', 'XXL'],
         //         id: uuid(),
         //     },
         //     {
@@ -77,8 +70,7 @@ export default new Vuex.Store({
         //         color: "Green",
         //         brand: "Gucci",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: uuid(),
         //     },
         //     {
@@ -90,8 +82,7 @@ export default new Vuex.Store({
         //         color: "Multicolor",
         //         brand: "Gucci",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: uuid(),
         //     },
         //     {
@@ -103,8 +94,7 @@ export default new Vuex.Store({
         //         color: "Pink",
         //         brand: "Gucci",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: uuid(),
         //     },
         //     {
@@ -117,7 +107,6 @@ export default new Vuex.Store({
         //         brand: "Gucci",
         //         type: "Dress",
         //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'XL', 'XXL'],
         //         id: uuid(),
         //     },
         //     {
@@ -129,7 +118,6 @@ export default new Vuex.Store({
         //         brand: "Dolce & Gabbana",
         //         type: "Dress",
         //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL'],
         //         id: uuid(),
         //     },
         //     {
@@ -140,8 +128,7 @@ export default new Vuex.Store({
         //         color: "Beige",
         //         brand: "Dolce & Gabbana",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: uuid(),
         //     },
         //     {
@@ -152,8 +139,7 @@ export default new Vuex.Store({
         //         color: "Grey",
         //         brand: "Dolce & Gabbana",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: uuid(),
         //     },
         //     {
@@ -164,8 +150,7 @@ export default new Vuex.Store({
         //         color: "White",
         //         brand: "Dolce & Gabbana",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: uuid(),
         //     },
         //     {
@@ -176,8 +161,7 @@ export default new Vuex.Store({
         //         color: "White",
         //         brand: "Dolce & Gabbana",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: uuid(),
         //     },
         //     {
@@ -188,8 +172,7 @@ export default new Vuex.Store({
         //         color: "Gold",
         //         brand: "Valentino",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: uuid(),
         //     },
         //     {
@@ -212,8 +195,7 @@ export default new Vuex.Store({
         //         color: "Pink",
         //         brand: "Prada",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: uuid(),
         //     },
         //     {
@@ -225,7 +207,6 @@ export default new Vuex.Store({
         //         brand: "Massimo Dutti",
         //         type: "Dress",
         //         gender: "women",
-        //         size: ['XS', 'S', 'L', 'XL', 'XXL'],
         //         id: uuid(),
         //     },
         //     {
@@ -236,8 +217,7 @@ export default new Vuex.Store({
         //         color: "Multicolor",
         //         brand: "Massimo Dutti",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: uuid(),
         //     },
         //     {
@@ -248,8 +228,7 @@ export default new Vuex.Store({
         //         color: "White",
         //         brand: "Massimo Dutti",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: uuid(),
         //     },
         //     {
@@ -260,8 +239,7 @@ export default new Vuex.Store({
         //         color: "Black",
         //         brand: "Massimo Dutti",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: uuid(),
         //     },
         //     {
@@ -273,8 +251,7 @@ export default new Vuex.Store({
         //         color: "Blue",
         //         brand: "Versace",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: uuid(),
         //     },
         //     {
@@ -286,8 +263,7 @@ export default new Vuex.Store({
         //         color: "Multicolor",
         //         brand: "Versace",
         //         type: "Dress",
-        //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "women"
         //         id: 22,
         //     },
         //     {
@@ -300,7 +276,6 @@ export default new Vuex.Store({
         //         brand: "Versace",
         //         type: "Dress",
         //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'XL', 'XXL'],
         //         id: uuid(),
         //     },
         //     {
@@ -313,7 +288,6 @@ export default new Vuex.Store({
         //         brand: "Versace",
         //         type: "Dress",
         //         gender: "women",
-        //         size: ['XS', 'S', 'M', 'L', 'XXL'],
         //         id: uuid(),
         //     },
         // ],
@@ -326,8 +300,7 @@ export default new Vuex.Store({
         //         color: "Brown",
         //         brand: "Valentino",
         //         type: "Jacket",
-        //         gender: "men",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "men"
         //         id: uuid(),
         //     },
         //     {
@@ -339,8 +312,7 @@ export default new Vuex.Store({
         //         color: "Brown",
         //         brand: "Valentino",
         //         type: "Trousers",
-        //         gender: "men",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "men"
         //         id: uuid(),
         //     },
         //     {
@@ -353,7 +325,6 @@ export default new Vuex.Store({
         //         brand: "Valentino",
         //         type: "Shirt",
         //         gender: "men",
-        //         size: ['XS', 'M', 'L', 'XL', 'XXL'],
         //         id: uuid(),
         //     },
         //     {
@@ -366,7 +337,6 @@ export default new Vuex.Store({
         //         brand: "Valentino",
         //         type: "Jacket",
         //         gender: "men",
-        //         size: ['S', 'M', 'XL', 'XXL'],
         //         id: uuid(),
         //     },
         //     {
@@ -391,8 +361,7 @@ export default new Vuex.Store({
         //         color: "Black",
         //         brand: "BURBERRY",
         //         type: "Trousers",
-        //         gender: "men",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "men"
         //         id: uuid(),
         //     },
         //     {
@@ -405,7 +374,6 @@ export default new Vuex.Store({
         //         brand: "BURBERRY",
         //         type: "Shirt",
         //         gender: "men",
-        //         size: ['XS', 'S', 'L', 'XL', 'XXL'],
         //         id: uuid(),
         //     },
         //     {
@@ -417,8 +385,7 @@ export default new Vuex.Store({
         //         color: "Beige",
         //         brand: "BURBERRY",
         //         type: "Overcoat",
-        //         gender: "men",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "men"
         //         id: uuid(),
         //     },
         //     {
@@ -430,8 +397,7 @@ export default new Vuex.Store({
         //         color: "Grey",
         //         brand: "Gucci",
         //         type: "Jacket",
-        //         gender: "men",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "men"
         //         id: uuid(),
         //     },
         //     {
@@ -443,8 +409,7 @@ export default new Vuex.Store({
         //         color: "Beige",
         //         brand: "Gucci",
         //         type: "Jacket",
-        //         gender: "men",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "men"
         //         id: uuid(),
         //     },
         //     {
@@ -456,8 +421,7 @@ export default new Vuex.Store({
         //         color: "Red",
         //         brand: "Gucci",
         //         type: "Jacket",
-        //         gender: "men",
-        //         size: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        //         gender: "men"
         //         id: uuid(),
         //     },
         //     {
@@ -470,7 +434,6 @@ export default new Vuex.Store({
         //         brand: "Gucci",
         //         type: "Jacket",
         //         gender: "men",
-        //         size: ['XS', 'S', 'M', 'L', 'XXL'],
         //         id: uuid(),
         //     },
         //     {
@@ -483,7 +446,6 @@ export default new Vuex.Store({
         //         brand: "Alexander Mqueen",
         //         type: "Shirt",
         //         gender: "men",
-        //         size: ['XS', 'S', 'M', 'L', 'XL'],
         //         id: uuid(),
         //     },
         // ],
@@ -719,9 +681,9 @@ export default new Vuex.Store({
             for (let product of state.women) {
                 try {
                     await firebase.firestore().collection('women').doc(product.id.toString()).set(product);
-                    console.log('Product added to Firestore: ', product);
+                    console.log('Products added to Firestore: ', product);
                 } catch (error) {
-                    console.error('Error adding product to Firestore: ', error);
+                    console.error('Error adding products to Firestore: ', error);
                 }
             }
         },
@@ -729,9 +691,9 @@ export default new Vuex.Store({
             for (let product of state.men) {
                 try {
                     await firebase.firestore().collection('men').doc(product.id.toString()).set(product);
-                    console.log('Product added to Firestore: ', product);
+                    console.log('Products added to Firestore: ', product);
                 } catch (error) {
-                    console.error('Error adding product to Firestore: ', error);
+                    console.error('Error adding products to Firestore: ', error);
                 }
             }
         },
@@ -756,7 +718,7 @@ export default new Vuex.Store({
                     user.id = docRef.id
                 })
                 .catch((error) => {
-                    console.error("Error adding product: ", error);
+                    console.error("Error adding user: ", error);
                 });
         },
         async removeProduct(context, product) {
@@ -772,8 +734,6 @@ export default new Vuex.Store({
         async updateProduct(context, product) {
             try {
                 const collectionName = product.gender === 'women' ? 'women' : 'men';
-                console.log(product)
-                console.log(collectionName)
                 const docRef = db.collection(collectionName).doc(product.id);
                 await docRef.update(product);
                 console.log('Product updated in Firestore');
@@ -788,9 +748,9 @@ export default new Vuex.Store({
                     firstName: firstName,
                     lastName: lastName
                 });
-                console.log('Product updated in Firestore');
+                console.log('Profile updated in Firestore');
             } catch (error) {
-                console.error('Error updating product in Firestore: ', error);
+                console.error('Error updating profile', error);
             }
         },
         async removeProductFromCart(context, index) {
@@ -832,11 +792,11 @@ export default new Vuex.Store({
                 const docRef = db.collection('users').doc(userId);
                 docRef.update({favorites: this.state.user?.favorites})
                     .then(() => {
-                        console.log('Product removed from favorites successfully');
+                        console.log('Product added to favorites successfully');
                         context.commit("ADD_TO_FAVORITES", product);
                     }).catch(e => console.log(e))
             } catch (error) {
-                console.error('Error adding product to favorites in Firestore: ', error);
+                console.error('Error adding product to favorites', error);
             }
         },
         async addToCart(context, item) {
@@ -904,12 +864,12 @@ export default new Vuex.Store({
                 this.state.user?.orders.push(order)
                 docRef.update({orders: this.state.user?.orders})
                     .then(() => {
-                        console.log('Product added to orders successfully');
+                        console.log('Order set successfully');
                         this.state.user.cart = [],
                             localStorage.setItem("user", JSON.stringify(this.state.user));
                     }).catch(e => console.log(e))
             } catch (error) {
-                console.error('Error adding order to orders in Firestore: ', error);
+                console.error('Error adding order to orders ', error);
                 throw new Error('Error adding order')
                 //alert.showError(error)
             }
@@ -924,11 +884,11 @@ export default new Vuex.Store({
                 this.state.user?.returns.push(orderToReturn)
                 docRef.update({returns: this.state.user?.returns})
                     .then(() => {
-                        console.log('Product added to returns successfully');
+                        console.log('Return set to returns successfully');
                         localStorage.setItem("user", JSON.stringify(this.state.user));
                     }).catch(e => console.log(e))
             } catch (error) {
-                console.error('Error adding order to returns in Firestore: ', error);
+                console.error('Error setting return', error);
             }
         },
         async saveDeliveryAddress(context, address) {
@@ -938,8 +898,7 @@ export default new Vuex.Store({
                 this.state.user?.deliveryAddresses.push(address)
                 docRef.update({deliveryAddresses: this.state.user?.deliveryAddresses})
                     .then(() => {
-                        console.log('Product added to delivery addresses successfully');
-                        // context.commit("SAVE_DELIVERY_ADDRESS", this.state.user?.deliveryAddresses);
+                        console.log('Delivery address added successfully');
                         localStorage.setItem("user", JSON.stringify(this.state.user));
                     }).catch(e => console.log(e))
             } catch (error) {
@@ -953,12 +912,11 @@ export default new Vuex.Store({
                 this.state.user?.billingAddresses.push(address)
                 docRef.update({billingAddresses: this.state.user?.billingAddresses})
                     .then(() => {
-                        console.log('Product added to billing addresses successfully');
+                        console.log('Billing address added successfully');
                         localStorage.setItem("user", JSON.stringify(this.state.user));
-                        // context.commit("SAVE_BILLING_ADDRESS", this.state.user?.billingAddresses);
                     }).catch(e => console.log(e))
             } catch (error) {
-                console.error('Error adding address to billing addresses in Firestore: ', error);
+                console.error('Error adding billing address', error);
             }
         },
         async updateBillingAddress(context, address, index) {
@@ -967,10 +925,10 @@ export default new Vuex.Store({
                 const docRef = db.collection('users').doc(userId);
                 this.state.user.billingAddresses[index] = address;
                 await docRef.update({billingAddresses: this.state.user?.billingAddresses});
-                console.log('Address updated in billingAddresses successfully');
+                console.log('Billing address updated successfully');
                 context.commit('UPDATE_BILLING_ADDRESS', {address, index});
             } catch (error) {
-                console.error('Error updating address in billingAddresses in Firestore:', error);
+                console.error('Error updating billing address', error);
             }
         },
         async updateDeliveryAddress(context, address, index) {
@@ -979,10 +937,10 @@ export default new Vuex.Store({
                 const docRef = db.collection('users').doc(userId);
                 this.state.user.deliveryAddresses[index] = address;
                 await docRef.update({deliveryAddresses: this.state.user?.deliveryAddresses});
-                console.log('Address updated in deliveryAddresses successfully');
+                console.log('Delivery address updated successfully');
                 context.commit('UPDATE_DELIVERY_ADDRESS', {address, index});
             } catch (error) {
-                console.error('Error updating address in deliveryAddresses in Firestore:', error);
+                console.error('Error updating delivery address', error);
             }
         },
 
@@ -993,17 +951,15 @@ export default new Vuex.Store({
                 this.state.user?.deliveryAddresses.splice(index, 1)
                 docRef.update({deliveryAddresses: this.state.user?.deliveryAddresses})
                     .then(() => {
-                        console.log('Address removed from deliveryAddresses successfully');
-                        // context.commit("REMOVE_DELIVERY_ADDRESS", this.state.user.deliveryAddresses);
-                        // context.commit('UPDATE_STORE')
+                        console.log('Delivery address removed successfully');
                         localStorage.setItem("user", JSON.stringify(this.state.user));
                     })
                     .catch((error) => {
-                        console.error('Error removing address from deliveryAddresses in Firestore:', error);
+                        console.error('Error removing delivery address', error);
                     });
 
             } catch (error) {
-                console.error('Error removing address from deliveryAddresses in Firestore: ', error);
+                console.error('Error removing delivery address', error);
             }
         },
         async removeBillingAddress(context, addressId, index) {
@@ -1013,14 +969,14 @@ export default new Vuex.Store({
                 this.state.user?.billingAddresses.splice(index, 1)
                 docRef.update({billingAddresses: this.state.user?.billingAddresses})
                     .then(() => {
-                        console.log('Address removed from billingAddresses successfully');
+                        console.log('Billing address removed');
                         context.commit("REMOVE_BILLING_ADDRESS", this.state.user?.billingAddresses);
                     })
                     .catch((error) => {
-                        console.error('Error removing address from billingAddresses in Firestore:', error);
+                        console.error('Error removing billing address ', error);
                     });
             } catch (error) {
-                console.error('Error removing address from billingAddresses in Firestore: ', error);
+                console.error('Error removing billing address', error);
             }
             context.commit("UPDATE_STORE");
         },

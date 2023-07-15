@@ -254,7 +254,7 @@ export default {
                         setTimeout(clear, 3000);
                       }
                     }).catch((error) => {
-                  console.log('An error ocurred', error)
+                  console.log('An error occurred', error)
                 });
               }
             }).catch(e => {

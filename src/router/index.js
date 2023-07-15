@@ -22,7 +22,6 @@ import Orders from "@/views/Orders";
 import Returns from "@/views/Returns";
 import Addresses from "@/views/Addresses";
 import CartSummary from "@/views/CartSummary";
-import CheckoutGuest from "@/views/CheckoutGuest";
 import ProductCreate from "@/views/admin/ProductCreate";
 import Products from "@/views/admin/Products";
 import ProductDetails from "@/views/admin/ProductDetails";
@@ -257,10 +256,6 @@ const routes = [
         meta: {
             requiresAuth: false,
         }
-    }, {
-        path: "/checkout/guest",
-        name: "CheckoutGuest",
-        component: CheckoutGuest,
     },
     {
         path: "/register",

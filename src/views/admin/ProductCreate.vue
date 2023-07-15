@@ -86,17 +86,10 @@ export default {
           && !this.showAlertBrandIncomplete && !this.showAlertTypeIncomplete
           && !this.showAlertGenderIncomplete) {
         const storage = firebase.storage();
-        // Create a root reference
         let storageRef = storage.ref();
-        console.log('imageeeeee', storageRef)
-        console.log('IMG', storage)
-        //salvam imaginea cu nume unic
-        //folosium uuid ca sa generam un uuic unic si il apenduim la numele imagini
-        //`images/${files[0].name+uuid()}`
         const imgPath = "images/" + this.productImageFile.name;
         const imgRef = storageRef.child(imgPath)
         await imgRef.put(this.productImageFile);
-        // Get the download URL
         const imgUrl = await imgRef.getDownloadURL();
         this.product.img = imgUrl
         await this.$store.dispatch('addProductAsAdmin', this.product)
