@@ -396,15 +396,16 @@ export default {
       this.showPaymentMethodAlert = !this.isCheckboxCreditCardChecked
       if (!this.showShippingMethodAlert && !this.showPaymentMethodAlert && this.billingAddressSelected !== null
           && this.deliveryAddressSelected !== null) {
-        try {
-          const res1 = await this.$refs.paymentRef.submit();
-          console.log("res:", res1)
-        } catch (e) {
-          console.log("error:", e)
-        }
+        this.$router.push('/order/confirmation')
+        // try {
+        //   const res1 = await this.$refs.paymentRef.submit();
+        //   console.log("res:", res1)
+        // } catch (e) {
+        //   console.log("error:", e)
+        // }
         try {
           await this.$store.dispatch('setOrder', order)
-          this.$router.push('/order/confirmation')
+          // this.$router.push('/order/confirmation')
           const db = firebase.firestore();
           let HTMLmessage = this.form.message.replace(/\n/g, '<br/>');
           db.collection('email').add({

@@ -34,6 +34,9 @@ https://shopping-app-meduzza.netlify.app/
   
 ## UI
 <img src="src/assets/shopp-app.jpg" width="500" alt="ShoppApp">
+<img src="src/assets/women.jpg" width="500" alt="ShoppApp">
+<img src="src/assets/sign-in-img.jpg" width="500" alt="ShoppApp">
+<img src="src/assets/checkout.jpg" width="500" alt="ShoppApp">
 
 ## Project setup
 ```

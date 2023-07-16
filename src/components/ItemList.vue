@@ -13,9 +13,10 @@
       <div v-for="(product, index) in products" :key="index"
            class="item">
         <div class="favorite-icon">
-<!--          <div v-if="($store.getters.isUserLoggedIn  && !product.isFavorite ) || !$store.getters.isUserLoggedIn "-->
-<!--          <div v-if="!product.isFavorite"-->
-          <div v-if="!$store.getters.getFavorites(product)"
+          <!--          <div v-if="!$store.getters.getFavorites(product)"-->
+
+          <!--          <div v-if="($store.getters.isUserLoggedIn  && !product.isFavorite ) || !$store.getters.isUserLoggedIn "-->
+          <div v-if="!product.isFavorite"
                @click="addToFavorite(product)">
 <!--               @click="$store.state.user.favorites.push(product.id)">-->
             <svg
@@ -90,11 +91,11 @@ export default {
   methods: {
     async addToFavorite(product) {
       if (this.$store.getters.isUserLoggedIn && !product.isFavorite) {
-        this.$store.dispatch("toggleFavorite", product.id);
+        await  this.$store.dispatch("toggleFavorite", product.id);
         await this.$store.dispatch("addToFavorites", product);
         product.isFavorite = true;
       } else {
-        this.$store.dispatch("setProducts");
+        await  this.$store.dispatch("setProducts");
         this.showLoginMessageForFav = true;
         let clear = () => (this.showLoginMessageForFav = false)
         if (this.showLoginMessageForFav) {
@@ -103,7 +104,7 @@ export default {
       }
     },
     async removeFromFavorite(product) {
-      this.$store.dispatch("toggleFavorite", product.id);
+      await  this.$store.dispatch("toggleFavorite", product.id);
       await this.$store.dispatch("removeFromFavorites", product.id);
       product.isFavorite = false;
     },

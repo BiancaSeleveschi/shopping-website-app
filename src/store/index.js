@@ -776,15 +776,15 @@ export default new Vuex.Store({
             context.commit("UPDATE_STORE");
         },
         toggleFavorite(context, productId) {
-            if (this.state.user?.emailAddress !== undefined) {
+            // if (this.state.user?.emailAddress !== undefined) {
             let isFavorite = localStorage.getItem(`favorite_${productId}`) === 'true';
             localStorage.setItem(`favorite_${productId}`, String(!isFavorite));
             context.commit('SET_PRODUCTS_IS_FAVORITE', {productId, isFavorite: !isFavorite});
-            localStorage.setItem("user", JSON.stringify(this.state.user));
-            }
-            else {
-                context.commit('SET_PRODUCTS' );
-            }
+            // localStorage.setItem("user", JSON.stringify(this.state.user));
+            // }
+            // else {
+            //     context.commit('SET_PRODUCTS' );
+            // }
         },
         async addToFavorites(context, product) {
             try {
@@ -821,6 +821,7 @@ export default new Vuex.Store({
                     .then(() => {
                         console.log('Product removed from favorites successfully');
                         context.commit("REMOVE_FROM_FAVORITES", productId);
+                        context.commit("SET_PRODUCTS", productId);
                     })
                     .catch((error) => {
                         console.error('Error removing product from favorites in Firestore:', error);

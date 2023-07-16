@@ -5,6 +5,7 @@
           src="https://player.vimeo.com/external/396570197.hd.mp4?s=b31763e4f3b76f8c4fa6bd1d2be237ec6dc30442&profile_id=174&oauth2_token_id=57447761"
           type="video/mp4"/>
     </video>
+
     <div class="content">
       <h2 class="coupon text-secondary">Get a 10% discount with code <span class="text-light">EXTRA10</span> </h2>
       <div>
