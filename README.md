@@ -39,10 +39,18 @@ https://shopping-app-meduzza.netlify.app/
 <img src="src/assets/checkout.jpg" width="400" alt="ShoppApp">
 
 ## Environment Variables
+```
 VUE_APP_FIREBASE_API_ID
+```
+```
 VUE_APP_FIREBASE_API_KEY
+```
+```
 VUE_APP_STRIPE_PK
+```
+```
 VUE_APP_STRIPE_SECRET
+```
 
 ## Project setup
 ```
