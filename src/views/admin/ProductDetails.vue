@@ -21,14 +21,14 @@
       />
       <span class="prod-alert" v-show="showAlertPriceIncomplete">This field is required</span>
     </div>
-    <div class=" w-25 col-div mb-5 d-block m-auto">
+    <div class=" w-25 col-div mb-4 d-block m-auto">
       <p class="prod-pgf">Description</p>
-      <input
+      <textarea
           v-model="prod.description"
           type="text"
-          class="w-100 prod-input"
+          class="w-100 p-1 textarea-admin"
           required
-      />
+      ></textarea>
       <span class="prod-alert" v-show="showAlertDescriptionIncomplete">This field is required</span>
     </div>
     <div class=" w-25 col-div mb-5 d-block m-auto">
@@ -145,6 +145,11 @@ input[type=number]::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
   appearance: textfield;
+}
+
+.textarea-admin {
+  height: 120px;
+  outline: none;
 }
 
 .overlay {

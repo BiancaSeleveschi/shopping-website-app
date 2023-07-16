@@ -1,6 +1,5 @@
 <template>
-  <div class="outer-card">
-    <div class="text-decoration-none text-dark " @click="closeProfile">
+    <div class="text-decoration-none text-dark outer-card" @click="closeProfile">
       <router-link to="/settings" class="mt-4 px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/settings' }">
         Settings
       </router-link>
@@ -12,7 +11,6 @@
         Addresses
       </router-link>
       <p @click="logout" class="body-pgf w-100 mb-4">Logout</p>
-    </div>
   </div>
 </template>
 
@@ -25,10 +23,10 @@ export default {
     logout() {
       firebase.auth().signOut()
           .then(() => {
+            this.closeProfile()
             this.$store.commit("RESET_USER")
             console.log('User logged out')
             this.$router.push('/login')
-            this.closeProfile()
           })
           .catch((error) => {
             console.error('Error logging out: ', error);

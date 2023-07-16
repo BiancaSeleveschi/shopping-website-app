@@ -455,7 +455,7 @@ export default new Vuex.Store({
         getCart: (state) => state.user?.cart,
         isUserLoggedIn: (state) => state.user?.emailAddress !== undefined,
         getAllProducts: (state) => state.women.concat(state.men),
-        getFavorites: (state) => (product) => state.user?.favorites?.find(p=> p === product.id),
+        getFavorites: (state) => (product) => state.user?.favorites?.find(p => p === product.id),
         getCartTotalPrice: (state) => {
             let total = 0;
             if (state.user && state.user?.cart) {
@@ -574,13 +574,14 @@ export default new Vuex.Store({
             }
         },
         ADD_TO_CART(state, item) {
-            let itemCart = this.state.user?.cart.find((i) => i.id === item.product.id && item.size === i.size);
+            let itemCart = state.user?.cart.find((i) => i.product.id === item.product.id && item.size === i.size);
             if (itemCart) {
                 itemCart.quantity++;
                 itemCart.quantityPrice = itemCart.quantity * item.product.price;
                 itemCart.quantityPrice = parseFloat(itemCart.quantityPrice).toLocaleString('pt-BR', {maximumFractionDigits: 2});
-            } else {
-                this.state.user?.cart.push(item)
+            }
+            else {
+                state.user?.cart.push(item)
             }
             localStorage.setItem("user", JSON.stringify(state.user));
         },
@@ -593,12 +594,12 @@ export default new Vuex.Store({
         },
         SET_PRODUCTS_IS_FAVORITE(state, {productId, isFavorite}) {
             if (state.user?.emailAddress !== undefined) {
-                const product = state.women.find(p => p.id === productId) || state.men.find(p => p.id === productId);
-                if (product) {
-                    product.isFavorite = isFavorite;
+                const favProduct = state.user?.favorites.find(p => p.id === productId);
+                if (favProduct) {
+                    favProduct.isFavorite = isFavorite;
                 }
-                localStorage.setItem("user", JSON.stringify(state.user));
             }
+            localStorage.setItem("user", JSON.stringify(state.user));
         },
         UPDATE_PRODUCTS(state) {
             const allProducts = [...state.women, ...state.men];
@@ -776,15 +777,15 @@ export default new Vuex.Store({
             context.commit("UPDATE_STORE");
         },
         toggleFavorite(context, productId) {
-            // if (this.state.user?.emailAddress !== undefined) {
+            if (this.state.user?.emailAddress !== undefined) {
             let isFavorite = localStorage.getItem(`favorite_${productId}`) === 'true';
             localStorage.setItem(`favorite_${productId}`, String(!isFavorite));
             context.commit('SET_PRODUCTS_IS_FAVORITE', {productId, isFavorite: !isFavorite});
-            // localStorage.setItem("user", JSON.stringify(this.state.user));
-            // }
-            // else {
-            //     context.commit('SET_PRODUCTS' );
-            // }
+            }
+            else {
+                context.commit('SET_PRODUCTS' );
+            }
+            localStorage.setItem("user", JSON.stringify(this.state.user));
         },
         async addToFavorites(context, product) {
             try {
@@ -803,16 +804,15 @@ export default new Vuex.Store({
             try {
                 const userId = this.state.user?.id
                 const docRef = db.collection('users').doc(userId);
+                context.commit("ADD_TO_CART", item);
                 docRef.update({cart: this.state.user?.cart})
                     .then(() => {
                         console.log('Product added to cart successfully');
-                        context.commit("ADD_TO_CART", item);
                     }).catch(e => console.log(e))
             } catch (error) {
                 console.error('Error adding product to cart in Firestore: ', error);
             }
         },
-
         async removeFromFavorites(context, productId) {
             try {
                 const userId = this.state.user?.id;
@@ -821,7 +821,7 @@ export default new Vuex.Store({
                     .then(() => {
                         console.log('Product removed from favorites successfully');
                         context.commit("REMOVE_FROM_FAVORITES", productId);
-                        context.commit("SET_PRODUCTS", productId);
+                        // context.commit("SET_PRODUCTS", productId);
                     })
                     .catch((error) => {
                         console.error('Error removing product from favorites in Firestore:', error);
@@ -841,10 +841,30 @@ export default new Vuex.Store({
             context.commit("UPDATE_STORE");
         },
         increaseQuantity(context, item) {
-            context.commit("INCREASE_QUANTITY", item);
+            try {
+                const userId = this.state.user?.id
+                const docRef = db.collection('users').doc(userId);
+                context.commit("INCREASE_QUANTITY", item);
+                docRef.update({cart: this.state.user?.cart})
+                    .then(() => {
+                        console.log('Product added to cart successfully');
+                    }).catch(e => console.log(e))
+            } catch (error) {
+                console.error('Error adding product to cart in Firestore: ', error);
+            }
         },
         decreaseQuantity(context, item) {
-            context.commit("DECREASE_QUANTITY", item);
+            try {
+                const userId = this.state.user?.id
+                const docRef = db.collection('users').doc(userId);
+                context.commit("DECREASE_QUANTITY", item);
+                docRef.update({cart: this.state.user?.cart})
+                    .then(() => {
+                        console.log('Product added to cart successfully');
+                    }).catch(e => console.log(e))
+            } catch (error) {
+                console.error('Error adding product to cart in Firestore: ', error);
+            }
         },
         changePassword(context, newPassword) {
             context.commit("CHANGE_PASSWORD", newPassword);

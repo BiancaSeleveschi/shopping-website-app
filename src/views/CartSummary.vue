@@ -65,8 +65,8 @@ export default {
     },
     async continueToCheckout() {
       console.log("hostname", location.host)
-      const intent = await fetch("http://localhost:9999/.netlify/functions/stripe", {
-        // const intent = await fetch("https://shopping-app-meduzza.netlify.app/.netlify/functions/stripe", {
+      // const intent = await fetch("http://localhost:9999/.netlify/functions/stripe", {
+        const intent = await fetch("https://shopping-app-meduzza.netlify.app/.netlify/functions/stripe", {
         method: 'POST',
         body: JSON.stringify({amount: this.cartTotalPrice, currency: "RON"})
       })

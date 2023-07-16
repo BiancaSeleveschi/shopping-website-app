@@ -14,11 +14,10 @@
            class="item">
         <div class="favorite-icon">
           <!--          <div v-if="!$store.getters.getFavorites(product)"-->
+<!--          <div v-if="!product.isFavorite"-->
 
-          <!--          <div v-if="($store.getters.isUserLoggedIn  && !product.isFavorite ) || !$store.getters.isUserLoggedIn "-->
-          <div v-if="!product.isFavorite"
+                    <div v-if="($store.getters.isUserLoggedIn  && !product.isFavorite ) || !$store.getters.isUserLoggedIn "
                @click="addToFavorite(product)">
-<!--               @click="$store.state.user.favorites.push(product.id)">-->
             <svg
 
                 xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +94,7 @@ export default {
         await this.$store.dispatch("addToFavorites", product);
         product.isFavorite = true;
       } else {
-        await  this.$store.dispatch("setProducts");
+        // await  this.$store.dispatch("setProducts");
         this.showLoginMessageForFav = true;
         let clear = () => (this.showLoginMessageForFav = false)
         if (this.showLoginMessageForFav) {

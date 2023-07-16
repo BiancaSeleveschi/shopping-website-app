@@ -6,7 +6,8 @@
       <p v-show="showAlertTitleIncomplete" class="alert-input">This field is required</p>
       <input v-model="product.price" placeholder="Price" type="number" class="input-product d-block mb-3 m-auto">
       <p v-show="showAlertPriceIncomplete" class="alert-input">This field is required</p>
-      <input v-model="product.description" placeholder="Description" class="input-product d-block mb-3 m-auto">
+      <textarea v-model="product.description" placeholder="Description"
+                class="input-product textarea-admin d-block mb-3 m-auto"></textarea>
       <p v-show="showAlertDescriptionIncomplete" class="alert-input">This field is required</p>
       <input v-model="product.color" placeholder="Color" class="input-product d-block mb-3 m-auto">
       <p v-show="showAlertColorIncomplete" class="alert-input">This field is required</p>
@@ -108,6 +109,11 @@ export default {
 </script>
 
 <style scoped>
+.textarea-admin {
+  height: 120px;
+  outline: none;
+}
+
 .product-form-page {
   margin-top: 7%;
   margin-bottom: 20%;

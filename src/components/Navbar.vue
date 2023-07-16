@@ -66,7 +66,7 @@
       <NavCart @toggleCart="showCartDetails = false"/>
     </div>
     <div v-show="showProfile">
-      <NavProfile id="profile-div" @closeProfile="closeProfile"/>
+      <NavProfile id="profile-div" @closeProfile="showProfile = !showProfile"/>
     </div>
   </div>
 </template>
@@ -121,8 +121,8 @@ export default {
       this.showCartDetails = false;
     },
     closeProfile() {
-      this.showProfile = !this.showProfile;
-      this.showCartDetails = false;
+      this.showProfile = false;
+      this.showLogin = true;
     },
   },
 };
