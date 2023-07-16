@@ -52,6 +52,10 @@ VUE_APP_STRIPE_PK
 VUE_APP_STRIPE_SECRET
 ```
 
+## Roadmap 
+- add functionality for the admin to manage orders and returns
+- implement functionality to send an email with the placed order to the user
+
 ## Project setup
 ```
 npm install
