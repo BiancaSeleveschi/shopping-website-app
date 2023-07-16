@@ -33,10 +33,16 @@ As an admin, I can:
 https://shopping-app-meduzza.netlify.app/
   
 ## UI
-<img src="src/assets/shopp-app.jpg" width="500" alt="ShoppApp">
-<img src="src/assets/women.jpg" width="500" alt="ShoppApp">
-<img src="src/assets/sign-in-img.jpg" width="500" alt="ShoppApp">
-<img src="src/assets/checkout.jpg" width="500" alt="ShoppApp">
+<img src="src/assets/shopp-app.jpg" width="400" alt="ShoppApp">
+<img src="src/assets/women.jpg" width="400" alt="ShoppApp">
+<img src="src/assets/sign-in-img.jpg" width="400" alt="ShoppApp">
+<img src="src/assets/checkout.jpg" width="400" alt="ShoppApp">
+
+## Environment Variables
+VUE_APP_FIREBASE_API_ID
+VUE_APP_FIREBASE_API_KEY
+VUE_APP_STRIPE_PK
+VUE_APP_STRIPE_SECRET
 
 ## Project setup
 ```
