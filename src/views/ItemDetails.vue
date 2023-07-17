@@ -19,7 +19,7 @@
             {{ product.description }}
           </p>
           <div class="m-auto my-4">
-            <div v-if="!product.isFavorite">
+            <div v-if="!isFavorite(product)">
               <button @click="addToFavorite(product)"
                       class="p-2 bg-black text-white border border-3 add-fav-button">Add favorite
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart"
@@ -92,7 +92,6 @@ export default {
       size: "Size",
       error: false,
       isModalOpen: false,
-      isFavorite: false,
       showSuccessAlert: false,
       showLoginMessageForFav: false,
       showLoginMessageForCart: false,
@@ -138,23 +137,25 @@ export default {
         this.error = true;
       }
     },
+    isFavorite(product) {
+      return this.$store.state.user?.favorites?.some(favoriteProduct => favoriteProduct.id === product.id);
+    },
     async addToFavorite(product) {
-      if (this.isUserLoggedIn && !product.isFavorite) {
-        this.$store.dispatch("toggleFavorite", product.id);
-        await this.$store.dispatch("addToFavorites", product);
-        product.isFavorite = true;
-      } else {
+      if(!this.$store.getters.isUserLoggedIn){
         this.showLoginMessageForFav = true;
         let clear = () => (this.showLoginMessageForFav = false)
         if (this.showLoginMessageForFav) {
           setTimeout(clear, 3000);
         }
       }
+      if (!product.isFavorite) {
+        product.isFavorite = true;
+        await this.$store.dispatch("addToFavorites", product);
+      }
     },
     async removeFromFavorite(product) {
-      this.$store.dispatch("toggleFavorite", product.id);
-      await this.$store.dispatch("removeFromFavorites", product.id);
       product.isFavorite = false;
+      await this.$store.dispatch("removeFromFavorites", product.id);
     },
   },
 };
