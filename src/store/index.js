@@ -562,7 +562,6 @@ export default new Vuex.Store({
         },
         SET_LOGGED_USER(state, user) {
             state.user = user;
-            localStorage.setItem("user", JSON.stringify(state.user));
         },
         RESET_USER(state) {
             state.user = {};
