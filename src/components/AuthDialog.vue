@@ -2,7 +2,11 @@
   <div class="outer-card" @click="toggleLoginButton">
     <div class="card border border-dark" @click.stop>
       <div class="close" @click="toggleLoginButton">X</div>
-      <button class="login-div px-1 py-2" @click="login">Log in</button>
+      <router-link to="/login" class="text-decoration-none login-div px-1">
+        <div class=" px-1 py-2" @click="toggleLoginButton">
+          Login
+        </div>
+      </router-link>
       <router-link to="/register" class="card-footer">
         <div class="p-2 create-account" @click="toggleLoginButton">
           Create account
@@ -20,9 +24,6 @@ export default {
     toggleLoginButton() {
       this.$emit("toggleLoginButton");
     },
-    login() {
-      this.$router.push("/login")
-    }
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div class="text-decoration-none text-dark outer-card" @click="closeProfile">
+    <div class="text-decoration-none text-dark outer-card" >
       <router-link to="/settings" class="mt-4 px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/settings' }">
         Settings
       </router-link>
@@ -21,9 +21,9 @@ export default {
   name: "NavProfile",
   methods: {
     logout() {
+      this.$emit("closeProfile");
       firebase.auth().signOut()
           .then(() => {
-            this.closeProfile()
             this.$store.commit("RESET_USER")
             console.log('User logged out')
             this.$router.push('/login')
@@ -32,9 +32,6 @@ export default {
             console.error('Error logging out: ', error);
           })
     },
-    closeProfile() {
-      this.$emit('closeProfile')
-    }
   }
 }
 </script>

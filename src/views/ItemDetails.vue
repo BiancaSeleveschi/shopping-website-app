@@ -192,7 +192,7 @@ export default {
   cursor: pointer;
   position: absolute;
   margin-left: -40%;
-  margin-top: -13%;
+  margin-top: -10%;
 }
 
 .overlay {
@@ -210,7 +210,7 @@ export default {
 
 .alert-log {
   position: absolute;
-  top: 9%;
+  top: 11%;
   left: 52%;
   width: 36%;
   height: max-content;

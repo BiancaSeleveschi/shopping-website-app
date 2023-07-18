@@ -106,23 +106,14 @@ export default {
       this.showProfile = false;
     },
     showLoginBox() {
-      if (this.user) {
-        this.showLogin = false
-        this.showProfile = !this.showProfile;
-        this.showCartDetails = false;
-      } else {
         this.showLogin = !this.showLogin;
         this.showProfile = false;
         this.showCartDetails = false;
-      }
     },
     openProfile() {
       this.showProfile = !this.showProfile;
+      this.showLogin = false;
       this.showCartDetails = false;
-    },
-    closeProfile() {
-      this.showProfile = false;
-      this.showLogin = true;
     },
   },
 };

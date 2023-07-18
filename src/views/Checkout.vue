@@ -252,7 +252,7 @@ export default {
     cartTotalPrice() {
       let total;
       let price = parseFloat(this.subtotal.replace('.', ''));
-      if (this.isCheckboxStandardChecked || this.isCheckboxExpressChecked && !this.showEnterCouponCodeForm) {
+      if ((this.isCheckboxStandardChecked || this.isCheckboxExpressChecked )&& !this.showEnterCouponCodeForm) {
         total = price + parseFloat(this.shippingFinalCost);
       } else if (this.isCouponCodeInvalid && (this.isCheckboxStandardChecked || this.isCheckboxExpressChecked)) {
         total = price + parseFloat(this.shippingFinalCost);
@@ -396,6 +396,7 @@ export default {
       this.showPaymentMethodAlert = !this.isCheckboxCreditCardChecked
       if (!this.showShippingMethodAlert && !this.showPaymentMethodAlert && this.billingAddressSelected !== null
           && this.deliveryAddressSelected !== null) {
+        this.$store.state.user.cart = [];
         this.$router.push('/order/confirmation')
         // try {
         //   const res1 = await this.$refs.paymentRef.submit();
