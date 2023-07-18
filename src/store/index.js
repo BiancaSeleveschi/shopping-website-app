@@ -515,6 +515,7 @@ export default new Vuex.Store({
                     this.commit("UPDATE_STORE");
                 });
             state.user = JSON.parse(localStorage.getItem("user"))
+            state.user = JSON.parse(sessionStorage.getItem("user"))
             state.cart = JSON.parse(localStorage.getItem("cart"))
         },
         UPDATE_STORE(state) {
@@ -562,6 +563,7 @@ export default new Vuex.Store({
         },
         SET_LOGGED_USER(state, user) {
             state.user = user;
+            sessionStorage.setItem("user", JSON.stringify(state.user));
         },
         RESET_USER(state) {
             state.user = {};
