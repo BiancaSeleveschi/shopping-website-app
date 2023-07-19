@@ -7,24 +7,21 @@
         <h4 class=" m-5 border border-1 bg-white p-3 order-title">My orders</h4>
         <div v-for="(order, index) in $store.state.user?.orders" :key="index"
              class="border border-dark bg-light rounded-2 my-3 mx-5 p-3">
-          <h5 class="order-id py-2 fw-bold">Order: #{{ order.number }}</h5>
+          <h5 class="order-id py-2 fw-bold">Order: #{{ order.orderNumber }}</h5>
           <button class="btn btn-dark px-5" @click="showOrder(index)">
             {{ index === indexOrder ? 'Close' : 'See more' }}
           </button>
           <p class="border border-dark border-pgf"></p>
           <p class="date-status my-3">Data: <span class="fw-bold">{{ order.orderDate }}</span></p>
-          <p class="amount m-3">Total: <span class="text-danger">${{ order.amount }}</span></p>
           <p class="date-status w-100">Status: <span class="fw-bold">{{ order.status }}</span></p>
-          <router-link v-if="order.status === 'Received'"
-                       :to="{
-            name: 'ReturnItem',
-            params: {
-              order: order,
-            },
-          }"
-                       id="return" class="text-decoration-none w-100 fw-bold">Return
-          </router-link>
-          <div v-show="index === indexOrder" class="my-5 pt-5">
+          <p class="date-status w-100">Estimate arrival date: <span class="fw-bold">{{ order.estimateArrivalDate }}</span></p>
+          <router-link
+              v-if="order.status === 'Received' && isWithinThirtyDays(order.getEstimateArrivalDate) "
+              :to="{name: 'ReturnItem', params: { order: order}, }"
+              id="return" class="text-decoration-none w-100 fw-bold">Return</router-link>
+          <p class="amount me-3">Total: <span class="text-danger">${{ order.amount }}</span></p>
+
+          <div v-show="index === indexOrder" class="pt-5 product-list-div">
             <h5 class="products-header d-block m-auto">Products ordered</h5>
             <div v-for="(item,index) in order.productList"
                  :key="index" class="cart-item m-auto">
@@ -71,12 +68,17 @@ export default {
   data() {
     return {
       indexOrder: -1,
-      currentDate: new Date(),
     }
   },
   methods: {
     showOrder(index) {
       this.indexOrder = this.indexOrder !== index ? index : -1;
+    },
+    isWithinThirtyDays(arrivalDate) {
+      const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+      const currentDate = new Date();
+      const timeDifference = currentDate.getTime() - arrivalDate.getTime();
+      return timeDifference < thirtyDays;
     },
   }
 }
@@ -134,7 +136,9 @@ export default {
 .orders-page {
   padding-bottom: 150px;
 }
-
+.product-list-div {
+  margin-top: 15%;
+}
 .btn {
   float: right;
   border-radius: 0;
@@ -142,6 +146,7 @@ export default {
 
 .amount {
   float: right;
+  margin-top: -40px;
 }
 
 .date-status {

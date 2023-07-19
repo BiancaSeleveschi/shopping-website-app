@@ -13,7 +13,7 @@
         <p class="price">${{ item.quantityPrice }}</p>
       </div>
       <div class="cancel px-3 ">
-        <div @click.prevent="removeProductFromCart(item)">
+        <div @click.prevent="removeProductFromCart(index)">
           <svg xmlns="http://www.w3.org/2000/svg" width="16"
                height="16" fill="currentColor" class="bi bi-trash3"
                viewBox="0 0 16 16">
@@ -52,6 +52,7 @@ export default {
   data() {
     return {
       cart: this.$store.state.user?.cart,
+      isLoggedIn: this.$store.state.user?.isLoggedIn,
     };
   },
   computed: {
@@ -60,15 +61,16 @@ export default {
     }
   },
   methods: {
-    removeProductFromCart(product) {
-      this.$store.dispatch("removeProductFromCart", product);
+    removeProductFromCart(index) {
+      this.$store.dispatch("removeProductFromCart", index);
     },
     async continueToCheckout() {
       console.log("hostname", location.host)
       // const intent = await fetch("http://localhost:9999/.netlify/functions/stripe", {
         const intent = await fetch("https://shopping-app-meduzza.netlify.app/.netlify/functions/stripe", {
         method: 'POST',
-        body: JSON.stringify({amount: this.cartTotalPrice, currency: "RON"})
+        body: JSON.stringify({amount: this.cartTotalPrice, currency: "RON"}),
+        // mode: "no-cors"
       })
       const {paymentIntent} = await intent.json()
       console.log(paymentIntent)
@@ -203,41 +205,4 @@ export default {
   color: #656565;
 }
 
-.login-checkout {
-  width: 100%;
-  border-bottom: solid 1px #333;
-  display: grid;
-  background-color: #a2a2a2;
-  position: fixed;
-  top: -5%;
-  left: 0;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black background */
-  z-index: 1;
-}
-
-.center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 40%;
-  height: 40%;
-  background-color: #e7e7e7;
-  transform: translate(-50%, -50%); /* center the element */
-  z-index: 2;
-}
-
-.login {
-  width: 70%;
-  border: 1px solid black;
-  text-align: center;
-  color: black;
-  background-color: white;
-  transform: translateY(200%);
-}
-
-.login:hover {
-  background-color: black;
-  color: white;
-}
 </style>

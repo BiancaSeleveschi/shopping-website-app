@@ -1,7 +1,8 @@
 <template>
   <div class="admin-page">
-    <router-link to="/admin/product/create" class="add-button text-decoration-none d-block mb-4 px-3 py-2 btn btn-primary me-4">
-     + Add new Product
+    <router-link to="/admin/product/create"
+                 class="add-button text-decoration-none d-block mb-4 px-3 py-2 btn btn-primary me-4">
+      + Add new Product
     </router-link>
     <input
         v-model="searchWord"
@@ -74,8 +75,8 @@ export default {
 
 .add-button {
   float: right;
-  margin-top: -40px;
 }
+
 .shop-section {
   display: grid;
   grid-template-columns: repeat(auto-fill, 20em);

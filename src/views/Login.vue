@@ -79,8 +79,6 @@ export default {
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
     },
-    //TODO: authorization -> add role for user  ["USER", "ADMIN"]
-    //TODO: google authentication
 
     loginWithGoogle() {
       const db = firebase.firestore();

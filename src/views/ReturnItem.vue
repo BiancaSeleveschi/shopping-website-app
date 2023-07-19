@@ -3,7 +3,7 @@
     <div class="border-top pt-5 w-100">
       <NavProfile class="outer-card"/>
       <div v-if="order" class="bg-secondary bg-opacity-50" id="orders-card">
-        <h3 class="order-id py-5 fw-bold">Order: #{{ order.number }}</h3>
+        <h3 class="order-id py-5 fw-bold">Order: #{{ orderNumber }}</h3>
         <h5 class="products-header d-block m-auto">Products ordered</h5>
         <div v-for="(item,index) in order.productList"
              :key="index" class="cart-item m-auto">
@@ -16,23 +16,15 @@
               <input v-model="item.selected" type="checkbox" name="example" :value="item.product"/>
               <span class="ms-2"> Return this product</span>
             </div>
-            <p class="price">${{ item.quantityPrice }}</p>
+            <p class="price me-2">${{ item.quantityPrice }}</p>
           </div>
         </div>
         <textarea v-model="message" class="message m-auto mt-5" @input="checkCharacterLimit"
                   placeholder="Write your message"></textarea>
         <p>{{ remainingChars }} characters remaining</p>
-        <button @click="sendProductToReturn" class="btn btn-dark w-25 m-auto p-2 mt-3">SEND</button>
+        <p v-show="showImportantAlert" class="text-danger">Make sure that you have selected the right products.</p>
+        <button @click="sendProductToReturn" class="btn btn-dark w-25 m-auto p-2 mt-3 position-relative">SEND</button>
       </div>
-    </div>
-    <div v-show="showImportantAlert" class="overlay">
-      <transition name="fade">
-        <div class="alert alert-primary py-4"
-             role="alert">
-          <h5> Make sure that you have selected the right products. </h5>
-          <h5> You can't return twice.</h5>
-        </div>
-      </transition>
     </div>
     <div v-show="showSelectProductAlert " class="overlay">
       <transition name="fade">
@@ -57,9 +49,8 @@ export default {
     return {
       selectedProducts: this.getSelectedProducts(),
       message: '',
-      status: '',
       maxChars: 1000,
-      orderNumber: this.order.number,
+      orderNumber: this.order.orderNumber,
       hasReturned: false,
       isFirstClick: false,
       showImportantAlert: false,
@@ -80,12 +71,27 @@ export default {
         this.message = this.message.slice(0, this.maxChars);
       }
     },
-    async sendProductToReturn() {
+    getEstimatedPickupDate() {
       let currentDate = new Date();
+      let estimatedPickupDate = new Date();
+        estimatedPickupDate.setDate(currentDate.getDate() + 2);
+      let year = estimatedPickupDate.getFullYear();
+      let month = String(estimatedPickupDate.getMonth() + 1).padStart(2, '0');
+      let day = String(estimatedPickupDate.getDate()).padStart(2, '0');
+      let formattedEstimatedPickupDate = `${year}-${month}-${day}`;
+      return formattedEstimatedPickupDate;
+    },
+    getCurrentDate() {
+      let currentDate = new Date();
+
       let year = currentDate.getFullYear();
       let month = String(currentDate.getMonth() + 1).padStart(2, '0');
       let day = String(currentDate.getDate()).padStart(2, '0');
       let formattedDate = `${year}-${month}-${day}`;
+      return formattedDate;
+    },
+    async sendProductToReturn() {
+      let currentDate = new Date();
       let randomDays = Math.floor(Math.random() * (5 - 3 + 1)) + 3;
       let randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
       let estimatedDate = new Date(currentDate.getTime() + randomDays * 24 * 60 * 60 * 1000);
@@ -94,25 +100,23 @@ export default {
       } else {
         this.status = 'Pending';
       }
+      console.log('order num', this.orderNumber)
       let orderToReturn = {
         productList: this.getSelectedProducts(),
-        returnDate: formattedDate,
-        orderNumber: this.orderNumber,
+        returnDate: this.getCurrentDate(),
         returnNumber: randomNum,
+        orderNumber: this.orderNumber,
         message: this.message,
-        estimatedPickupDate: estimatedDate,
+        estimatedPickupDate: this.getEstimatedPickupDate(),
         status: this.status,
       }
+
       if (orderToReturn.productList.length > 0) {
         if (this.isFirstClick) {
           this.isFirstClick = false;
         } else {
           if (!this.hasReturned) {
             this.showImportantAlert = true;
-            let clear = () => (this.showImportantAlert = false)
-            if (this.showImportantAlert) {
-              setTimeout(clear, 5000);
-            }
           } else {
             await this.$store.dispatch('setReturn', orderToReturn);
             this.$router.push('/return/confirmation')
@@ -136,10 +140,6 @@ export default {
   float: left;
 }
 
-.border-pgf {
-  margin-top: 60px;
-}
-
 #orders-card {
   display: grid;
   width: 65%;
@@ -149,7 +149,6 @@ export default {
   border: 1px solid grey;
   float: right;
 }
-
 
 #size {
   text-transform: uppercase;

@@ -8,13 +8,13 @@
         <div v-for="(returnedOrder, index) in $store.state.user?.returns" :key="index"
              class="border border-dark bg-light rounded-2 my-3 mx-5 p-4 ">
           <h5 class="return-number mb-1 d-block fw-bold">Return: #{{ returnedOrder.returnNumber }}</h5>
-          <p class="details px-5" @click="showOrder(index, order)">
-            {{ index === indexOrder ? 'close' : 'view details' }}
+          <p class="details px-5" @click="showOrder(index, returnedOrder)">
+            {{ index === indexReturn ? 'close' : 'view details' }}
           </p>
           <p class="w-100 content-body">Data: <span class="fw-bold">{{ returnedOrder.returnDate }}</span></p>
           <p class="w-100 content-body">Returned products from the order:
             <span class="fw-bold">#{{ returnedOrder.orderNumber }}</span></p>
-          <div v-show="index === indexOrder" class="my-5 pt-5">
+          <div v-show="index === indexReturn" class="my-5 pt-5">
             <p class="return-type w-100 content-body">Return type:
               <span class="fw-bold">Courier</span></p>
             <p class="refund-type w-100 content-body">Money refund option:
@@ -50,13 +50,13 @@ export default {
   components: {NavProfile},
   data() {
     return {
-      indexOrder: -1,
+      indexReturn: -1,
     }
   },
   methods: {
-    showOrder(index,order) {
-      this.indexOrder = this.indexOrder !== index ? index : -1;
-      this.getReturnDate(order.orderDate)
+    showOrder(index,returnedOrder) {
+      this.indexReturn = this.indexReturn !== index ? index : -1;
+      this.getReturnDate(returnedOrder.orderDate)
     },
     getReturnDate(orderDate) {
       const currentDate = new Date();

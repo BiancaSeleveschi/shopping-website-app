@@ -135,7 +135,8 @@ import AddressForm from "@/components/AddressForm";
 import AddressList from "@/components/AddressList";
 import {v4 as uuid} from 'uuid';
 import {StripeElementPayment} from '@vue-stripe/vue-stripe';
-import {firebase} from "@/firebaseInit";
+// import {firebase} from "@/firebaseInit";
+import emailjs from "emailjs-com";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -270,6 +271,7 @@ export default {
     console.log("ok", this.clientSecret)
     console.log(this.$route.params.clientSecret);
     console.log(this.$refs.paymentRef)
+    console.log('this.form: ' ,this.form)
   },
   methods: {
     displayStripeError(e) {
@@ -365,6 +367,22 @@ export default {
       let formattedEstimatedArrivalDate = `${year}-${month}-${day}`;
       return formattedEstimatedArrivalDate;
     },
+    sendEmail(orderNumber,estimateArrivalDate) {
+      try {
+        emailjs.send('service_a5t9saj', 'template_pxs7hyg',
+            {
+              from_name: this.name,
+              to_name: this.$store.state.user?.firstName,
+              from_email: 'meduzza.shopp@gmail.com',
+              to_email: this.$store.state.user?.emailAddress,
+              order_no: orderNumber,
+              estimateArrivalDate: estimateArrivalDate,
+            }, 'aDIfVs3j8DVwr2L7K')
+
+      } catch (error) {
+        console.log({error})
+      }
+    },
     async pay() {
       let randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
       if (this.deliveryAddressSelected === null) {
@@ -396,8 +414,6 @@ export default {
       this.showPaymentMethodAlert = !this.isCheckboxCreditCardChecked
       if (!this.showShippingMethodAlert && !this.showPaymentMethodAlert && this.billingAddressSelected !== null
           && this.deliveryAddressSelected !== null) {
-        this.$store.state.user.cart = [];
-        this.$router.push('/order/confirmation')
         // try {
         //   const res1 = await this.$refs.paymentRef.submit();
         //   console.log("res:", res1)
@@ -405,22 +421,32 @@ export default {
         //   console.log("error:", e)
         // }
         try {
+          console.log('ORDER',order)
+
           await this.$store.dispatch('setOrder', order)
-          // this.$router.push('/order/confirmation')
-          const db = firebase.firestore();
-          let HTMLmessage = this.form.message.replace(/\n/g, '<br/>');
-          db.collection('email').add({
-            to: 'example@domain.com',
-            template: {
-              name: "template_name",
-              data: {
-                email: this.$store.state.user.emailAddress,
-                message: HTMLmessage
-              }
-            },
-            replyTo: this.form.email,
-            from: this.form.email,
-          })
+          console.log('ORDER  22222',order)
+          // this.state.user.cart = [];
+
+          this.sendEmail(order.orderNumber, order.estimateArrivalDate)
+          console.log('succes')
+          // const db = firebase.firestore();
+          // let HTMLmessage = this.form.message.replace(/\n/g, '<br/>');
+          // console.log('this.form: ' ,this.form)
+          // db.collection('email').add({
+          //
+          //   to: 'example@domain.com',
+          //   template: {
+          //     name: "template_name",
+          //     data: {
+          //       email: this.$store.state.user.emailAddress,
+          //       message: HTMLmessage
+          //     }
+          //   },
+          //   replyTo: this.form.email,
+          //   from: this.form.email,
+          // })
+          this.$router.push('/order/confirmation')
+          this.$store.commit('RESET_CART')
         } catch (error) {
           console.log(error)
         }

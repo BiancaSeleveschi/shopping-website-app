@@ -3,6 +3,7 @@ import Vuex from "vuex";
 // import {firebase, FieldValue} from "../firebaseInit.js";
 import {firebase} from "../firebaseInit.js";
 import 'firebase/firestore';
+// import contact from "@/views/Contact";
 
 const db = firebase.firestore();
 
@@ -569,11 +570,9 @@ export default new Vuex.Store({
             state.user = {};
             localStorage.setItem("user", JSON.stringify(state.user));
         },
-        UPDATE_CART(state, cart) {
-            if (state.user) {
-                state.user.cart = cart;
-                localStorage.setItem("user", JSON.stringify(state.user));
-            }
+        SET_ORDER(state, order) {
+            state.user?.orders?.push(order);
+            localStorage.setItem("user", JSON.stringify(state.user));
         },
         ADD_TO_CART(state, item) {
             let itemCart = state.user?.cart.find((i) => i.product.id === item.product.id && item.size === i.size);
@@ -581,11 +580,10 @@ export default new Vuex.Store({
                 itemCart.quantity++;
                 itemCart.quantityPrice = itemCart.quantity * item.product.price;
                 itemCart.quantityPrice = parseFloat(itemCart.quantityPrice).toLocaleString('pt-BR', {maximumFractionDigits: 2});
-            }
-            else {
+            } else {
                 state.user?.cart.push(item)
             }
-            localStorage.setItem("user", JSON.stringify(state.user));
+            sessionStorage.setItem("user", JSON.stringify(state.user));
         },
         ADD_FAVORITE_TO_ALL_PRODUCTS(state) {
             const allProducts = state.women.concat(state.men);
@@ -607,7 +605,7 @@ export default new Vuex.Store({
                 itemCart.quantityPrice = itemCart.quantity * item.product.price;
                 itemCart.quantityPrice = parseFloat(itemCart.quantityPrice).toLocaleString('pt-BR', {maximumFractionDigits: 2});
             }
-            localStorage.setItem('user', JSON.stringify(state.user))
+            sessionStorage.setItem('user', JSON.stringify(state.user))
         },
         DECREASE_QUANTITY(state, item) {
             let itemCart = state.user?.cart.find((i) => i.product.id === item.product.id && item.size === i.size);
@@ -616,16 +614,12 @@ export default new Vuex.Store({
                 itemCart.quantityPrice = itemCart.quantity * item.product.price;
                 itemCart.quantityPrice = parseFloat(itemCart.quantityPrice).toLocaleString('pt-BR', {maximumFractionDigits: 2});
             }
-            localStorage.setItem('user', JSON.stringify(state.user))
+            sessionStorage.setItem('user', JSON.stringify(state.user))
         },
         CHANGE_PASSWORD(state, newPassword) {
             if (state.user) {
                 state.user.password = newPassword
-
             }
-        },
-        REMOVE_CARD(state, index) {
-            state.user?.cards.splice(index, 1)
         },
         REMOVE_DELIVERY_ADDRESS(state, addresses) {
             if (state.user) {
@@ -639,25 +633,26 @@ export default new Vuex.Store({
                 localStorage.setItem("user", JSON.stringify(state.user));
             }
         },
-        SAVE_CARD(state, card) {
-            state.user?.cards.push(card)
-        },
         UPDATE_BILLING_ADDRESS(state, {address, index}) {
             if (state.user) {
                 state.user.billingAddresses[index] = address;
-                localStorage.setItem("user", JSON.stringify(state.user));
             }
+            localStorage.setItem("user", JSON.stringify(state.user));
         },
         UPDATE_DELIVERY_ADDRESS(state, {address, index}) {
             if (state.user) {
                 state.user.deliveryAddresses[index] = address;
-                localStorage.setItem("user", JSON.stringify(state.user));
             }
+            localStorage.setItem("user", JSON.stringify(state.user));
         },
         SET_USER_EMAIL(state, email) {
             if (state.user) {
                 state.user.email = email;
             }
+            localStorage.setItem("user", JSON.stringify(state.user));
+        },
+        RESET_CART(state) {
+                state.user.cart = [];
             localStorage.setItem("user", JSON.stringify(state.user));
         },
     },
@@ -694,6 +689,8 @@ export default new Vuex.Store({
                 .catch((error) => {
                     console.error("Error adding product: ", error);
                 });
+            localStorage.setItem("men", JSON.stringify(this.state.men));
+            localStorage.setItem("women", JSON.stringify(this.state.women));
         },
         addUser(context, user) {
             db.collection('users')
@@ -715,6 +712,8 @@ export default new Vuex.Store({
             } catch (error) {
                 console.error('Error deleting product:', error);
             }
+            localStorage.setItem("men", JSON.stringify(this.state.men));
+            localStorage.setItem("women", JSON.stringify(this.state.women));
         },
         async updateProduct(context, product) {
             try {
@@ -725,6 +724,8 @@ export default new Vuex.Store({
             } catch (error) {
                 console.error('Error updating product in Firestore: ', error);
             }
+            localStorage.setItem("men", JSON.stringify(this.state.men));
+            localStorage.setItem("women", JSON.stringify(this.state.women));
         },
         async updateProfile(firstName, lastName) {
             try {
@@ -737,6 +738,7 @@ export default new Vuex.Store({
             } catch (error) {
                 console.error('Error updating profile', error);
             }
+            sessionStorage.setItem('user', JSON.stringify(this.state.user))
         },
         async addToCart(context, item) {
             try {
@@ -750,6 +752,7 @@ export default new Vuex.Store({
             } catch (error) {
                 console.error('Error adding product to cart in Firestore: ', error);
             }
+            sessionStorage.setItem('user', JSON.stringify(this.state.user))
         },
         async removeProductFromCart(context, index) {
             try {
@@ -759,7 +762,7 @@ export default new Vuex.Store({
                 docRef.update({cart: this.state.user?.cart})
                     .then(() => {
                         console.log('Product removed from cart successfully');
-                        context.commit("UPDATE_CART", this.state.user?.cart);
+                        sessionStorage.setItem('user', JSON.stringify(this.state.user))
                     })
                     .catch((error) => {
                         console.error('Error removing product from cart in Firestore:', error);
@@ -802,10 +805,6 @@ export default new Vuex.Store({
                 console.error('Error removing product from favorites in Firestore: ', error);
             }
         },
-        updateProductsIsFavorite(context) {
-            context.commit("UPDATE_PRODUCT_IS_FAVORITE");
-            context.commit("UPDATE_STORE");
-        },
         increaseQuantity(context, item) {
             try {
                 const userId = this.state.user?.id
@@ -836,24 +835,21 @@ export default new Vuex.Store({
             context.commit("CHANGE_PASSWORD", newPassword);
             context.commit("UPDATE_STORE");
         },
-        saveCard(context, card) {
-            context.commit("SAVE_CARD", card);
-            context.commit("UPDATE_STORE");
-        },
-        removeCard(context, index) {
-            context.commit("REMOVE_CARD", index);
-            context.commit("UPDATE_STORE");
-        },
-        async setOrder(order) {
+        async setOrder2(context, order) {
             try {
+                console.log('ORDER in Vuex',order)
                 const userId = this.state.user?.id
                 const docRef = db.collection('users').doc(userId);
+                // if (!Array.isArray(this.state.user?.orders)) {
+                //     this.state.user.orders = [];
+                // }
                 this.state.user?.orders.push(order)
                 docRef.update({orders: this.state.user?.orders})
                     .then(() => {
+                        this.state.user.cart = [];
+                        console.log('ORDER 2 in Vuex',order)
                         console.log('Order set successfully');
-                        this.state.user.cart = [],
-                            localStorage.setItem("user", JSON.stringify(this.state.user));
+                        localStorage.setItem("user", JSON.stringify(this.state.user));
                     }).catch(e => console.log(e))
             } catch (error) {
                 console.error('Error adding order to orders ', error);
@@ -861,8 +857,23 @@ export default new Vuex.Store({
                 //alert.showError(error)
             }
         },
+        async setOrder(context, order) {
+            try {
+                const userId = this.state.user?.id
+                let docRef = db.collection('users').doc(userId);
+                this.state.user?.orders.push(order);
+                docRef.update({orders: this.state.user?.orders})
+                    .then(() => {
+                        console.log('Order set successfully');
+                    }).catch(e => console.log(e))
+            } catch (error) {
+                console.error('Error adding order to orders ', error);
+                throw new Error('Error adding order')
+            }
+        },
         async setReturn(context, orderToReturn) {
             try {
+                console.log('RETURN IN VUEW', orderToReturn)
                 const userId = this.state.user?.id
                 const docRef = db.collection('users').doc(userId);
                 if (!Array.isArray(this.state.user?.returns)) {
@@ -872,11 +883,11 @@ export default new Vuex.Store({
                 docRef.update({returns: this.state.user?.returns})
                     .then(() => {
                         console.log('Return set to returns successfully');
-                        localStorage.setItem("user", JSON.stringify(this.state.user));
                     }).catch(e => console.log(e))
             } catch (error) {
                 console.error('Error setting return', error);
             }
+            localStorage.setItem("user", JSON.stringify(this.state.user));
         },
         async saveDeliveryAddress(context, address) {
             try {
@@ -964,7 +975,6 @@ export default new Vuex.Store({
             } catch (error) {
                 console.error('Error removing billing address', error);
             }
-            context.commit("UPDATE_STORE");
         },
     },
     modules: {}

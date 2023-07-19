@@ -174,8 +174,8 @@ const routes = [
         name: "OrderConfirmation",
         component: OrderConfirmation,
         meta: {
-            requiresAuth: true,
-            roles: [Role.User]
+            requiresAuth: false,
+            // roles: [Role.User]
         }
     },
     {
@@ -208,8 +208,8 @@ const routes = [
         component: ReturnItem,
         props: true,
         meta: {
-            requiresAuth: true,
-            roles: [Role.User, Role.Admin]
+            requiresAuth: false,
+            // roles: [Role.User, Role.Admin]
         }
     }, {
         path: "/addresses",
@@ -269,8 +269,7 @@ const routes = [
         name: "PasswordReset",
         component: PasswordReset,
         meta: {
-            requiresAuth: true,
-            roles: [Role.User]
+            requiresAuth: false,
         }
     },
 ];
