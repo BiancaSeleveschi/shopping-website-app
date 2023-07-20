@@ -53,8 +53,10 @@ VUE_APP_STRIPE_SECRET
 ```
 
 ## Roadmap 
-- add functionality for the admin to manage orders and returns
-- implement functionality to send an email with the placed order to the user
+- ability to manage orders and returns by the Administrator.
+- personalized recommendations: Implementation of a recommendation system based on the user's purchase history to enhance the shopping experience.
+- product reviews and ratings: Adding a functionality that allows users to leave reviews and rate products.
+- pive chat for support: Implementing a live chat to provide real-time assistance to customers.
 
 ## Project setup
 ```
