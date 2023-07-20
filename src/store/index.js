@@ -548,6 +548,8 @@ export default new Vuex.Store({
             } else if (product.gender === 'men') {
                 state.men = state.men.filter(prod => prod.id !== product.id);
             }
+            localStorage.setItem("men", JSON.stringify(this.state.men));
+            localStorage.setItem("women", JSON.stringify(this.state.women));
         },
         UPDATE_PRODUCT(state, product) {
             if (product.gender === 'women') {
@@ -561,6 +563,8 @@ export default new Vuex.Store({
                     state.men.splice(productIndex, 1, product);
                 }
             }
+            localStorage.setItem("men", JSON.stringify(this.state.men));
+            localStorage.setItem("women", JSON.stringify(this.state.women));
         },
         SET_LOGGED_USER(state, user) {
             state.user = user;
@@ -568,10 +572,6 @@ export default new Vuex.Store({
         },
         RESET_USER(state) {
             state.user = {};
-            localStorage.setItem("user", JSON.stringify(state.user));
-        },
-        SET_ORDER(state, order) {
-            state.user?.orders?.push(order);
             localStorage.setItem("user", JSON.stringify(state.user));
         },
         ADD_TO_CART(state, item) {
@@ -592,6 +592,11 @@ export default new Vuex.Store({
             });
             localStorage.setItem("men", JSON.stringify(state.men)); // Store the updated men array in local storage
             localStorage.setItem("women", JSON.stringify(state.women)); // Store the updated allProducts array in local storage
+        },
+        ADD_TO_FAVORITES(state, product) {
+            product.isFavorite = true;
+            state.user.favorites.push(product);
+            localStorage.setItem("user", JSON.stringify(state.user));
         },
         REMOVE_FROM_FAVORITES(state, productId) {
             let index = state.user?.favorites.findIndex((p) => p.id === productId);
@@ -703,7 +708,7 @@ export default new Vuex.Store({
                     console.error("Error adding user: ", error);
                 });
         },
-        async removeProduct(context, product) {
+        async removeProductAsAdmin(context, product) {
             try {
                 const collectionName = product.gender === 'women' ? 'women' : 'men';
                 const collection = db.collection(collectionName);
@@ -712,8 +717,6 @@ export default new Vuex.Store({
             } catch (error) {
                 console.error('Error deleting product:', error);
             }
-            localStorage.setItem("men", JSON.stringify(this.state.men));
-            localStorage.setItem("women", JSON.stringify(this.state.women));
         },
         async updateProduct(context, product) {
             try {
@@ -769,7 +772,7 @@ export default new Vuex.Store({
                     });
 
             } catch (error) {
-                console.error('Error removing product from favorites in Firestore: ', error);
+                console.error('Error removing product from cart in Firestore: ', error);
             }
         },
         addIsFavoriteToAllProducts(context) {
@@ -777,26 +780,26 @@ export default new Vuex.Store({
         },
         async addToFavorites(context, product) {
             try {
-                const userId = this.state.user?.id
-                let docRef = db.collection('users').doc(userId);
+                const userId = this.state.user?.id;
+                const docRef = db.collection('users').doc(userId);
                 this.state.user?.favorites.push(product);
-                docRef.update({favorites: this.state.user?.favorites})
-                    .then(() => {
-                        console.log('Product added to favorites successfully');
-                    }).catch(e => console.log(e))
+                await docRef.update({ favorites: this.state.user?.favorites });
+                localStorage.setItem("user", JSON.stringify(this.state.user));
+                console.log('Product added to favorites successfully');
             } catch (error) {
-                console.error('Error adding product to favorites', error);
+                console.error('Error adding product to favorites in Firestore: ', error);
             }
-            localStorage.setItem('user', JSON.stringify(this.state.user))
         },
         async removeFromFavorites(context, productId) {
             try {
                 const userId = this.state.user?.id;
                 const docRef = db.collection('users').doc(userId);
-                context.commit("REMOVE_FROM_FAVORITES", productId);
+                let index = this.state.user?.favorites.findIndex((p) => p.id === productId);
+                this.state.user?.favorites.splice(index, 1);
                 docRef.update({favorites: this.state.user?.favorites})
                     .then(() => {
                         console.log('Product removed from favorites successfully');
+                        localStorage.setItem('user', JSON.stringify(this.state.user))
                     })
                     .catch((error) => {
                         console.error('Error removing product from favorites in Firestore:', error);

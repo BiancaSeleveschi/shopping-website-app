@@ -16,9 +16,9 @@ export default {
     this.$store.commit("INIT_STORE");
     // this.$store.dispatch('saveWomenProducts');
     // this.$store.dispatch('saveMenProducts');
-
   },
 };
+
 </script>
 
 <style>

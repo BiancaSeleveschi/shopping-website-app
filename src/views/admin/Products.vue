@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     removeProduct(product) {
-      this.$store.dispatch('removeProduct', product)
+      this.$store.dispatch('removeProductAsAdmin', product)
     },
   },
 }

@@ -19,7 +19,7 @@
             {{ product.description }}
           </p>
           <div class="m-auto my-4">
-            <div v-if="!isFavorite(product)">
+            <div v-if="!isFavorite(product) && !product.isFavorite">
               <button @click="addToFavorite(product)"
                       class="p-2 bg-black text-white border border-3 add-fav-button">Add favorite
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart"
@@ -51,7 +51,7 @@
               Add to cart
             </div>
           </form>
-          <div v-show="showSuccessAlert" class="overlay">
+          <div v-show="showSuccessAlertForProductAddedToCart" class="overlay">
             <transition name="fade">
               <div class="alert alert-success px-5 py-4" id="alert-cart" role="alert">
                 The product has been added to cart
@@ -66,7 +66,7 @@
               </div>
             </transition>
           </div>
-          <div v-show="showLoginMessageForCart" class="overlay">
+          <div v-show="showLoginMessageForAddToCart" class="overlay">
             <transition name="fade">
               <div class="alert-log alert alert-warning py-4"
                    role="alert">
@@ -92,9 +92,9 @@ export default {
       size: "Size",
       error: false,
       isModalOpen: false,
-      showSuccessAlert: false,
+      showSuccessAlertForProductAddedToCart: false,
       showLoginMessageForFav: false,
-      showLoginMessageForCart: false,
+      showLoginMessageForAddToCart: false,
       quantity: 1,
       isUserLoggedIn: this.$store.getters.isUserLoggedIn,
     };
@@ -120,16 +120,16 @@ export default {
         quantity: 1,
         quantityPrice: product.price,
       };
-      let clear = () => (this.showSuccessAlert = false)
+      let clear = () => (this.showSuccessAlertForProductAddedToCart = false)
       if (size !== "Size" && this.isUserLoggedIn ) {
         await this.$store.dispatch("addToCart", item);
-        this.showSuccessAlert = true;
+        this.showSuccessAlertForProductAddedToCart = true;
         setTimeout(clear, 3000);
       }
        if( !this.isUserLoggedIn) {
-          this.showLoginMessageForCart = true;
-          let clear = () => (this.showLoginMessageForCart = false)
-          if (this.showLoginMessageForCart) {
+          this.showLoginMessageForAddToCart = true;
+          let clear = () => (this.showLoginMessageForAddToCart = false)
+          if (this.showLoginMessageForAddToCart) {
             setTimeout(clear, 3000);
           }
       }
@@ -140,22 +140,26 @@ export default {
     isFavorite(product) {
       return this.$store.state.user?.favorites?.some(favoriteProduct => favoriteProduct.id === product.id);
     },
+
     async addToFavorite(product) {
-      if(!this.$store.getters.isUserLoggedIn){
+      if (this.isUserLoggedIn && !product.isFavorite) {
+        product.isFavorite = true;
+        await this.$store.dispatch("addToFavorites", product);
+      }
+      if(!this.isUserLoggedIn){
         this.showLoginMessageForFav = true;
         let clear = () => (this.showLoginMessageForFav = false)
         if (this.showLoginMessageForFav) {
           setTimeout(clear, 3000);
         }
       }
-      if (!product.isFavorite) {
-        product.isFavorite = true;
-        await this.$store.dispatch("addToFavorites", product);
-      }
+
     },
     async removeFromFavorite(product) {
       product.isFavorite = false;
       await this.$store.dispatch("removeFromFavorites", product.id);
+      // product.isFavorite = false;
+
     },
   },
 };
@@ -178,10 +182,8 @@ export default {
 }
 
 #alert-cart {
-  display: flow;
-  position: relative;
-  top: 11%;
-  left: 75%;
+  top: 12%;
+  left: 76%;
   height: max-content;
   width: max-content;
 }
@@ -221,7 +223,7 @@ export default {
   width: 40%;
   height: 70%;
   margin-left: 50%;
-  margin-top: -11%;
+  margin-top: -7%;
   font-family: "JetBrains Mono Light", sans-serif;
   text-align: center;
   justify-content: center;

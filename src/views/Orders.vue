@@ -16,7 +16,7 @@
           <p class="date-status w-100">Status: <span class="fw-bold">{{ order.status }}</span></p>
           <p class="date-status w-100">Estimate arrival date: <span class="fw-bold">{{ order.estimateArrivalDate }}</span></p>
           <router-link
-              v-if="order.status === 'Received' && isWithinThirtyDays(order.getEstimateArrivalDate) "
+              v-if="order.status === 'Received' && isWithinThirtyDays(order.estimateArrivalDate) "
               :to="{name: 'ReturnItem', params: { order: order}, }"
               id="return" class="text-decoration-none w-100 fw-bold">Return</router-link>
           <p class="amount me-3">Total: <span class="text-danger">${{ order.amount }}</span></p>
