@@ -74,10 +74,10 @@ export default {
     async selectAddress(index, address) {
       this.selectedAddressIndex = index;
       if (this.title === 'Delivery address') {
-      this.$emit('selectDeliveryAddress', address)
-        } else {
+        this.$emit('selectDeliveryAddress', address)
+      } else {
         this.$emit('selectBillingAddress', address)
-        }
+      }
     },
     async removeAddress(address, index) {
       if (this.addressesInitial === this.deliveryAddresses) {

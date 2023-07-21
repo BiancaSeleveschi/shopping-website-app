@@ -5,9 +5,8 @@
     <NavProfile class="outer-card"/>
     <div class="d-inline-bloc bg-secondary bg-opacity-10" id="address-card">
       <h4 class=" m-5 border border-1 bg-white p-3 address-title">My addresses</h4>
-      <AddressList :addresses="deliveryAddresses" title="Delivery address"/>
-      <AddressList :addresses="billingAddresses" title="Billing address"/>
-
+      <AddressList :addresses="this.$store.state.user?.deliveryAddresses" title="Delivery address"/>
+      <AddressList :addresses="this.$store.state.user?.billingAddresses" title="Billing address"/>
       <div class="mt-5 pt-5">
         <button class="btn btn-dark d-inline-block w-25 p-4 mx-5 mb-3 mt-5 address-title"
                 @click="openDeliveryAddressForm">Add delivery address
@@ -71,11 +70,15 @@ export default {
       isBillingAddressSaved: false,
       showAddingDeliveryAddressForm: false,
       showAddingBillingAddressForm: false,
-      deliveryAddresses: this.$store.state.user?.deliveryAddresses,
-      billingAddresses: this.$store.state.user?.billingAddresses,
-      currentDeliveryAddressesIndex: this.$store.getters.getCurrentDeliveryAddressesIndex,
-      currentBillingAddressesIndex: this.$store.getters.getCurrentBillingAddressesIndex,
     }
+  },
+  computed: {
+    currentBillingAddressesIndex() {
+      return this.$store.getters.getCurrentBillingAddressesIndex
+    },
+    currentDeliveryAddressesIndex() {
+      return this.$store.getters.getCurrentDeliveryAddressesIndex
+    },
   },
   methods: {
     closeAddingDeliveryAddressForm() {
@@ -89,7 +92,7 @@ export default {
         id: uuid(),
       };
       this.isDeliveryAddressSaved = true;
-      this.showAddingDeliveryAddressForm = false;
+      this.showAddingDeliveryAddressForm = !this.showAddingDeliveryAddressForm;
       let clear = () => (this.isDeliveryAddressSaved = false)
       if (this.isDeliveryAddressSaved) {
         setTimeout(clear, 3000);
@@ -177,25 +180,10 @@ input[type=number] {
   letter-spacing: 2px;
 }
 
-.overlay {
-  width: 100%;
-  border-bottom: solid 1px #333;
-  display: grid;
-  background-color: #a2a2a2;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1;
-}
-
 .alert-address {
   bottom: 200px;
-  /*left: 220px;*/
   width: 500px;
   display: flow;
-  /*transform: translateY(500%);*/
   margin: auto;
   z-index: 2;
 }

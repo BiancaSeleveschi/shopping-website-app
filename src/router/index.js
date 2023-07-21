@@ -28,7 +28,8 @@ import ProductDetails from "@/views/admin/ProductDetails";
 import Contact from "@/views/Contact";
 import ReturnItem from "@/views/ReturnItem";
 import OrderConfirmation from "@/views/OrderConfirmation";
-import ReturnConfirmation from "@/views/ReturnConfirmation";
+import ReturnConfirmation from "@/views/ReturnConfirmation"
+import MessageSentConfirmation from "@/views/MessageSentConfirmation";
 import {Role} from "../utils/role.js"
 import {firebase} from "@/firebaseInit.js"
 
@@ -187,6 +188,15 @@ const routes = [
         //     requiresAuth: true,
         //     roles: [Role.User]
         // }
+    },
+    {
+        path: "/message/sent/confirmation",
+        name: "MessageSentConfirmation",
+        component: MessageSentConfirmation,
+        // meta: {
+        //     requiresAuth: true,
+        //     roles: [Role.User]
+        // }
     }, {
         path: "/orders",
         name: "Orders",
@@ -284,11 +294,11 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     console.log(to.path, to.meta)
 
-            console.log(to.meta.requiresAuth)
+    console.log(to.meta.requiresAuth)
     if (to.meta.requiresAuth) {
         console.log(firebase.auth().currentUser)
 
-        if (firebase.auth().currentUser ) {
+        if (firebase.auth().currentUser) {
             // if(to.meta.roles.includes(auth.currentUser.role)){
             // if(to.meta.roles.includes("Admin") && auth?.currentUser.emailAddress === "bianca.seleveschi@gmail.com"){
             //             //     next()

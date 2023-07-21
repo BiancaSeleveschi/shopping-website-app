@@ -186,8 +186,8 @@ export default {
       shippingPrice: '',
       deliveryAddressSelected: null,
       billingAddressSelected: null,
-      currentDeliveryAddressesIndex: this.$store.getters.getCurrentDeliveryAddressesIndex,
-      currentBillingAddressesIndex: this.$store.getters.getCurrentBillingAddressesIndex,
+      // currentDeliveryAddressesIndex: this.$store.getters.getCurrentDeliveryAddressesIndex,
+      // currentBillingAddressesIndex: this.$store.getters.getCurrentBillingAddressesIndex,
 
       isFormValid: false,
       pk: process.env.VUE_APP_STRIPE_PK,
@@ -201,6 +201,12 @@ export default {
     };
   },
   computed: {
+    currentBillingAddressesIndex() {
+      return this.$store.getters.getCurrentBillingAddressesIndex
+    },
+    currentDeliveryAddressesIndex() {
+      return this.$store.getters.getCurrentDeliveryAddressesIndex
+    },
     existDeliveryAddresses() {
       return this.currentDeliveryAddressesIndex === 0
     },
@@ -266,27 +272,9 @@ export default {
     },
     addNewDeliveryAddress() {
       this.isAddDeliveryAddressButtonClicked = !this.isAddDeliveryAddressButtonClicked
-      this.address = {
-        country: '',
-        city: '',
-        street: '',
-        number: '',
-        blockStaircase: '',
-        postcode: '',
-        id: uuid(),
-      }
     },
     addNewBillingAddress() {
       this.isAddBillingAddressButtonClicked = !this.isAddBillingAddressButtonClicked
-      this.address = {
-        country: '',
-        city: '',
-        street: '',
-        number: '',
-        blockStaircase: '',
-        postcode: '',
-        id: uuid(),
-      }
     },
     closeAddingDeliveryAddressForm() {
       this.deliveryAddress = {

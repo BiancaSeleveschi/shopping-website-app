@@ -3,7 +3,7 @@
     <div class="gradient-section ">
       <h1 class="title text-light">Shopping bag</h1>
     </div>
-    <div v-for="(item,index) in cart"
+    <div v-for="(item,index) in this.$store.state.user?.cart"
          :key="index" class="cart-item m-auto mb-3">
       <img :src="item.product.img"/>
       <div>
@@ -49,12 +49,6 @@
 
 export default {
   name: "CartSummary",
-  data() {
-    return {
-      cart: this.$store.state.user?.cart,
-      isLoggedIn: this.$store.state.user?.isLoggedIn,
-    };
-  },
   computed: {
     cartTotalPrice() {
       return this.$store.getters.getCartTotalPrice
@@ -66,7 +60,7 @@ export default {
     },
 
     async continueToCheckout() {
-      for (let item of this.cart) {
+      for (let item of this.$store.state.user?.cart) {
         try {
           const intent = await fetch("http://localhost:9999/.netlify/functions/stripe", {
             // const intent = await fetch("https://shopping-app-meduzza.netlify.app/.netlify/functions/stripe", {

@@ -14,11 +14,14 @@
           <p class="border border-dark border-pgf"></p>
           <p class="date-status my-3">Data: <span class="fw-bold">{{ order.orderDate }}</span></p>
           <p class="date-status w-100">Status: <span class="fw-bold">{{ order.status }}</span></p>
-          <p class="date-status w-100">Estimate arrival date: <span class="fw-bold">{{ order.estimateArrivalDate }}</span></p>
+          <p class="date-status w-100">Estimate arrival date: <span class="fw-bold">{{
+              order.estimateArrivalDate
+            }}</span></p>
           <router-link
               v-if="order.status === 'Received' && isWithinThirtyDays(order.estimateArrivalDate) "
               :to="{name: 'ReturnItem', params: { order: order}, }"
-              id="return" class="text-decoration-none w-100 fw-bold">Return</router-link>
+              id="return" class="text-decoration-none w-100 fw-bold">Return
+          </router-link>
           <p class="amount me-3">Total: <span class="text-danger">${{ order.amount }}</span></p>
 
           <div v-show="index === indexOrder" class="pt-5 product-list-div">
@@ -137,9 +140,11 @@ export default {
 .orders-page {
   padding-bottom: 150px;
 }
+
 .product-list-div {
   margin-top: 15%;
 }
+
 .btn {
   float: right;
   border-radius: 0;

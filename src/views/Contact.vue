@@ -49,7 +49,7 @@ export default {
               from_email: this.email,
               message: this.message
             }, 'aDIfVs3j8DVwr2L7K')
-
+        this.$router.push('/message/sent/confirmation');
       } catch (error) {
         console.log({error})
       }

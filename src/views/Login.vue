@@ -86,11 +86,11 @@ export default {
       firebase.auth()
           .signInWithPopup(GoogleAuthProvider)
           .then((result) => {
-            /** @type {firebase.auth.OAuthCredential} */
+            /** @type {firebase.auth.AuthCredential} */
             const credential = result.credential;
             const token = credential.accessToken;
             const user = result.user;
-            console.log(token, user, "sign in succesfully", result.additionalUserInfo.isNewUser)
+            console.log(token, user, "sign in successfully", result.additionalUserInfo.isNewUser)
             if (result.additionalUserInfo.isNewUser) {
               let account = {
                 title: "",
@@ -237,9 +237,11 @@ export default {
   background-color: #ffffff;
   color: #000000;
 }
+
 .google-button-text {
   text-transform: uppercase;
 }
+
 .google-button {
   display: inline-flex;
   align-items: center;

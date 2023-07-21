@@ -36,7 +36,7 @@ export default {
   name: "CartItem",
   methods: {
     async removeProductFromCart(index) {
-        await this.$store.dispatch("removeProductFromCart", index);
+      await this.$store.dispatch("removeProductFromCart", index);
     },
     increaseQuantity(item) {
       this.$store.dispatch('increaseQuantity', item)

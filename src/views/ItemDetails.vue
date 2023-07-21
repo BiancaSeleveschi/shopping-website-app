@@ -121,19 +121,18 @@ export default {
         quantityPrice: product.price,
       };
       let clear = () => (this.showSuccessAlertForProductAddedToCart = false)
-      if (size !== "Size" && this.isUserLoggedIn ) {
+      if (size !== "Size" && this.isUserLoggedIn) {
         await this.$store.dispatch("addToCart", item);
         this.showSuccessAlertForProductAddedToCart = true;
         setTimeout(clear, 3000);
       }
-       if( !this.isUserLoggedIn) {
-          this.showLoginMessageForAddToCart = true;
-          let clear = () => (this.showLoginMessageForAddToCart = false)
-          if (this.showLoginMessageForAddToCart) {
-            setTimeout(clear, 3000);
-          }
-      }
-       else if(size === "Size"){
+      if (!this.isUserLoggedIn) {
+        this.showLoginMessageForAddToCart = true;
+        let clear = () => (this.showLoginMessageForAddToCart = false)
+        if (this.showLoginMessageForAddToCart) {
+          setTimeout(clear, 3000);
+        }
+      } else if (size === "Size") {
         this.error = true;
       }
     },
@@ -147,7 +146,7 @@ export default {
         this.$store.commit("ADD_TO_FAVORITES", product);
         await this.$store.dispatch("addToFavorites", product);
       }
-      if(!this.isUserLoggedIn){
+      if (!this.isUserLoggedIn) {
         this.showLoginMessageForFav = true;
         let clear = () => (this.showLoginMessageForFav = false)
         if (this.showLoginMessageForFav) {

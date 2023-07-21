@@ -5,7 +5,9 @@
         <h1 class="navbar-brand text-light">M.E.D.U.Z.Z.A</h1>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav fw-bold ">
-            <router-link v-show="this.$store.state.user?.emailAddress === 'bianca.ciocan97@gmail.com'" class="nav-link" to="/admin/products">Admin</router-link>
+            <router-link v-show="this.$store.state.user?.emailAddress === 'bianca.seleveschi.com'" class="nav-link"
+                         to="/admin/products">Admin
+            </router-link>
             <router-link class="nav-link" to="/">Home</router-link>
             <router-link class="nav-link" to="/women">Women</router-link>
             <router-link class="nav-link" to="/men">Men</router-link>
@@ -107,9 +109,9 @@ export default {
       this.showProfile = false;
     },
     showLoginBox() {
-        this.showLogin = !this.showLogin;
-        this.showProfile = false;
-        this.showCartDetails = false;
+      this.showLogin = !this.showLogin;
+      this.showProfile = false;
+      this.showCartDetails = false;
     },
     openProfile() {
       this.showProfile = !this.showProfile;

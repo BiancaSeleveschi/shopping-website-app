@@ -54,7 +54,7 @@ export default {
     }
   },
   methods: {
-    showOrder(index,returnedOrder) {
+    showOrder(index, returnedOrder) {
       this.indexReturn = this.indexReturn !== index ? index : -1;
       this.getReturnDate(returnedOrder.orderDate)
     },
@@ -165,7 +165,6 @@ export default {
   -webkit-user-select: none;
   -ms-user-select: none;
 }
-
 
 .item-product-title {
   display: flex;

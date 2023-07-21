@@ -1,16 +1,16 @@
 <template>
-    <div class="text-decoration-none text-dark outer-card" >
-      <router-link to="/settings" class="mt-4 px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/settings' }">
-        Settings
-      </router-link>
-      <router-link to="/orders" class="px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/orders' }">Orders
-      </router-link>
-      <router-link to="/returns" class="px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/returns' }">Returns
-      </router-link>
-      <router-link to="/addresses" class="px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/addresses' }">
-        Addresses
-      </router-link>
-      <p @click="logout" class="body-pgf w-100 mb-4">Logout</p>
+  <div class="text-decoration-none text-dark outer-card">
+    <router-link to="/settings" class="mt-4 px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/settings' }">
+      Settings
+    </router-link>
+    <router-link to="/orders" class="px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/orders' }">Orders
+    </router-link>
+    <router-link to="/returns" class="px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/returns' }">Returns
+    </router-link>
+    <router-link to="/addresses" class="px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/addresses' }">
+      Addresses
+    </router-link>
+    <p @click="logout" class="body-pgf w-100 mb-4">Logout</p>
   </div>
 </template>
 

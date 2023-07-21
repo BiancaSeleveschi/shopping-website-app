@@ -11,7 +11,7 @@ import ItemList from "@/components/ItemList";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Men",
-  components: { ItemList},
+  components: {ItemList},
   data() {
     return {
       image: "men2.avif",

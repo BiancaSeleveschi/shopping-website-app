@@ -47,7 +47,6 @@ export default {
   props: ['order'],
   data() {
     return {
-      selectedProducts: this.getSelectedProducts(),
       message: '',
       maxChars: 1000,
       orderNumber: this.order.orderNumber,
@@ -74,7 +73,7 @@ export default {
     getEstimatedPickupDate() {
       let currentDate = new Date();
       let estimatedPickupDate = new Date();
-        estimatedPickupDate.setDate(currentDate.getDate() + 2);
+      estimatedPickupDate.setDate(currentDate.getDate() + 2);
       let year = estimatedPickupDate.getFullYear();
       let month = String(estimatedPickupDate.getMonth() + 1).padStart(2, '0');
       let day = String(estimatedPickupDate.getDate()).padStart(2, '0');
@@ -83,7 +82,6 @@ export default {
     },
     getCurrentDate() {
       let currentDate = new Date();
-
       let year = currentDate.getFullYear();
       let month = String(currentDate.getMonth() + 1).padStart(2, '0');
       let day = String(currentDate.getDate()).padStart(2, '0');
@@ -110,7 +108,6 @@ export default {
         estimatedPickupDate: this.getEstimatedPickupDate(),
         status: this.status,
       }
-
       if (orderToReturn.productList.length > 0) {
         if (this.isFirstClick) {
           this.isFirstClick = false;
@@ -167,7 +164,7 @@ export default {
   top: 0;
   left: 0;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black background */
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
 

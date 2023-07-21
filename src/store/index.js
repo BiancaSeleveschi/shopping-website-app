@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-// import {firebase, FieldValue} from "../firebaseInit.js";
 import {firebase} from "../firebaseInit.js";
 import 'firebase/firestore';
 // import contact from "@/views/Contact";
@@ -570,9 +569,9 @@ export default new Vuex.Store({
         ADD_FAVORITE_TO_ALL_PRODUCTS(state) {
             const allProducts = state.women.concat(state.men);
             allProducts.forEach(product => {
-                    product.isFavorite = false;
+                product.isFavorite = false;
             });
-       },
+        },
         ADD_TO_FAVORITES(state, product) {
             product.isFavorite = true;
             state.user.favorites.push(product);
@@ -609,26 +608,20 @@ export default new Vuex.Store({
         REMOVE_BILLING_ADDRESS(state, addresses) {
             if (state.user) {
                 state.user.billingAddresses = addresses;
-                localStorage.setItem("user", JSON.stringify(state.user));
+                sessionStorage.setItem("user", JSON.stringify(state.user));
             }
         },
         UPDATE_BILLING_ADDRESS(state, {address, index}) {
             if (state.user) {
                 state.user.billingAddresses[index] = address;
+                sessionStorage.setItem("user", JSON.stringify(state.user));
             }
-            localStorage.setItem("user", JSON.stringify(state.user));
         },
         UPDATE_DELIVERY_ADDRESS(state, {address, index}) {
             if (state.user) {
                 state.user.deliveryAddresses[index] = address;
             }
-            localStorage.setItem("user", JSON.stringify(state.user));
-        },
-        SET_USER_EMAIL(state, email) {
-            if (state.user) {
-                state.user.email = email;
-            }
-            localStorage.setItem("user", JSON.stringify(state.user));
+            sessionStorage.setItem("user", JSON.stringify(state.user));
         },
         RESET_CART(state) {
             state.user.cart = [];
@@ -749,9 +742,6 @@ export default new Vuex.Store({
                 console.error('Error removing product from cart in Firestore: ', error);
             }
         },
-        addIsFavoriteToAllProducts(context) {
-            context.commit("ADD_FAVORITE_TO_ALL_PRODUCTS");
-        },
         async addToFavorites(context, item) {
             try {
                 const userId = this.state.user?.id
@@ -791,10 +781,10 @@ export default new Vuex.Store({
                 context.commit("INCREASE_QUANTITY", item);
                 docRef.update({cart: this.state.user?.cart})
                     .then(() => {
-                        console.log('Product added to cart successfully');
+                        console.log('Product increasing to cart successfully');
                     }).catch(e => console.log(e))
             } catch (error) {
-                console.error('Error adding product to cart in Firestore: ', error);
+                console.error('Error increasing product to cart', error);
             }
         },
         decreaseQuantity(context, item) {
@@ -804,10 +794,10 @@ export default new Vuex.Store({
                 context.commit("DECREASE_QUANTITY", item);
                 docRef.update({cart: this.state.user?.cart})
                     .then(() => {
-                        console.log('Product added to cart successfully');
+                        console.log('Product decreased to cart successfully');
                     }).catch(e => console.log(e))
             } catch (error) {
-                console.error('Error adding product to cart in Firestore: ', error);
+                console.error('Error decreasing product to cart', error);
             }
         },
         changePassword(context, newPassword) {
@@ -824,14 +814,13 @@ export default new Vuex.Store({
                         console.log('Order set successfully');
                     }).catch(e => console.log(e))
             } catch (error) {
-                console.error('Error adding order to orders ', error);
+                console.error('Error adding order to orders', error);
                 throw new Error('Error adding order')
             }
             localStorage.setItem("user", JSON.stringify(this.state.user));
         },
         async setReturn(context, orderToReturn) {
             try {
-                console.log('RETURN IN VUEW', orderToReturn)
                 const userId = this.state.user?.id
                 const docRef = db.collection('users').doc(userId);
                 if (!Array.isArray(this.state.user?.returns)) {
@@ -840,7 +829,7 @@ export default new Vuex.Store({
                 this.state.user?.returns.push(orderToReturn)
                 docRef.update({returns: this.state.user?.returns})
                     .then(() => {
-                        console.log('Return set to returns successfully');
+                        console.log('Return set in returns successfully');
                     }).catch(e => console.log(e))
             } catch (error) {
                 console.error('Error setting return', error);
@@ -869,7 +858,7 @@ export default new Vuex.Store({
                 docRef.update({billingAddresses: this.state.user?.billingAddresses})
                     .then(() => {
                         console.log('Billing address added successfully');
-                        localStorage.setItem("user", JSON.stringify(this.state.user));
+                        sessionStorage.setItem("user", JSON.stringify(this.state.user));
                     }).catch(e => console.log(e))
             } catch (error) {
                 console.error('Error adding billing address', error);
@@ -912,7 +901,6 @@ export default new Vuex.Store({
                     .catch((error) => {
                         console.error('Error removing delivery address', error);
                     });
-
             } catch (error) {
                 console.error('Error removing delivery address', error);
             }
@@ -928,7 +916,7 @@ export default new Vuex.Store({
                         context.commit("REMOVE_BILLING_ADDRESS", this.state.user?.billingAddresses);
                     })
                     .catch((error) => {
-                        console.error('Error removing billing address ', error);
+                        console.error('Error removing billing address', error);
                     });
             } catch (error) {
                 console.error('Error removing billing address', error);

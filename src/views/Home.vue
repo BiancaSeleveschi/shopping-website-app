@@ -7,7 +7,7 @@
     </video>
 
     <div class="content">
-      <h2 class="coupon text-secondary">Get a 10% discount with code <span class="text-light">EXTRA10</span> </h2>
+      <h2 class="coupon text-secondary">Get a 10% discount with code <span class="text-light">EXTRA10</span></h2>
       <div>
         <router-link to="/wo23/collection">
           <button class="nav-button">WO23 Collection</button>
