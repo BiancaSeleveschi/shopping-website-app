@@ -11,7 +11,7 @@
         </transition>
       </div>
       <div v-for="(product, index) in products" :key="index" class="item">
-        <div v-if="!isFavorite(product)"  class="favorite-icon" @click="addToFavorite(product)">
+        <div v-if="!isFavorite(product)" class="favorite-icon" @click="addToFavorite(product)">
           <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -70,12 +70,11 @@ export default {
   props: ["products", 'image'],
   data() {
     return {
-      // isFavorite: false,
       showLoginMessageForFav: false,
       productIndex: -1,
     };
   },
-  created() {
+  mounted() {
     this.$store.commit('ADD_FAVORITE_TO_ALL_PRODUCTS');
   },
   methods: {
@@ -83,7 +82,7 @@ export default {
       return this.$store.state.user?.favorites?.some((favoriteProduct) => favoriteProduct.id === product.id);
     },
     async addToFavorite(product) {
-      if(!this.$store.getters.isUserLoggedIn){
+      if (!this.$store.getters.isUserLoggedIn) {
         this.showLoginMessageForFav = true;
         let clear = () => (this.showLoginMessageForFav = false)
         if (this.showLoginMessageForFav) {

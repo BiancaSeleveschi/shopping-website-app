@@ -41,6 +41,7 @@ export default {
         }, 5000);
       } else {
         this.$router.push('/cart/summary')
+        this.toggleCartButton()
       }
     }
   },

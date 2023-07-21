@@ -48,9 +48,7 @@
 
         <div class="border border-1 bg-light mx-5">
           <h4 class="mt-4 ps-5 content-title">Change password</h4>
-
           <div class="w-50 ps-5 mt-4 col-div mb-5">
-
             <p>PASSWORD*</p>
             <input
                 v-model="password"
@@ -66,6 +64,7 @@
             <span class="password-toggle" @click="toggleCurrentPasswordVisibility">{{
                 currentPasswordToggleLabel
               }}</span>
+            <router-link to="/password" class="forgot-password">Forgot my password</router-link>
           </div>
           <div class="w-50 ps-5 mt-3 d-inline-block col-div mb-5">
             <p>NEW PASSWORD*</p>
@@ -226,16 +225,13 @@ export default {
     },
     changePassword() {
       const authUser = firebase.auth().currentUser;
-      console.log(authUser.email, this.password)
       try {
         const credential = EmailAuthProvider.credential(
             authUser.email,
             this.password
         )
-        console.log(credential)
         authUser.reauthenticateWithCredential(credential)
-            .then(u => {
-              console.log(u)
+            .then(() => {
               this.isCurrentPasswordMismatch = false;
               this.isInvalidNewPassword = this.verifyNewPassword();
               if (!this.isInvalidNewPassword) {
@@ -246,7 +242,6 @@ export default {
               if (!this.isCurrentPasswordMismatch && !this.isInvalidNewPassword && !this.isInvalidConfirmedPassword) {
                 authUser.updatePassword(this.newPassword)
                     .then(() => {
-                      console.log('Update successful.')
                       console.log('Password changed successfully!')
                       this.showPasswordChangedSuccessfullyAlert = true
                       let clear = () => (this.showPasswordChangedSuccessfullyAlert = false)
@@ -313,6 +308,20 @@ export default {
   margin-top: 130px;
   margin-bottom: 50px;
   letter-spacing: 2px;
+}
+
+.forgot-password {
+  font-size: 14px;
+  margin-top: 18px;
+  text-decoration: underline;
+  color: black;
+  position: relative;
+  display: grid;
+  width: max-content;
+}
+
+.forgot-password:hover {
+  color: #7c7c7c;
 }
 
 .overlay {

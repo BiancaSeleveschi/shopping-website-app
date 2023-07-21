@@ -81,9 +81,9 @@ export default {
     },
     async removeAddress(address, index) {
       if (this.addressesInitial === this.deliveryAddresses) {
-        await this.$store.dispatch('removeDeliveryAddress', address.id, index)
+        await this.$store.dispatch('removeDeliveryAddress', index)
       } else if (this.addressesInitial === this.billingAddresses) {
-        await this.$store.dispatch('removeBillingAddress', address.id, index)
+        await this.$store.dispatch('removeBillingAddress', index)
       }
     },
 

@@ -43,7 +43,7 @@ export default {
   methods: {
     sendEmail() {
       try {
-        emailjs.send('service_a5t9saj', 'template_siye7am',
+        emailjs.send('service_7lazobg', 'template_siye7am',
             {
               from_name: this.name,
               from_email: this.email,

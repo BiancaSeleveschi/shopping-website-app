@@ -10,7 +10,7 @@
 
       <div class="mt-5 pt-5">
         <button class="btn btn-dark d-inline-block w-25 p-4 mx-5 mb-3 mt-5 address-title"
-                @click="openAddressForm">Add delivery address
+                @click="openDeliveryAddressForm">Add delivery address
         </button>
         <button class="btn btn-dark d-inline-block w-25 p-4 mx-5 mb-3 mt-5 address-title"
                 @click="openBillingAddressForm">Add billing address
@@ -20,23 +20,19 @@
                        titleInitial="Delivery address"
                        :isAddressSavedInitial="false"
                        :index="currentDeliveryAddressesIndex"
-                       @closeDeliveryAddressForm="closeAddingDeliveryAddressForm"/>
+                       @closeAddressForm="closeAddingDeliveryAddressForm"/>
         </div>
-        <div v-else-if="isAddressSaved && !showAddingDeliveryAddressForm">
-          <transition name="fade">
-            <div class="p-4 alert alert-success bg-opacity-10">
-              The address have been saved
-            </div>
-          </transition>
-        </div>
+
         <div v-show="showAddingBillingAddressForm">
           <AddressForm :addressInitial="billingAddress"
                        titleInitial="Billing address"
                        :isAddressSavedInitial="false"
                        :index="currentBillingAddressesIndex"
-                       @closeDeliveryAddressForm="closeAddingDeliveryAddressForm"/>
+                       @closeAddressForm="closeAddingBillingAddressForm"/>
         </div>
       </div>
+      <p v-show="isDeliveryAddressSaved || isBillingAddressSaved"
+         class="p-4 alert alert-success bg-opacity-10 alert-address">The address have been saved</p>
     </div>
   </div>
 </template>
@@ -71,7 +67,8 @@ export default {
         postcode: '',
         id: uuid(),
       },
-      isAddressSaved: false,
+      isDeliveryAddressSaved: false,
+      isBillingAddressSaved: false,
       showAddingDeliveryAddressForm: false,
       showAddingBillingAddressForm: false,
       deliveryAddresses: this.$store.state.user?.deliveryAddresses,
@@ -82,22 +79,40 @@ export default {
   },
   methods: {
     closeAddingDeliveryAddressForm() {
+      this.deliveryAddress = {
+        country: '',
+        city: '',
+        street: '',
+        number: '',
+        blockStaircase: '',
+        postcode: '',
+        id: uuid(),
+      };
+      this.isDeliveryAddressSaved = true;
       this.showAddingDeliveryAddressForm = false;
-      this.isAddressSaved = true;
-      let clear = () => (this.isAddressSaved = false)
-      if (this.isAddressSaved) {
+      let clear = () => (this.isDeliveryAddressSaved = false)
+      if (this.isDeliveryAddressSaved) {
         setTimeout(clear, 3000);
       }
     },
     closeAddingBillingAddressForm() {
+      this.billingAddress = {
+        country: '',
+        city: '',
+        street: '',
+        number: '',
+        blockStaircase: '',
+        postcode: '',
+        id: uuid(),
+      };
       this.showAddingBillingAddressForm = false;
-      this.isAddressSaved = true;
-      let clear = () => (this.isAddressSaved = false)
-      if (this.isAddressSaved) {
+      this.isBillingAddressSaved = true;
+      let clear = () => (this.isBillingAddressSaved = false)
+      if (this.isBillingAddressSaved) {
         setTimeout(clear, 3000);
       }
     },
-    openAddressForm() {
+    openDeliveryAddressForm() {
       this.showAddingDeliveryAddressForm = !this.showAddingDeliveryAddressForm;
       this.showAddingBillingAddressForm = false;
     },
@@ -144,6 +159,7 @@ input[type=number] {
   padding-bottom: 150px;
 }
 
+
 .outer-card {
   text-align: left;
   float: left;
@@ -161,11 +177,27 @@ input[type=number] {
   letter-spacing: 2px;
 }
 
-.alert {
-  width: 400px;
+.overlay {
+  width: 100%;
+  border-bottom: solid 1px #333;
+  display: grid;
+  background-color: #a2a2a2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.alert-address {
+  bottom: 200px;
+  /*left: 220px;*/
+  width: 500px;
   display: flow;
-  transform: translateY(500%);
+  /*transform: translateY(500%);*/
   margin: auto;
+  z-index: 2;
 }
 
 </style>

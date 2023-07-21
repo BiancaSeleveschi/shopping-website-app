@@ -75,9 +75,10 @@ export default {
       this.indexOrder = this.indexOrder !== index ? index : -1;
     },
     isWithinThirtyDays(arrivalDate) {
-      const thirtyDays = 30 * 24 * 60 * 60 * 1000;
       const currentDate = new Date();
-      const timeDifference = currentDate.getTime() - arrivalDate.getTime();
+      const parsedArrivalDate = new Date(arrivalDate);
+      const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+      const timeDifference = currentDate.getTime() - parsedArrivalDate.getTime();
       return timeDifference < thirtyDays;
     },
   }

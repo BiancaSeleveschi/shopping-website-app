@@ -64,22 +64,30 @@ export default {
     removeProductFromCart(index) {
       this.$store.dispatch("removeProductFromCart", index);
     },
+
     async continueToCheckout() {
-      console.log("hostname", location.host)
-      // const intent = await fetch("http://localhost:9999/.netlify/functions/stripe", {
-        const intent = await fetch("https://shopping-app-meduzza.netlify.app/.netlify/functions/stripe", {
-        method: 'POST',
-        body: JSON.stringify({amount: this.cartTotalPrice, currency: "RON"}),
-        // mode: "no-cors"
-      })
-      const {paymentIntent} = await intent.json()
-      console.log(paymentIntent)
-      await this.$router.push({
-        name: 'Checkout',
-        params: {
-          clientSecret: paymentIntent?.client_secret,
+      for (let item of this.cart) {
+        try {
+          const intent = await fetch("http://localhost:9999/.netlify/functions/stripe", {
+            // const intent = await fetch("https://shopping-app-meduzza.netlify.app/.netlify/functions/stripe", {
+            method: 'POST',
+            body: JSON.stringify({amount: (item.product.price * item.quantity), currency: 'USD'}),
+          })
+          console.log("Response:", intent);
+          const {paymentIntent} = await intent.json()
+          console.log("paymentIntent: ", paymentIntent);
+          if (this.$router.currentRoute.name !== 'Checkout') {
+            this.$router.push({
+              name: 'Checkout',
+              params: {
+                clientSecret: paymentIntent.client_secret,
+              }
+            });
+          }
+        } catch (error) {
+          console.error(`Error processing payment for ${item.name}:`, error);
         }
-      })
+      }
     },
   },
 }

@@ -39,64 +39,65 @@ const routes = [
         path: "/",
         name: "home",
         component: Home,
-        meta: {
-            requiresAuth: false,
-        }
+        // meta: {
+        //     requiresAuth: false,
+        // }
     },
     {
         path: "/about",
         name: "about",
         component: About,
-        meta: {
-            requiresAuth: false,
-        }
+        // meta: {
+        //     requiresAuth: false,
+        // }
     },
     {
         path: "/search",
         name: "search",
         component: Search,
-        meta: {
-            requiresAuth: false,
-        }
+        // meta: {
+        //     requiresAuth: false,
+        // }
     },
     {
         path: "/men",
         name: "Men",
         component: Men,
-        meta: {
-            requiresAuth: false,
-        }
+        // meta: {
+        //     requiresAuth: false,
+        // }
     },
     {
         path: "/me23/collection",
         name: "ME23Collection",
         component: ME23Collection,
-        meta: {
-            requiresAuth: false,
-        }
+        // meta: {
+        //     requiresAuth: false,
+        // }
     },
     {
         path: "/wo23/collection",
         name: "WO23Collection",
         component: WO23Collection,
-        meta: {
-            requiresAuth: false,
-        }
+        // meta: {
+        //     requiresAuth: false,
+        // }
     }, {
         path: "/women",
         name: "Women",
         component: Women,
         meta: {
             requiresAuth: false,
+            roles: [Role.User, Role.Admin]
         }
     }, {
         path: "/contact",
         name: "Contact",
         component: Contact,
-        meta: {
-            requiresAuth: true,
-            roles: [Role.User, Role.Admin]
-        }
+        // meta: {
+        //     requiresAuth: true,
+        //     roles: [Role.User, Role.Admin]
+        // }
     },
     {
         path: "/admin/product/create",
@@ -130,118 +131,118 @@ const routes = [
         name: "ItemDetails",
         component: ItemDetails,
         props: true,
-        meta: {
-            requiresAuth: false,
-        }
+        // meta: {
+        //     requiresAuth: false,
+        // }
     },
     {
         path: "/cart/summary",
         name: "CartSummary",
         component: CartSummary,
-        meta: {
-            requiresAuth: true,
-            roles: [Role.User, Role.Admin]
-        }
+        // meta: {
+        //     requiresAuth: true,
+        //     roles: [Role.User, Role.Admin]
+        // }
     },
     {
         path: "/favorites",
         name: "Favorites",
         component: Favorites,
         props: true,
-        meta: {
-            requiresAuth: false,
-        }
+        // meta: {
+        //     requiresAuth: false,
+        // }
     },
     {
         path: "/privacy/policy",
         name: "PrivacyPolicy",
         component: PrivacyPolicy,
-        meta: {
-            requiresAuth: false,
-        }
+        // meta: {
+        //     requiresAuth: false,
+        // }
     },
     {
         path: "/settings",
         name: "Settings",
         component: Settings,
-        meta: {
-            requiresAuth: true,
-            roles: [Role.User, Role.Admin]
-        }
+        // meta: {
+        //     requiresAuth: true,
+        //     roles: [Role.User, Role.Admin]
+        // }
     },
     {
         path: "/order/confirmation",
         name: "OrderConfirmation",
         component: OrderConfirmation,
-        meta: {
-            requiresAuth: false,
-            // roles: [Role.User]
-        }
+        // meta: {
+        //     requiresAuth: false,
+        //     // roles: [Role.User]
+        // }
     },
     {
         path: "/return/confirmation",
         name: "ReturnConfirmation",
         component: ReturnConfirmation,
-        meta: {
-            requiresAuth: true,
-            roles: [Role.User]
-        }
+        // meta: {
+        //     requiresAuth: true,
+        //     roles: [Role.User]
+        // }
     }, {
         path: "/orders",
         name: "Orders",
         component: Orders,
-        meta: {
-            requiresAuth: true,
-            roles: [Role.User, Role.Admin]
-        }
+        // meta: {
+        //     requiresAuth: true,
+        //     roles: [Role.User, Role.Admin]
+        // }
     }, {
         path: "/returns",
         name: "Returns",
         component: Returns,
-        meta: {
-            requiresAuth: true,
-            roles: [Role.User, Role.Admin]
-        }
+        // meta: {
+        //     requiresAuth: true,
+        //     roles: [Role.User, Role.Admin]
+        // }
     }, {
         path: "/return/item",
         name: "ReturnItem",
         component: ReturnItem,
         props: true,
-        meta: {
-            requiresAuth: false,
-            // roles: [Role.User, Role.Admin]
-        }
+        // meta: {
+        //     requiresAuth: false,
+        //     // roles: [Role.User, Role.Admin]
+        // }
     }, {
         path: "/addresses",
         name: "Addresses",
         component: Addresses,
-        meta: {
-            requiresAuth: true,
-            roles: [Role.User, Role.Admin]
-        }
+        // meta: {
+        //     requiresAuth: true,
+        //     roles: [Role.User, Role.Admin]
+        // }
     }, {
         path: "/terms",
         name: "TermsConditions",
         component: TermsConditions,
-        meta: {
-            requiresAuth: false,
-        }
+        // meta: {
+        //     requiresAuth: false,
+        // }
     },
     {
         path: "/cookie",
         name: "CookieStatement",
         component: CookieStatement,
-        meta: {
-            requiresAuth: false,
-        }
+        // meta: {
+        //     requiresAuth: false,
+        // }
     },
     {
         path: "/service",
         name: "Service",
         component: Service,
-        meta: {
-            requiresAuth: false,
-        }
+        // meta: {
+        //     requiresAuth: false,
+        // }
     },
     {
         path: "/checkout",
@@ -253,24 +254,24 @@ const routes = [
         path: "/login",
         name: "Login",
         component: Login,
-        meta: {
-            requiresAuth: false,
-        }
+        // meta: {
+        //     requiresAuth: false,
+        // }
     },
     {
         path: "/register",
         name: "Register",
         component: Register,
-        meta: {
-            requiresAuth: false,
-        }
+        // meta: {
+        //     requiresAuth: false,
+        // }
     }, {
         path: "/password",
         name: "PasswordReset",
         component: PasswordReset,
-        meta: {
-            requiresAuth: false,
-        }
+        // meta: {
+        //     requiresAuth: false,
+        // }
     },
 ];
 

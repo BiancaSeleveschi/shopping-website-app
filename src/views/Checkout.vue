@@ -135,7 +135,7 @@ import AddressForm from "@/components/AddressForm";
 import AddressList from "@/components/AddressList";
 import {v4 as uuid} from 'uuid';
 import {StripeElementPayment} from '@vue-stripe/vue-stripe';
-// import {firebase} from "@/firebaseInit";
+import {firebase} from "@/firebaseInit";
 import emailjs from "emailjs-com";
 
 export default {
@@ -145,6 +145,24 @@ export default {
   props: ['clientSecret'],
   data() {
     return {
+      deliveryAddress: {
+        country: '',
+        city: '',
+        street: '',
+        number: '',
+        blockStaircase: '',
+        postcode: '',
+        id: uuid(),
+      },
+      billingAddress: {
+        country: '',
+        city: '',
+        street: '',
+        number: '',
+        blockStaircase: '',
+        postcode: '',
+        id: uuid(),
+      },
       subtotal: this.$store.getters.getCartTotalPrice,
       cart: this.$store.state.user?.cart,
       showEnterCouponCodeForm: false,
@@ -168,6 +186,9 @@ export default {
       shippingPrice: '',
       deliveryAddressSelected: null,
       billingAddressSelected: null,
+      currentDeliveryAddressesIndex: this.$store.getters.getCurrentDeliveryAddressesIndex,
+      currentBillingAddressesIndex: this.$store.getters.getCurrentBillingAddressesIndex,
+
       isFormValid: false,
       pk: process.env.VUE_APP_STRIPE_PK,
       elementsOptions: {
@@ -180,40 +201,6 @@ export default {
     };
   },
   computed: {
-    deliveryAddress() {
-      let address = {};
-      if (this.existDeliveryAddresses) {
-        address = {
-          country: '',
-          city: '',
-          street: '',
-          number: '',
-          blockStaircase: '',
-          postcode: '',
-        }
-      }
-      return address
-    },
-    billingAddress() {
-      let address = {};
-      if (this.existBillingAddresses) {
-        address = {
-          country: '',
-          city: '',
-          street: '',
-          number: '',
-          blockStaircase: '',
-          postcode: '',
-        }
-      }
-      return address
-    },
-    currentBillingAddressesIndex() {
-      return this.$store.getters.getCurrentBillingAddressesIndex
-    },
-    currentDeliveryAddressesIndex() {
-      return this.$store.getters.getCurrentDeliveryAddressesIndex
-    },
     existDeliveryAddresses() {
       return this.currentDeliveryAddressesIndex === 0
     },
@@ -253,7 +240,7 @@ export default {
     cartTotalPrice() {
       let total;
       let price = parseFloat(this.subtotal.replace('.', ''));
-      if ((this.isCheckboxStandardChecked || this.isCheckboxExpressChecked )&& !this.showEnterCouponCodeForm) {
+      if ((this.isCheckboxStandardChecked || this.isCheckboxExpressChecked) && !this.showEnterCouponCodeForm) {
         total = price + parseFloat(this.shippingFinalCost);
       } else if (this.isCouponCodeInvalid && (this.isCheckboxStandardChecked || this.isCheckboxExpressChecked)) {
         total = price + parseFloat(this.shippingFinalCost);
@@ -271,7 +258,6 @@ export default {
     console.log("ok", this.clientSecret)
     console.log(this.$route.params.clientSecret);
     console.log(this.$refs.paymentRef)
-    console.log('this.form: ' ,this.form)
   },
   methods: {
     displayStripeError(e) {
@@ -287,6 +273,7 @@ export default {
         number: '',
         blockStaircase: '',
         postcode: '',
+        id: uuid(),
       }
     },
     addNewBillingAddress() {
@@ -298,13 +285,32 @@ export default {
         number: '',
         blockStaircase: '',
         postcode: '',
+        id: uuid(),
       }
     },
     closeAddingDeliveryAddressForm() {
+      this.deliveryAddress = {
+        country: '',
+        city: '',
+        street: '',
+        number: '',
+        blockStaircase: '',
+        postcode: '',
+        id: uuid(),
+      };
       this.isAddDeliveryAddressButtonClicked = false;
       this.currentDeliveryAddressesIndex = this.currentDeliveryAddressesIndex !== 0;
     },
     closeAddingBillingAddressForm() {
+      this.billingAddress = {
+        country: '',
+        city: '',
+        street: '',
+        number: '',
+        blockStaircase: '',
+        postcode: '',
+        id: uuid(),
+      };
       this.isAddBillingAddressButtonClicked = false;
       this.currentBillingAddressesIndex = this.currentBillingAddressesIndex !== 0;
     },
@@ -367,9 +373,9 @@ export default {
       let formattedEstimatedArrivalDate = `${year}-${month}-${day}`;
       return formattedEstimatedArrivalDate;
     },
-    sendEmail(orderNumber,estimateArrivalDate) {
+    sendEmail(orderNumber, estimateArrivalDate) {
       try {
-        emailjs.send('service_a5t9saj', 'template_pxs7hyg',
+        emailjs.send('service_7lazobg', 'template_pxs7hyg',
             {
               from_name: this.name,
               to_name: this.$store.state.user?.firstName,
@@ -378,9 +384,17 @@ export default {
               order_no: orderNumber,
               estimateArrivalDate: estimateArrivalDate,
             }, 'aDIfVs3j8DVwr2L7K')
-
       } catch (error) {
         console.log({error})
+      }
+    },
+    getStatus() {
+      let currentDate = new Date();
+      let estimatedArrivalDate = new Date(this.getEstimateArrivalDate());
+      if (currentDate > estimatedArrivalDate) {
+        return "Processing";
+      } else {
+        return "Received";
       }
     },
     async pay() {
@@ -390,13 +404,6 @@ export default {
       }
       if (this.billingAddressSelected === null) {
         this.isBillingAddressNotSelected = true;
-      }
-      let statusOrder;
-      let currentDate = new Date();
-      if (currentDate > this.getEstimateArrivalDate()) {
-        statusOrder = 'Received'
-      } else {
-        statusOrder = "Processing"
       }
       let order = {
         id: uuid(),
@@ -408,45 +415,37 @@ export default {
         deliveryAddress: this.deliveryAddressSelected,
         billingAddress: this.billingAddressSelected,
         paymentMethod: 'Credit Card',
-        status: statusOrder,
+        status: this.getStatus(),
       }
+
       this.showShippingMethodAlert = !this.isCheckboxStandardChecked && !this.isCheckboxExpressChecked
       this.showPaymentMethodAlert = !this.isCheckboxCreditCardChecked
       if (!this.showShippingMethodAlert && !this.showPaymentMethodAlert && this.billingAddressSelected !== null
           && this.deliveryAddressSelected !== null) {
-        // try {
-        //   const res1 = await this.$refs.paymentRef.submit();
-        //   console.log("res:", res1)
-        // } catch (e) {
-        //   console.log("error:", e)
-        // }
         try {
-          console.log('ORDER',order)
-
+          const res1 = await this.$refs.paymentRef.submit();
+          console.log("res:", res1)
+        } catch (e) {
+          console.log("error:", e)
+        }
+        try {
           await this.$store.dispatch('setOrder', order)
-          console.log('ORDER  22222',order)
-          // this.state.user.cart = [];
-
           this.sendEmail(order.orderNumber, order.estimateArrivalDate)
-          console.log('succes')
-          // const db = firebase.firestore();
-          // let HTMLmessage = this.form.message.replace(/\n/g, '<br/>');
-          // console.log('this.form: ' ,this.form)
-          // db.collection('email').add({
-          //
-          //   to: 'example@domain.com',
-          //   template: {
-          //     name: "template_name",
-          //     data: {
-          //       email: this.$store.state.user.emailAddress,
-          //       message: HTMLmessage
-          //     }
-          //   },
-          //   replyTo: this.form.email,
-          //   from: this.form.email,
-          // })
-          this.$router.push('/order/confirmation')
-          this.$store.commit('RESET_CART')
+          const db = firebase.firestore();
+          let HTMLmessage = this.form.message.replace(/\n/g, '<br/>');
+          db.collection('email').add({
+
+            to: 'example@domain.com',
+            template: {
+              name: "template_name",
+              data: {
+                email: this.$store.state.user.emailAddress,
+                message: HTMLmessage
+              }
+            },
+            replyTo: this.form.email,
+            from: this.form.email,
+          })
         } catch (error) {
           console.log(error)
         }

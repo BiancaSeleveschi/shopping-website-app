@@ -12,7 +12,7 @@ import Footer from "@/components/Footer";
 
 export default {
   components: {Footer, Navbar},
-  created() {
+  mounted() {
     this.$store.commit("INIT_STORE");
     // this.$store.dispatch('saveWomenProducts');
     // this.$store.dispatch('saveMenProducts');

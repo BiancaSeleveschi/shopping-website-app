@@ -12,8 +12,9 @@ export default {
   name: "OrderConfirmation",
   mounted() {
     const queryParams = this.$route.query;
+    this.$store.commit('RESET_CART')
     console.log("query params:", queryParams)
-    console.log("query params:", queryParams.redirect_status)
+    console.log("query params status:", queryParams.redirect_status)
   },
 }
 </script>

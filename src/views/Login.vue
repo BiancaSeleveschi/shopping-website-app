@@ -23,7 +23,7 @@
           required
       />
       <span class="password-toggle" @click="togglePasswordVisibility">{{ passwordToggleLabel }}</span>
-      <router-link to="/password" id="forgot-password" class="m-auto mb-3">Forgot my password</router-link>
+      <router-link to="/password" class="m-auto mb-3 forgot-password">Forgot my password</router-link>
       <div class="account-pgf mb-5">
         <input type="checkbox" name="example" value="1"/>
         Sign-up for newsletter
@@ -164,7 +164,7 @@ export default {
   margin-bottom: 50px;
 }
 
-#forgot-password {
+.forgot-password {
   font-size: 12px;
   text-decoration: underline;
   color: black;
@@ -173,7 +173,7 @@ export default {
   width: max-content;
 }
 
-#forgot-password:hover {
+.forgot-password:hover {
   color: #7c7c7c;
 }
 

@@ -144,6 +144,7 @@ export default {
     async addToFavorite(product) {
       if (this.isUserLoggedIn && !product.isFavorite) {
         product.isFavorite = true;
+        this.$store.commit("ADD_TO_FAVORITES", product);
         await this.$store.dispatch("addToFavorites", product);
       }
       if(!this.isUserLoggedIn){
@@ -158,8 +159,6 @@ export default {
     async removeFromFavorite(product) {
       product.isFavorite = false;
       await this.$store.dispatch("removeFromFavorites", product.id);
-      // product.isFavorite = false;
-
     },
   },
 };

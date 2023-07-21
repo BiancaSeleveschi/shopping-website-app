@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     async saveAddress() {
-      let newAddress = {
+      let address = {
         country: '',
         city: '',
         street: '',
@@ -109,12 +109,12 @@ export default {
       if (this.isAddressComplete && !this.isAddressSaved) {
         if (this.title === 'Delivery address') {
           await this.$store.dispatch('saveDeliveryAddress', this.address)
+          this.address = address
           this.$emit('closeAddressForm')
-          this.address = newAddress
         } else if (this.title === 'Billing address') {
           await this.$store.dispatch('saveBillingAddress', this.address)
           this.$emit('closeAddressForm')
-          this.address = newAddress
+          this.address = address
         }
       }
     },

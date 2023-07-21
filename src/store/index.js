@@ -502,7 +502,6 @@ export default new Vuex.Store({
                         womenProducts.push({...doc.data(), id: doc.id});
                     });
                     state.women = womenProducts;
-                    this.commit("UPDATE_STORE");
                 });
 
             db.collection("men")
@@ -513,11 +512,9 @@ export default new Vuex.Store({
                         menProducts.push({...doc.data(), id: doc.id});
                     });
                     state.men = menProducts;
-                    this.commit("UPDATE_STORE");
                 });
             state.user = JSON.parse(localStorage.getItem("user"))
             state.user = JSON.parse(sessionStorage.getItem("user"))
-            state.cart = JSON.parse(localStorage.getItem("cart"))
         },
         UPDATE_STORE(state) {
             localStorage.setItem("state", JSON.stringify(state));
@@ -551,21 +548,6 @@ export default new Vuex.Store({
             localStorage.setItem("men", JSON.stringify(this.state.men));
             localStorage.setItem("women", JSON.stringify(this.state.women));
         },
-        UPDATE_PRODUCT(state, product) {
-            if (product.gender === 'women') {
-                const productIndex = state.women.findIndex(product => product.id === product.id);
-                if (productIndex !== -1) {
-                    state.women.splice(productIndex, 1, product);
-                }
-            } else if (product.gender === 'men') {
-                const productIndex = state.men.findIndex(product => product.id === product.id);
-                if (productIndex !== -1) {
-                    state.men.splice(productIndex, 1, product);
-                }
-            }
-            localStorage.setItem("men", JSON.stringify(this.state.men));
-            localStorage.setItem("women", JSON.stringify(this.state.women));
-        },
         SET_LOGGED_USER(state, user) {
             state.user = user;
             sessionStorage.setItem("user", JSON.stringify(state.user));
@@ -588,11 +570,9 @@ export default new Vuex.Store({
         ADD_FAVORITE_TO_ALL_PRODUCTS(state) {
             const allProducts = state.women.concat(state.men);
             allProducts.forEach(product => {
-                product.isFavorite = false;
+                    product.isFavorite = false;
             });
-            localStorage.setItem("men", JSON.stringify(state.men)); // Store the updated men array in local storage
-            localStorage.setItem("women", JSON.stringify(state.women)); // Store the updated allProducts array in local storage
-        },
+       },
         ADD_TO_FAVORITES(state, product) {
             product.isFavorite = true;
             state.user.favorites.push(product);
@@ -626,12 +606,6 @@ export default new Vuex.Store({
                 state.user.password = newPassword
             }
         },
-        REMOVE_DELIVERY_ADDRESS(state, addresses) {
-            if (state.user) {
-                state.user.deliveryAddresses = addresses
-                localStorage.setItem("user", JSON.stringify(state.user));
-            }
-        },
         REMOVE_BILLING_ADDRESS(state, addresses) {
             if (state.user) {
                 state.user.billingAddresses = addresses;
@@ -657,7 +631,7 @@ export default new Vuex.Store({
             localStorage.setItem("user", JSON.stringify(state.user));
         },
         RESET_CART(state) {
-                state.user.cart = [];
+            state.user.cart = [];
             localStorage.setItem("user", JSON.stringify(state.user));
         },
     },
@@ -778,28 +752,30 @@ export default new Vuex.Store({
         addIsFavoriteToAllProducts(context) {
             context.commit("ADD_FAVORITE_TO_ALL_PRODUCTS");
         },
-        async addToFavorites(context, product) {
+        async addToFavorites(context, item) {
             try {
-                const userId = this.state.user?.id;
+                const userId = this.state.user?.id
                 const docRef = db.collection('users').doc(userId);
-                this.state.user?.favorites.push(product);
-                await docRef.update({ favorites: this.state.user?.favorites });
-                localStorage.setItem("user", JSON.stringify(this.state.user));
-                console.log('Product added to favorites successfully');
+                context.commit("ADD_TO_FAVORITES", item);
+                docRef.update({favorites: this.state.user?.favorites})
+                    .then(() => {
+                        console.log('Product added to favorites successfully');
+                    }).catch(e => console.log(e))
             } catch (error) {
                 console.error('Error adding product to favorites in Firestore: ', error);
             }
+            sessionStorage.setItem('user', JSON.stringify(this.state.user))
         },
         async removeFromFavorites(context, productId) {
             try {
                 const userId = this.state.user?.id;
                 const docRef = db.collection('users').doc(userId);
                 let index = this.state.user?.favorites.findIndex((p) => p.id === productId);
-                this.state.user?.favorites.splice(index, 1);
+                this.state.user?.favorites.splice(index, 1)
                 docRef.update({favorites: this.state.user?.favorites})
                     .then(() => {
                         console.log('Product removed from favorites successfully');
-                        localStorage.setItem('user', JSON.stringify(this.state.user))
+                        sessionStorage.setItem('user', JSON.stringify(this.state.user))
                     })
                     .catch((error) => {
                         console.error('Error removing product from favorites in Firestore:', error);
@@ -838,28 +814,6 @@ export default new Vuex.Store({
             context.commit("CHANGE_PASSWORD", newPassword);
             context.commit("UPDATE_STORE");
         },
-        async setOrder2(context, order) {
-            try {
-                console.log('ORDER in Vuex',order)
-                const userId = this.state.user?.id
-                const docRef = db.collection('users').doc(userId);
-                // if (!Array.isArray(this.state.user?.orders)) {
-                //     this.state.user.orders = [];
-                // }
-                this.state.user?.orders.push(order)
-                docRef.update({orders: this.state.user?.orders})
-                    .then(() => {
-                        this.state.user.cart = [];
-                        console.log('ORDER 2 in Vuex',order)
-                        console.log('Order set successfully');
-                        localStorage.setItem("user", JSON.stringify(this.state.user));
-                    }).catch(e => console.log(e))
-            } catch (error) {
-                console.error('Error adding order to orders ', error);
-                throw new Error('Error adding order')
-                //alert.showError(error)
-            }
-        },
         async setOrder(context, order) {
             try {
                 const userId = this.state.user?.id
@@ -873,6 +827,7 @@ export default new Vuex.Store({
                 console.error('Error adding order to orders ', error);
                 throw new Error('Error adding order')
             }
+            localStorage.setItem("user", JSON.stringify(this.state.user));
         },
         async setReturn(context, orderToReturn) {
             try {
@@ -944,7 +899,7 @@ export default new Vuex.Store({
                 console.error('Error updating delivery address', error);
             }
         },
-        async removeDeliveryAddress(context, addressId, index) {
+        async removeDeliveryAddress(context, index) {
             try {
                 const userId = this.state.user?.id;
                 const docRef = db.collection('users').doc(userId);
@@ -962,7 +917,7 @@ export default new Vuex.Store({
                 console.error('Error removing delivery address', error);
             }
         },
-        async removeBillingAddress(context, addressId, index) {
+        async removeBillingAddress(context, index) {
             try {
                 const userId = this.state.user?.id;
                 const docRef = db.collection('users').doc(userId);
