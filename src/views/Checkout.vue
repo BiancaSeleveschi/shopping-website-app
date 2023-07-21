@@ -379,7 +379,7 @@ export default {
     getStatus() {
       let currentDate = new Date();
       let estimatedArrivalDate = new Date(this.getEstimateArrivalDate());
-      if (currentDate > estimatedArrivalDate) {
+      if (currentDate < estimatedArrivalDate) {
         return "Processing";
       } else {
         return "Received";

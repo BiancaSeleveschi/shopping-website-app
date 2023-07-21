@@ -817,7 +817,7 @@ export default new Vuex.Store({
                 console.error('Error adding order to orders', error);
                 throw new Error('Error adding order')
             }
-            localStorage.setItem("user", JSON.stringify(this.state.user));
+            sessionStorage.setItem("user", JSON.stringify(this.state.user));
         },
         async setReturn(context, orderToReturn) {
             try {
@@ -834,7 +834,7 @@ export default new Vuex.Store({
             } catch (error) {
                 console.error('Error setting return', error);
             }
-            localStorage.setItem("user", JSON.stringify(this.state.user));
+            sessionStorage.setItem("user", JSON.stringify(this.state.user));
         },
         async saveDeliveryAddress(context, address) {
             try {
