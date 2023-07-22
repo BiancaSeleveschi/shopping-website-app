@@ -1,7 +1,7 @@
 <template>
-  <div class="item-details-page">
-    <div v-if="product" class="product bg-black">
-      <div class="d-inline-block mt-5 pt-5 w-100">
+  <div class="item-details-page bg-black">
+    <div v-if="product" class="product">
+      <div class="d-inline-block pt-5 w-100">
         <div class="mx-3">
           <img @click="openModal" :src="product.img" alt="Image" class="img-fluid"/>
           <div v-if="isModalOpen" class="modal" @click="closeModal">
@@ -91,12 +91,12 @@ export default {
       image: require("@/assets/black.jpg"),
       size: "Size",
       error: false,
-      isModalOpen: false,
       showSuccessAlertForProductAddedToCart: false,
       showLoginMessageForFav: false,
       showLoginMessageForAddToCart: false,
       quantity: 1,
       isUserLoggedIn: this.$store.getters.isUserLoggedIn,
+      isModalOpen: false,
     };
   },
   methods: {
@@ -241,6 +241,8 @@ export default {
 
 .item-details-page {
   z-index: 1;
+  position: relative;
+  padding-bottom: 900px;
 }
 
 .add-fav-button,
