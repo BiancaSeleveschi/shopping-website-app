@@ -105,14 +105,14 @@ export default {
                 returns: [],
               }
               this.$store.dispatch('addUser', account)
-              this.$store.commit("SET_LOGGED_USER", account)
+              this.$store.commit("SET_USER", account)
               this.$router.push('/');
             } else {
               db.collection("users").where('uid', "==", user.uid)
                   .get()
                   .then((querySnapshot) => {
                     const actualUser = {id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data()}
-                    this.$store.commit("SET_LOGGED_USER", actualUser)
+                    this.$store.commit("SET_USER", actualUser)
                     this.$router.push('/');
                   })
                   .catch((error) => {
@@ -138,7 +138,7 @@ export default {
                 .get()
                 .then((querySnapshot) => {
                   const actualUser = {id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data()}
-                  this.$store.commit("SET_LOGGED_USER", actualUser)
+                  this.$store.commit("SET_USER", actualUser)
                   this.$router.push('/');
                 })
                 .catch((error) => {

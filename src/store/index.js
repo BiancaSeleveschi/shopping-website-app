@@ -515,9 +515,6 @@ export default new Vuex.Store({
             state.user = JSON.parse(localStorage.getItem("user"))
             state.user = JSON.parse(sessionStorage.getItem("user"))
         },
-        UPDATE_STORE(state) {
-            localStorage.setItem("state", JSON.stringify(state));
-        },
         ADD_PRODUCT_AS_ADMIN(state, item) {
             let collection = item.gender === 'women' ? 'women' : 'men';
             db.collection(collection)
@@ -532,7 +529,8 @@ export default new Vuex.Store({
                     } else if (item.gender === 'men') {
                         state.men = products;
                     }
-                    this.commit("UPDATE_STORE");
+                    localStorage.setItem("men", JSON.stringify(this.state.men));
+                    localStorage.setItem("women", JSON.stringify(this.state.women));
                 })
                 .catch((error) => {
                     console.error("Error getting products: ", error);
@@ -547,7 +545,7 @@ export default new Vuex.Store({
             localStorage.setItem("men", JSON.stringify(this.state.men));
             localStorage.setItem("women", JSON.stringify(this.state.women));
         },
-        SET_LOGGED_USER(state, user) {
+        SET_USER(state, user) {
             state.user = user;
             sessionStorage.setItem("user", JSON.stringify(state.user));
         },
@@ -601,30 +599,39 @@ export default new Vuex.Store({
             sessionStorage.setItem('user', JSON.stringify(state.user))
         },
         CHANGE_PASSWORD(state, newPassword) {
-            if (state.user) {
-                state.user.password = newPassword
-            }
+            state.user.password = newPassword
+            localStorage.setItem('user', JSON.stringify(this.state.user));
         },
-        REMOVE_BILLING_ADDRESS(state, addresses) {
-            if (state.user) {
-                state.user.billingAddresses = addresses;
-                sessionStorage.setItem("user", JSON.stringify(state.user));
-            }
+        ADD_DELIVERY_ADDRESS(state, address) {
+            state.user?.deliveryAddresses.push(address);
+            localStorage.setItem("user", JSON.stringify(state.user));
+        },
+        ADD_BILLING_ADDRESS(state, address) {
+            state.user?.billingAddresses.push(address);
+            localStorage.setItem("user", JSON.stringify(state.user));
+        },
+        REMOVE_BILLING_ADDRESS(state, index) {
+            state.user?.billingAddresses.splice(index, 1);
+            localStorage.setItem("user", JSON.stringify(state.user));
+        },
+        REMOVE_DELIVERY_ADDRESS(state, index) {
+            state.user?.deliveryAddresses.splice(index, 1);
+            localStorage.setItem("user", JSON.stringify(state.user));
         },
         UPDATE_BILLING_ADDRESS(state, {address, index}) {
-            if (state.user) {
-                state.user.billingAddresses[index] = address;
-                sessionStorage.setItem("user", JSON.stringify(state.user));
-            }
+            state.user.billingAddresses[index] = address;
+            localStorage.setItem("user", JSON.stringify(state.user));
         },
         UPDATE_DELIVERY_ADDRESS(state, {address, index}) {
-            if (state.user) {
-                state.user.deliveryAddresses[index] = address;
-            }
-            sessionStorage.setItem("user", JSON.stringify(state.user));
+            state.user.deliveryAddresses[index] = address;
+            localStorage.setItem("user", JSON.stringify(state.user));
         },
-        RESET_CART(state) {
-            state.user.cart = [];
+        SET_ORDER(state, order) {
+            state.user?.orders.push(order);
+            localStorage.setItem("user", JSON.stringify(state.user));
+        },
+        SET_RETURN(state, orderToReturn) {
+            state.user?.returns.push(orderToReturn);
             localStorage.setItem("user", JSON.stringify(state.user));
         },
     },
@@ -664,17 +671,6 @@ export default new Vuex.Store({
             localStorage.setItem("men", JSON.stringify(this.state.men));
             localStorage.setItem("women", JSON.stringify(this.state.women));
         },
-        addUser(context, user) {
-            db.collection('users')
-                .add(user)
-                .then((docRef) => {
-                    console.log("success", docRef)
-                    user.id = docRef.id
-                })
-                .catch((error) => {
-                    console.error("Error adding user: ", error);
-                });
-        },
         async removeProductAsAdmin(context, product) {
             try {
                 const collectionName = product.gender === 'women' ? 'women' : 'men';
@@ -697,18 +693,30 @@ export default new Vuex.Store({
             localStorage.setItem("men", JSON.stringify(this.state.men));
             localStorage.setItem("women", JSON.stringify(this.state.women));
         },
-        async updateProfile(firstName, lastName) {
+        addUser(context, user) {
+            db.collection('users')
+                .add(user)
+                .then((docRef) => {
+                    console.log("success", docRef)
+                    user.id = docRef.id
+                })
+                .catch((error) => {
+                    console.error("Error adding user: ", error);
+                });
+        },
+        async updateProfile(context, firstName, lastName) {
             try {
                 const user = firebase.auth().currentUser;
                 await user.updateProfile({
                     firstName: firstName,
                     lastName: lastName
                 });
+                localStorage.setItem('user', JSON.stringify(this.state.user))
+                context.commit('SET_USER', this.state.user)
                 console.log('Profile updated in Firestore');
             } catch (error) {
                 console.error('Error updating profile', error);
             }
-            sessionStorage.setItem('user', JSON.stringify(this.state.user))
         },
         async addToCart(context, item) {
             try {
@@ -717,12 +725,12 @@ export default new Vuex.Store({
                 context.commit("ADD_TO_CART", item);
                 docRef.update({cart: this.state.user?.cart})
                     .then(() => {
+                        sessionStorage.setItem('user', JSON.stringify(this.state.user))
                         console.log('Product added to cart successfully');
                     }).catch(e => console.log(e))
             } catch (error) {
                 console.error('Error adding product to cart in Firestore: ', error);
             }
-            sessionStorage.setItem('user', JSON.stringify(this.state.user))
         },
         async removeProductFromCart(context, index) {
             try {
@@ -749,23 +757,22 @@ export default new Vuex.Store({
                 context.commit("ADD_TO_FAVORITES", item);
                 docRef.update({favorites: this.state.user?.favorites})
                     .then(() => {
+                        context.commit('SET_USER', this.state.user)
                         console.log('Product added to favorites successfully');
                     }).catch(e => console.log(e))
             } catch (error) {
                 console.error('Error adding product to favorites in Firestore: ', error);
             }
-            sessionStorage.setItem('user', JSON.stringify(this.state.user))
         },
         async removeFromFavorites(context, productId) {
             try {
                 const userId = this.state.user?.id;
                 const docRef = db.collection('users').doc(userId);
-                let index = this.state.user?.favorites.findIndex((p) => p.id === productId);
-                this.state.user?.favorites.splice(index, 1)
+                context.commit("REMOVE_FROM_FAVORITES", productId);
                 docRef.update({favorites: this.state.user?.favorites})
                     .then(() => {
                         console.log('Product removed from favorites successfully');
-                        sessionStorage.setItem('user', JSON.stringify(this.state.user))
+                        context.commit('SET_USER', this.state.user)
                     })
                     .catch((error) => {
                         console.error('Error removing product from favorites in Firestore:', error);
@@ -802,22 +809,22 @@ export default new Vuex.Store({
         },
         changePassword(context, newPassword) {
             context.commit("CHANGE_PASSWORD", newPassword);
-            context.commit("UPDATE_STORE");
         },
         async setOrder(context, order) {
             try {
                 const userId = this.state.user?.id
                 let docRef = db.collection('users').doc(userId);
-                this.state.user?.orders.push(order);
+                context.commit('SET_ORDER', order)
                 docRef.update({orders: this.state.user?.orders})
                     .then(() => {
+                        this.state.user.cart = [];
+                        context.commit('SET_USER', this.state.user)
                         console.log('Order set successfully');
                     }).catch(e => console.log(e))
             } catch (error) {
                 console.error('Error adding order to orders', error);
                 throw new Error('Error adding order')
             }
-            sessionStorage.setItem("user", JSON.stringify(this.state.user));
         },
         async setReturn(context, orderToReturn) {
             try {
@@ -826,39 +833,39 @@ export default new Vuex.Store({
                 if (!Array.isArray(this.state.user?.returns)) {
                     this.state.user.returns = [];
                 }
-                this.state.user?.returns.push(orderToReturn)
+                context.commit('SET_RETURN', orderToReturn)
                 docRef.update({returns: this.state.user?.returns})
                     .then(() => {
+                        context.commit('SET_USER', this.state.user)
                         console.log('Return set in returns successfully');
                     }).catch(e => console.log(e))
             } catch (error) {
                 console.error('Error setting return', error);
             }
-            sessionStorage.setItem("user", JSON.stringify(this.state.user));
         },
-        async saveDeliveryAddress(context, address) {
+        async addDeliveryAddress(context, address) {
             try {
                 const userId = this.state.user?.id
                 const docRef = db.collection('users').doc(userId);
-                this.state.user?.deliveryAddresses.push(address)
+                context.commit('ADD_DELIVERY_ADDRESS', address)
                 docRef.update({deliveryAddresses: this.state.user?.deliveryAddresses})
                     .then(() => {
                         console.log('Delivery address added successfully');
-                        localStorage.setItem("user", JSON.stringify(this.state.user));
+                        context.commit('SET_USER', this.state.user)
                     }).catch(e => console.log(e))
             } catch (error) {
                 console.error('Error adding address to delivery addresses in Firestore: ', error);
             }
         },
-        async saveBillingAddress(context, address) {
+        async addBillingAddress(context, address) {
             try {
                 const userId = this.state.user?.id
                 const docRef = db.collection('users').doc(userId);
-                this.state.user?.billingAddresses.push(address)
+                context.commit('ADD_BILLING_ADDRESS', address)
                 docRef.update({billingAddresses: this.state.user?.billingAddresses})
                     .then(() => {
                         console.log('Billing address added successfully');
-                        sessionStorage.setItem("user", JSON.stringify(this.state.user));
+                        context.commit('SET_USER', this.state.user)
                     }).catch(e => console.log(e))
             } catch (error) {
                 console.error('Error adding billing address', error);
@@ -868,10 +875,11 @@ export default new Vuex.Store({
             try {
                 const userId = this.state.user?.id;
                 const docRef = db.collection('users').doc(userId);
+                context.commit('UPDATE_BILLING_ADDRESS', {address, index});
                 this.state.user.billingAddresses[index] = address;
                 await docRef.update({billingAddresses: this.state.user?.billingAddresses});
                 console.log('Billing address updated successfully');
-                context.commit('UPDATE_BILLING_ADDRESS', {address, index});
+                context.commit('SET_USER', this.state.user)
             } catch (error) {
                 console.error('Error updating billing address', error);
             }
@@ -881,9 +889,10 @@ export default new Vuex.Store({
                 const userId = this.state.user?.id;
                 const docRef = db.collection('users').doc(userId);
                 this.state.user.deliveryAddresses[index] = address;
+                context.commit('UPDATE_DELIVERY_ADDRESS', {address, index});
                 await docRef.update({deliveryAddresses: this.state.user?.deliveryAddresses});
                 console.log('Delivery address updated successfully');
-                context.commit('UPDATE_DELIVERY_ADDRESS', {address, index});
+                context.commit('SET_USER', this.state.user)
             } catch (error) {
                 console.error('Error updating delivery address', error);
             }
@@ -892,11 +901,11 @@ export default new Vuex.Store({
             try {
                 const userId = this.state.user?.id;
                 const docRef = db.collection('users').doc(userId);
-                this.state.user?.deliveryAddresses.splice(index, 1)
+                context.commit("REMOVE_DELIVERY_ADDRESS", index);
                 docRef.update({deliveryAddresses: this.state.user?.deliveryAddresses})
                     .then(() => {
                         console.log('Delivery address removed successfully');
-                        localStorage.setItem("user", JSON.stringify(this.state.user));
+                        context.commit('SET_USER', this.state.user)
                     })
                     .catch((error) => {
                         console.error('Error removing delivery address', error);
@@ -909,11 +918,11 @@ export default new Vuex.Store({
             try {
                 const userId = this.state.user?.id;
                 const docRef = db.collection('users').doc(userId);
-                this.state.user?.billingAddresses.splice(index, 1)
+                context.commit("REMOVE_BILLING_ADDRESS", index);
                 docRef.update({billingAddresses: this.state.user?.billingAddresses})
                     .then(() => {
+                        context.commit('SET_USER', this.state.user)
                         console.log('Billing address removed');
-                        context.commit("REMOVE_BILLING_ADDRESS", this.state.user?.billingAddresses);
                     })
                     .catch((error) => {
                         console.error('Error removing billing address', error);

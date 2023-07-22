@@ -54,6 +54,7 @@ export default {
       isFirstClick: false,
       showImportantAlert: false,
       showSelectProductAlert: false,
+      currentDate: new Date(),
     }
   },
   computed: {
@@ -71,9 +72,8 @@ export default {
       }
     },
     getEstimatedPickupDate() {
-      let currentDate = new Date();
       let estimatedPickupDate = new Date();
-      estimatedPickupDate.setDate(currentDate.getDate() + 2);
+      estimatedPickupDate.setDate(this.currentDate.getDate() + 2);
       let year = estimatedPickupDate.getFullYear();
       let month = String(estimatedPickupDate.getMonth() + 1).padStart(2, '0');
       let day = String(estimatedPickupDate.getDate()).padStart(2, '0');
@@ -81,19 +81,17 @@ export default {
       return formattedEstimatedPickupDate;
     },
     getCurrentDate() {
-      let currentDate = new Date();
-      let year = currentDate.getFullYear();
-      let month = String(currentDate.getMonth() + 1).padStart(2, '0');
-      let day = String(currentDate.getDate()).padStart(2, '0');
+      let year = this.currentDate.getFullYear();
+      let month = String(this.currentDate.getMonth() + 1).padStart(2, '0');
+      let day = String(this.currentDate.getDate()).padStart(2, '0');
       let formattedDate = `${year}-${month}-${day}`;
       return formattedDate;
     },
     async sendProductToReturn() {
-      let currentDate = new Date();
       let randomDays = Math.floor(Math.random() * (5 - 3 + 1)) + 3;
       let randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-      let estimatedDate = new Date(currentDate.getTime() + randomDays * 24 * 60 * 60 * 1000);
-      if (currentDate > estimatedDate) {
+      let estimatedDate = new Date(this.currentDate.getTime() + randomDays * 24 * 60 * 60 * 1000);
+      if (this.currentDate > estimatedDate) {
         this.status = 'Received';
       } else {
         this.status = 'Pending';

@@ -8,7 +8,7 @@
         <div v-for="(returnedOrder, index) in $store.state.user?.returns" :key="index"
              class="border border-dark bg-light rounded-2 my-3 mx-5 p-4 ">
           <h5 class="return-number mb-1 d-block fw-bold">Return: #{{ returnedOrder.returnNumber }}</h5>
-          <p class="details px-5" @click="showOrder(index, returnedOrder)">
+          <p class="details px-5" @click="showReturn(index, returnedOrder)">
             {{ index === indexReturn ? 'close' : 'view details' }}
           </p>
           <p class="w-100 content-body">Data: <span class="fw-bold">{{ returnedOrder.returnDate }}</span></p>
@@ -54,14 +54,15 @@ export default {
     }
   },
   methods: {
-    showOrder(index, returnedOrder) {
+    showReturn(index, returnedOrder) {
       this.indexReturn = this.indexReturn !== index ? index : -1;
-      this.getReturnDate(returnedOrder.orderDate)
+      this.getReturnDate(returnedOrder.returnDate)
     },
-    getReturnDate(orderDate) {
+    getReturnDate(returnDate) {
       const currentDate = new Date();
+      let estimatedArrivalDate = new Date(returnDate);
       const thirtyDaysInMilliseconds = 30 * 24 * 60 * 60 * 1000;
-      const difference = currentDate.getTime() - orderDate.getTime();
+      const difference = currentDate.getTime() - estimatedArrivalDate.getTime();
       return difference > thirtyDaysInMilliseconds;
     }
   }

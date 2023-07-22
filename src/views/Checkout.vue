@@ -11,7 +11,6 @@
       <AddressForm :addressInitial="deliveryAddress"
                    titleInitial="Delivery address"
                    :isAddressSavedInitial="false"
-                   :index="currentDeliveryAddressesIndex"
                    @closeAddressForm="closeAddingDeliveryAddressForm"/>
     </div>
     <p v-show="isDeliveryAddressNotSelected" class="w-50 m-auto address-alert">Select a delivery address</p>
@@ -31,7 +30,6 @@
       <AddressForm :addressInitial="billingAddress"
                    titleInitial="Billing address"
                    :isAddressSavedInitial="false"
-                   :index="currentBillingAddressesIndex"
                    @closeAddressForm="closeAddingBillingAddressForm "/>
     </div>
     <p v-show="isBillingAddressNotSelected" class="w-50 m-auto pe-3 address-alert">Select a billing address</p>
@@ -186,9 +184,7 @@ export default {
       shippingPrice: '',
       deliveryAddressSelected: null,
       billingAddressSelected: null,
-      // currentDeliveryAddressesIndex: this.$store.getters.getCurrentDeliveryAddressesIndex,
-      // currentBillingAddressesIndex: this.$store.getters.getCurrentBillingAddressesIndex,
-
+      currentDate: new Date(),
       isFormValid: false,
       pk: process.env.VUE_APP_STRIPE_PK,
       elementsOptions: {
@@ -201,12 +197,6 @@ export default {
     };
   },
   computed: {
-    currentBillingAddressesIndex() {
-      return this.$store.getters.getCurrentBillingAddressesIndex
-    },
-    currentDeliveryAddressesIndex() {
-      return this.$store.getters.getCurrentDeliveryAddressesIndex
-    },
     existDeliveryAddresses() {
       return this.currentDeliveryAddressesIndex === 0
     },
@@ -340,20 +330,18 @@ export default {
       this.billingAddressSelected = selectedAddress;
     },
     getCurrentDate() {
-      let currentDate = new Date();
-      let year = currentDate.getFullYear();
-      let month = String(currentDate.getMonth() + 1).padStart(2, '0');
-      let day = String(currentDate.getDate()).padStart(2, '0');
+      let year = this.currentDate.getFullYear();
+      let month = String(this.currentDate.getMonth() + 1).padStart(2, '0');
+      let day = String(this.currentDate.getDate()).padStart(2, '0');
       let formattedDate = `${year}-${month}-${day}`;
       return formattedDate;
     },
     getEstimateArrivalDate() {
-      let currentDate = new Date();
       let estimatedArrivalDate = new Date();
       if (this.isCheckboxStandardChecked) {
-        estimatedArrivalDate.setDate(currentDate.getDate() + 4);
+        estimatedArrivalDate.setDate(this.currentDate.getDate() + 4);
       } else if (this.isCheckboxExpressChecked) {
-        estimatedArrivalDate.setDate(currentDate.getDate() + 1);
+        estimatedArrivalDate.setDate(this.currentDate.getDate() + 1);
       }
       let year = estimatedArrivalDate.getFullYear();
       let month = String(estimatedArrivalDate.getMonth() + 1).padStart(2, '0');
@@ -377,9 +365,8 @@ export default {
       }
     },
     getStatus() {
-      let currentDate = new Date();
       let estimatedArrivalDate = new Date(this.getEstimateArrivalDate());
-      if (currentDate < estimatedArrivalDate) {
+      if (this.currentDate < estimatedArrivalDate) {
         return "Processing";
       } else {
         return "Received";
@@ -422,7 +409,6 @@ export default {
           const db = firebase.firestore();
           let HTMLmessage = this.form.message.replace(/\n/g, '<br/>');
           db.collection('email').add({
-
             to: 'example@domain.com',
             template: {
               name: "template_name",

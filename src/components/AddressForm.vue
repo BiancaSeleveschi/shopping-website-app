@@ -108,11 +108,11 @@ export default {
           && !this.isStreetInputIncomplete && !this.isNumberInputIncomplete && !this.isPostcodeInputIncomplete;
       if (this.isAddressComplete && !this.isAddressSaved) {
         if (this.title === 'Delivery address') {
-          await this.$store.dispatch('saveDeliveryAddress', this.address)
+          await this.$store.dispatch('addDeliveryAddress', this.address)
           this.address = address
           this.$emit('closeAddressForm')
         } else if (this.title === 'Billing address') {
-          await this.$store.dispatch('saveBillingAddress', this.address)
+          await this.$store.dispatch('addBillingAddress', this.address)
           this.$emit('closeAddressForm')
           this.address = address
         }

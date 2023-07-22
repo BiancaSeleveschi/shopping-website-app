@@ -18,7 +18,6 @@
           <AddressForm :addressInitial="deliveryAddress"
                        titleInitial="Delivery address"
                        :isAddressSavedInitial="false"
-                       :index="currentDeliveryAddressesIndex"
                        @closeAddressForm="closeAddingDeliveryAddressForm"/>
         </div>
 
@@ -26,7 +25,6 @@
           <AddressForm :addressInitial="billingAddress"
                        titleInitial="Billing address"
                        :isAddressSavedInitial="false"
-                       :index="currentBillingAddressesIndex"
                        @closeAddressForm="closeAddingBillingAddressForm"/>
         </div>
       </div>
@@ -71,14 +69,6 @@ export default {
       showAddingDeliveryAddressForm: false,
       showAddingBillingAddressForm: false,
     }
-  },
-  computed: {
-    currentBillingAddressesIndex() {
-      return this.$store.getters.getCurrentBillingAddressesIndex
-    },
-    currentDeliveryAddressesIndex() {
-      return this.$store.getters.getCurrentDeliveryAddressesIndex
-    },
   },
   methods: {
     closeAddingDeliveryAddressForm() {
