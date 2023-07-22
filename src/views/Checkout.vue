@@ -97,12 +97,12 @@
             {{ !showEnterCouponCodeForm ? '+Enter coupon code' : '- Enter coupon code' }}</p>
           <div v-if="showEnterCouponCodeForm" class="d-inline-block">
             <input v-model="couponCode" class="coupon-code-input" type="text" v-on:keyup.enter='applyCouponCode'/>
+            <p v-show="!isCouponCodeInvalid" class="coupon-code-alert">The coupon code is not valid.</p>
             <button v-if="!isCouponCodeApplied" @click="applyCouponCode" class="coupon-code-button">Apply</button>
             <button v-else class="coupon-code-button" @click="removeCouponCode">
               {{ isCouponCodeApplied ? 'Remove' : 'Apply' }}
             </button>
           </div>
-          <p v-show="isCouponCodeInvalid" class="coupon-code-alert">The coupon code is not valid.</p>
         </div>
         <p>{{ isCheckboxExpressChecked ? ' Shipping: $' : 'Shipping:' }}
           <span :class="[ shippingFinalCost === 0 ? 'text-success' : 'text-dark']">
@@ -519,8 +519,7 @@ input[type=number] {
   position: absolute;
   font-size: 14px;
   color: red;
-  margin-top: -13px;
-  transform: translateX(118%);
+  transform: translateX(39%);
 }
 
 .address-alert,

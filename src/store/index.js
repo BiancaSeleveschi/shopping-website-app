@@ -711,12 +711,12 @@ export default new Vuex.Store({
                     firstName: firstName,
                     lastName: lastName
                 });
-                localStorage.setItem('user', JSON.stringify(this.state.user))
-                context.commit('SET_USER', this.state.user)
+                context.commit('SET_USER', user)
                 console.log('Profile updated in Firestore');
             } catch (error) {
                 console.error('Error updating profile', error);
             }
+            localStorage.setItem("user", JSON.stringify(this.state.user));
         },
         async addToCart(context, item) {
             try {
