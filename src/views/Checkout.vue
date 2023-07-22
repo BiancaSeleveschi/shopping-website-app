@@ -192,7 +192,7 @@ export default {
         clientSecret: this.clientSecret
       },
       confirmParams: {
-        return_url: 'https://shopping-app-meduzza.netlify.app/order/confirmation',
+        return_url: 'http://localhost:8080/order/confirmation',
       },
     };
   },
