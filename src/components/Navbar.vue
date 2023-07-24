@@ -3,9 +3,9 @@
     <nav class="navbar navbar-expand-lg p-3" id="navbar">
       <div class="container-fluid">
         <h1 class="navbar-brand text-light">M.E.D.U.Z.Z.A</h1>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="collapse navbar-collapse" :class="{ show: isCollapsed }" id="navbarNavAltMarkup">
           <div class="navbar-nav fw-bold ">
-            <router-link v-show="this.$store.state.user?.emailAddress === 'bianca.seleveschi.com'" class="nav-link"
+              <router-link v-show="this.$store.state.user?.emailAddress === 'bianca.seleveschi.com'" class="nav-link"
                          to="/admin/products">Admin
             </router-link>
             <router-link class="nav-link" to="/">Home</router-link>
@@ -61,6 +61,9 @@
           </div>
         </div>
       </div>
+      <button class="navbar-toggler" type="button" @click="toggleCollapse" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
     </nav>
     <div v-show="showLogin">
       <AuthDialog @toggleLoginButton="showLogin = !showLogin"/>
@@ -91,6 +94,7 @@ export default {
       showLogin: false,
       showProfile: false,
       showWrote: false,
+      isCollapsed: false,
       productName: "",
       profile: '',
       user: this.$store.getters.isUserLoggedIn,
@@ -117,6 +121,10 @@ export default {
       this.showProfile = !this.showProfile;
       this.showLogin = false;
       this.showCartDetails = false;
+    },
+    toggleCollapse() {
+      // Toggle the collapse state
+      this.isCollapsed = !this.isCollapsed;
     },
   },
 };

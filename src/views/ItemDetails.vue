@@ -1,27 +1,27 @@
 <template>
   <div class="item-details-page bg-black">
-    <div v-if="product" class="product">
-      <div class="d-inline-block pt-5 w-100">
-        <div class="mx-3">
-          <img @click="openModal" :src="product.img" alt="Image" class="img-fluid"/>
+    <div v-if="product" class="product container">
+      <div class="d-inline-block pt-5 row w-100">
+        <div class="img-div col-10 col-sm-8 col-md-10 col-lg-6 col-xxl-5">
+          <img @click="openModal" :src="product.img" alt="Image" class="img-fluid m-auto"/>
           <div v-if="isModalOpen" class="modal" @click="closeModal">
-            <div class="modal-content m-auto">
+            <div class="modal-content">
               <span @click="closeModal" class="close">X</span>
-              <img :src="product.img" alt="Image" id="modal-img"/>
+              <img :src="product.img" alt="Image" id="modal-img" class="m-auto"/>
             </div>
           </div>
         </div>
-        <div class="text-light product-details">
+        <div class="text-light product-details col-11 col-sm-11 col-md-11 col-lg-6 col-xxl-6">
           <p class="fw-bold" id="brand">{{ product.brand }}</p>
-          <h1>{{ product.title }}</h1>
-          <p class="fs-5 ">${{ product.price }}</p>
+          <h1 class="product-title">{{ product.title }}</h1>
+          <p class="fs-5 product-price">${{ product.price }}</p>
           <p class="mt-3" id="prod-description">
             {{ product.description }}
           </p>
           <div class="m-auto my-4">
             <div v-if="!isFavorite(product) && !product.isFavorite">
               <button @click="addToFavorite(product)"
-                      class="p-2 bg-black text-white border border-3 add-fav-button">Add favorite
+                      class="py-2 px-4 bg-black text-white border border-3 add-fav-button">Add favorite
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart"
                      viewBox="0 0 16 16">
                   <path
@@ -38,7 +38,7 @@
           </div>
           <div class="border border-white mt-5"></div>
           <form class="product-details-bottom pt-5">
-            <select class="select me-5 m-auto" v-model="size" :class="{ error: error }">
+            <select class="select px-5 py-2 me-4 m-auto" v-model="size" :class="{ error: error }">
               <option value="Size" disabled>Size</option>
               <option value="xs">xs</option>
               <option value="s">s</option>
@@ -47,7 +47,7 @@
               <option value="xl">xl</option>
               <option value="xxl">xxl</option>
             </select>
-            <div class="add-cart ms-5 m-auto" @click="addToCart(product, size)">
+            <div class="add-cart px-4 py-2 ms-4 m-auto" @click="addToCart(product, size)">
               Add to cart
             </div>
           </form>
@@ -163,10 +163,6 @@ export default {
 };
 </script>
 <style scoped>
-#modal-img {
-  width: 180%;
-  margin-right: 200px;
-}
 
 #brand {
   display: flow;
@@ -186,13 +182,35 @@ export default {
   width: max-content;
 }
 
+@media (max-width: 576px) {
+  .product-title, .product-price, #prod-description, #brand {
+    font-size: 14px;
+  }
+  .img-div {
+    margin: 20% auto auto;
+  }
+
+  .add-fav-button, .remove-fav-button, .add-cart,
+  .select {
+    font-size: 12px;
+  }
+  .product-details {
+    margin-top: 20px;
+    margin-left: 7%;
+  }
+  #modal-img {
+    width: 100%;
+    padding-top: 60%;
+    margin-left: 45%;
+  }
+  .modal-content {
+    margin-left: 8%;
+  }
+}
 .img-fluid {
-  width: 30%;
-  height: 70%;
+  display: grid;
   cursor: pointer;
-  position: absolute;
-  margin-left: -40%;
-  margin-top: -10%;
+  position: relative;
 }
 
 .overlay {
@@ -218,40 +236,29 @@ export default {
 }
 
 .product-details {
-  width: 40%;
-  height: 70%;
-  margin-left: 50%;
-  margin-top: -7%;
   font-family: "JetBrains Mono Light", sans-serif;
-  text-align: center;
-  justify-content: center;
-  position: absolute;
+  /*text-align: center;*/
+  /*justify-content: center;*/
+  /*position: relative;*/
+  display: grid;
 }
 
 .product {
+  margin-top: 10%;
   display: flex;
-  position: absolute;
-  justify-content: center;
-  align-content: center;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
+  position: relative;
   padding-bottom: 300px;
 }
 
 .item-details-page {
   z-index: 1;
   position: relative;
-  padding-bottom: 900px;
 }
 
 .add-fav-button,
 .remove-fav-button {
   border-radius: 10px;
   text-transform: uppercase;
-  font-size: 17px;
-  width: 220px;
-  height: 46px;
 }
 
 
@@ -270,9 +277,6 @@ export default {
   display: block;
   background-color: rgb(0, 0, 0);
   color: rgb(255, 255, 255);
-  font-size: 19px;
-  width: 220px;
-  height: 46px;
   position: relative;
   cursor: pointer;
   border-radius: 10px;
@@ -310,16 +314,14 @@ export default {
 }
 
 .modal-content {
-  padding-top: 5%;
-  display: block;
-  max-width: 350px;
+  padding-top: 4%;
   background-color: transparent;
 }
 
 .close {
   position: absolute;
   left: 170%;
-  z-index: 1;
+  z-index: 4;
   font-size: 30px;
   color: #000000;
   cursor: pointer;

@@ -1,8 +1,8 @@
 <template>
-  <div class="bg bg-black w-100">
+  <div class="bg bg-black w-100 footer-page">
     <div class="border border-white"></div>
     <div id="content-footer">
-      <div class="contact-service">
+      <div class="contact-service mt-3 mx-4">
         <h5 class="fw-bold">Contact us</h5>
         <ul style="list-style: none">
           <li>📧 service@meduzza.com</li>
@@ -10,13 +10,13 @@
           <li>📞 +49 897 400 458 40</li>
         </ul>
       </div>
-      <div class="contact-service">
+      <div class="contact-service mt-3 mx-4">
         <h5 class="fw-bold">Legal notice</h5>
         <router-link to="/privacy/policy" class="nav-link link">Privacy Policy</router-link>
         <router-link to="/terms" class="nav-link link">Terms and Conditions</router-link>
         <router-link to="/cookie" class="nav-link link">Cookie Statement</router-link>
       </div>
-      <div class="contact-service">
+      <div class="contact-service mt-3 mx-4">
         <h5 class="fw-bold">Service</h5>
         <ol>
           <li>
@@ -49,9 +49,6 @@ export default {
 
 .contact-service {
   display: inline-block;
-  margin-left: 50px;
-  margin-right: 50px;
-  margin-top: 30px;
   height: 200px;
   color: white;
 }
@@ -64,6 +61,12 @@ export default {
   color: gray;
 }
 
+@media (max-width: 576px) {
+  .footer-page, .contact-service {
+    font-size: 12px;
+    margin-right: 10px;
+  }
+}
 li {
   text-align: start;
 }

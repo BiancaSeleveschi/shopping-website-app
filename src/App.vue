@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="app-container">
     <Navbar/>
     <router-view></router-view>
     <Footer class="footer"/>
@@ -38,4 +38,12 @@ export default {
   bottom: 0;
   z-index: 0;
 }
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+
 </style>
