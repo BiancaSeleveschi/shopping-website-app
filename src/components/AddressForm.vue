@@ -192,8 +192,8 @@ input[type=number] {
   }
 
   .col-div {
-    width: 70%;
-    font-size: 12px;
+    width: 80%;
+    font-size: 13px;
     padding-bottom: 18px;
   }
 
@@ -204,7 +204,7 @@ input[type=number] {
   }
 
   .button {
-    font-size: 12px;
+    font-size: 13px;
     margin-bottom: 8px;
     margin-top: 10px;
   }

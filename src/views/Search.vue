@@ -79,4 +79,15 @@ export default {
   margin-top: -5%;
 }
 
+@media (max-width: 576px) {
+  .title {
+    top: 15%;
+    font-size: 28px;
+  }
+
+  .input-search {
+    font-size: 16px;
+    top: 22%;
+  }
+}
 </style>

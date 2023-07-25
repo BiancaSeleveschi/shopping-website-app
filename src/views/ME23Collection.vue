@@ -39,4 +39,12 @@ export default {
   font-family: "Franklin Gothic Medium", sans-serif;
   color: #250d01;
 }
+
+@media (max-width: 576px) {
+  .title {
+    top: 18%;
+    left: 3%;
+    font-size: 40px;
+  }
+}
 </style>

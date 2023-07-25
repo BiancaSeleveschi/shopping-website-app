@@ -2,12 +2,12 @@
   <div class="pass-reset-page">
     <h3 class="title text-uppercase">Reset your password</h3>
     <div class="my-5 d-block m-auto">
-      <p class="mb-5">Enter your email address to receive an email with instructions to reset your
+      <p class="mb-5 text">Enter your email address to receive an email with instructions to reset your
         password.</p>
       <input v-on:keyup.enter="resetPassword"
-             v-model="emailAddress" class="pass-reset-input w-25" placeholder="Email" type="email" required/>
-      <p v-if="isEmailInputIncomplete" class="alert-message ms-2 d-block text-danger">{{ alertMessage }}</p>
-      <button class="send-button p-2 mt-5 d-block m-auto" @click="resetPassword">Send</button>
+             v-model="emailAddress" class="pass-reset-input" placeholder="Email" type="email" required/>
+      <p v-if="isEmailInputIncomplete" class="alert-message d-block text-danger">{{ alertMessage }}</p>
+      <button class="send-button my-5 d-block m-auto" @click="resetPassword">Send</button>
     </div>
     <div v-show="showSuccessAlert" class="overlay">
       <transition name="fade">
@@ -42,6 +42,7 @@ export default {
             let clear = () => (this.showSuccessAlert = false)
             this.showSuccessAlert = true;
             setTimeout(clear, 5000);
+            this.$router.push('/login')
           })
           .catch((error) => {
             console.error("Error sending password reset email:", error);
@@ -71,7 +72,7 @@ export default {
 
 .alert-message {
   position: absolute;
-  left: 37%;
+  left: 38%;
 }
 
 .pass-reset-page {
@@ -84,6 +85,7 @@ export default {
   border: none;
   border-bottom: 1px solid #000000;
   outline: none;
+  width: 25%;
 }
 
 .send-button {
@@ -91,7 +93,7 @@ export default {
   border: 1px solid black;
   color: black;
   width: 200px;
-  margin-bottom: 20%;
+  padding: 7px;
 }
 
 
@@ -123,5 +125,40 @@ export default {
   z-index: 2;
 }
 
+@media (max-width: 576px) {
+  .pass-reset-page {
+    padding-top: 25%;
+  }
 
+  .title {
+    font-size: 20px;
+  }
+
+  .text {
+    font-size: 14px;
+  }
+
+  .pass-reset-input {
+    width: 70%;
+    font-size: 14px;
+  }
+
+  .send-button {
+    width: 30%;
+    font-size: 14px;
+    padding: 5px;
+  }
+
+  .alert-message {
+    font-size: 13px;
+    left: 15%;
+  }
+
+  .alert-log {
+    font-size: 14px;
+    width: 75%;
+    top: 20%;
+    left: 13%;
+  }
+}
 </style>

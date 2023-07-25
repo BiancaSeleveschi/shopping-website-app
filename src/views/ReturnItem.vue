@@ -252,6 +252,8 @@ export default {
   text-align: start;
   transform: translateY(140%);
 }
+@media (max-width: 576px) {
 
+}
 
 </style>

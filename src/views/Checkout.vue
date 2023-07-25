@@ -595,7 +595,7 @@ input[type=number] {
 @media (max-width: 576px) {
   .summary-card {
     width: 90%;
-    font-size: 12px;
+    font-size: 13px;
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -629,7 +629,7 @@ input[type=number] {
   }
 
   .add-close-button {
-    font-size: 12px;
+    font-size: 13px;
     padding: 4px 7px 4px 7px;
   }
 
@@ -654,7 +654,7 @@ input[type=number] {
   }
 
   #payment-button {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .payment-button-div {
@@ -662,8 +662,8 @@ input[type=number] {
   }
 
   .delivery-address-alert, .billing-address-alert {
-    left: -14px;
-    font-size: 12px;
+    left: 15px;
+    font-size: 13px;
     padding-top: 5px;
   }
 

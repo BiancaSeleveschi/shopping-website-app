@@ -163,7 +163,7 @@ input[type=number] {
   }
 
   .edit-delete, .address, #postcode {
-    font-size: 12px;
+    font-size: 13px;
     padding-right: 10px;
     padding-left: 10px;
   }

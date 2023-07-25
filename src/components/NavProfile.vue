@@ -1,16 +1,16 @@
 <template>
   <div class="text-decoration-none text-dark outer-card">
-    <router-link to="/settings" class="mt-4 px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/settings' }">
+    <router-link to="/settings" class="mt-3 body-pgf" :class="{ 'fw-bold': $route.path === '/settings' }">
       Settings
     </router-link>
-    <router-link to="/orders" class="px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/orders' }">Orders
+    <router-link to="/orders" class=" body-pgf" :class="{ 'fw-bold': $route.path === '/orders' }">Orders
     </router-link>
-    <router-link to="/returns" class="px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/returns' }">Returns
+    <router-link to="/returns" class=" body-pgf" :class="{ 'fw-bold': $route.path === '/returns' }">Returns
     </router-link>
-    <router-link to="/addresses" class="px-2 body-pgf" :class="{ 'fw-bold': $route.path === '/addresses' }">
+    <router-link to="/addresses" class=" body-pgf" :class="{ 'fw-bold': $route.path === '/addresses' }">
       Addresses
     </router-link>
-    <p @click="logout" class="body-pgf w-100 mb-4">Logout</p>
+    <p @click="logout" class="body-pgf w-100 ">Logout</p>
   </div>
 </template>
 
@@ -60,5 +60,12 @@ export default {
 
 .body-pgf:hover {
   background-color: #e5e5e5;
+}
+@media (max-width: 576px) {
+  .outer-card {
+    width: 80%;
+    font-size: 14px;
+    float: none;
+  }
 }
 </style>

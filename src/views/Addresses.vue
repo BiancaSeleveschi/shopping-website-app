@@ -4,14 +4,14 @@
     <div class="border-top pt-5 w-100"></div>
     <NavProfile class="outer-card"/>
     <div class="d-inline-bloc bg-secondary bg-opacity-10" id="address-card">
-      <h4 class=" m-5 border border-1 bg-white p-3 address-title">My addresses</h4>
+      <h4 class=" border border-1 bg-white address-title">My addresses</h4>
       <AddressList :addresses="this.$store.state.user?.deliveryAddresses" title="Delivery address"/>
       <AddressList :addresses="this.$store.state.user?.billingAddresses" title="Billing address"/>
-      <div class="mt-5 pt-5">
-        <button class="btn btn-dark d-inline-block w-25 p-4 mx-5 mb-3 mt-5 address-title"
+      <div class="add-address-div">
+        <button class="btn btn-dark d-inline-block add-address-button"
                 @click="openDeliveryAddressForm">Add delivery address
         </button>
-        <button class="btn btn-dark d-inline-block w-25 p-4 mx-5 mb-3 mt-5 address-title"
+        <button class="btn btn-dark d-inline-block add-address-button"
                 @click="openBillingAddressForm">Add billing address
         </button>
         <div v-if="showAddingDeliveryAddressForm">
@@ -152,7 +152,10 @@ input[type=number] {
   padding-bottom: 150px;
 }
 
-
+.add-address-button {
+  margin:20px;
+  padding: 15px;
+}
 .outer-card {
   text-align: left;
   float: left;
@@ -168,6 +171,8 @@ input[type=number] {
 .address-title {
   text-align: center;
   letter-spacing: 2px;
+  padding:15px;
+  margin: 30px 50px 30px 50px;
 }
 
 .alert-address {
@@ -177,5 +182,43 @@ input[type=number] {
   margin: auto;
   z-index: 2;
 }
+.add-address-div {
+  margin: 60px
+}
+@media (max-width: 576px) {
+  #address-card {
+    width: 90%;
+    margin-top: 55%;
+    float: none;
+    margin-left: 20px;
+    padding: -20px;
+  }
 
+
+  .outer-card {
+    width: 80%;
+    margin-top: -8%;
+    font-size: 14px;
+    margin-left: 40px;
+    float: none;
+  }
+
+.address-title {
+  font-size: 18px;
+  padding: 20px;
+  margin: 30px;
+}
+  .title {
+    margin-top: 100px;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+  }
+.add-address-button {
+  font-size: 14px;
+  margin:10px;
+}
+.add-address-div {
+  margin: 20px
+}
+}
 </style>

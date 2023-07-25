@@ -2,40 +2,40 @@
   <div class="settings-page">
     <h2 class="title">My account</h2>
     <div class="border-top pt-5 w-100">
-      <NavProfile class="outer-card"/>
+      <NavProfile class="outer-card bg-light"/>
       <div class="d-inline-bloc bg-secondary bg-opacity-10 " id="settings-card">
-        <div class="border border-1 bg-light m-5">
-          <h4 class="mt-4 ps-5 content-title">General</h4>
-          <div class="w-50 ps-5 mt-3 d-inline-block col-div mb-5">
-            <p>FIRSTNAME*</p>
+        <div class="border border-1 bg-light profile-div">
+          <h4 class="content-title">General</h4>
+          <div class=" mt-3 d-inline-block col-div">
+            <p class="settings-pgf">FIRSTNAME*</p>
             <input
                 v-model="user.firstName"
                 type="text"
-                class=" w-75 account-input"
+                class="account-input"
             />
             <p v-show="!isFirstNameInputCompleted" class="alert-message">{{ firstNameMessageAlert }}</p>
 
           </div>
-          <div class="w-50 d-inline-block col-div mb-5">
-            <p>LASTNAME*</p>
+          <div class="d-inline-block col-div">
+            <p class="settings-pgf">LASTNAME*</p>
             <input
                 v-model="user.lastName"
                 type="email"
-                class="w-75  account-input"
+                class="account-input"
             />
             <p v-show="!isLastNameInputCompleted" class="alert-message">{{ lastNameMessageAlert }}</p>
 
           </div>
-          <div class="w-50 ps-5 mt-4 col-div mb-5">
-            <p>EMAIL*</p>
+          <div class="col-div">
+            <p class="settings-pgf email-pgf">EMAIL*</p>
             <input
                 v-model="user.emailAddress"
                 type="text"
-                class=" w-75 account-input"
+                class="account-input"
             />
             <p v-show="isEmailAddressInvalid" class="alert-message">Enter a valid email address</p>
           </div>
-          <button class="btn btn-primary mb-5 save-button" @click="updateProfile">Save</button>
+          <button class="btn btn-primary save-button" @click="updateProfile">Save</button>
           <div v-show="showInformationSavedAlert" class="overlay">
             <transition name="fade">
               <div class="alert alert-success py-4"
@@ -46,14 +46,14 @@
           </div>
         </div>
 
-        <div class="border border-1 bg-light mx-5">
-          <h4 class="mt-4 ps-5 content-title">Change password</h4>
-          <div class="w-50 ps-5 mt-4 col-div mb-5">
-            <p>PASSWORD*</p>
+        <div class="border border-1 profile-div bg-light">
+          <h4 class="content-title">Change password</h4>
+          <div class="mt-4 col-div">
+            <p class="settings-pgf">PASSWORD*</p>
             <input
                 v-model="password"
                 name="password"
-                class="w-75 account-input"
+                class="account-input"
                 :type="currentPasswordFieldType"
                 required
             />
@@ -66,24 +66,24 @@
               }}</span>
             <router-link to="/password" class="forgot-password">Forgot my password</router-link>
           </div>
-          <div class="w-50 ps-5 mt-3 d-inline-block col-div mb-5">
-            <p>NEW PASSWORD*</p>
+          <div class="mt-3 d-inline-block col-div">
+            <p class="settings-pgf">NEW PASSWORD*</p>
             <input
                 v-model="newPassword"
                 name="password"
-                class="w-75 account-input"
+                class="account-input"
                 :type="newPasswordFieldType"
                 required
             />
             <p v-show="isInvalidNewPassword" class="alert-message">{{ invalidNewPasswordMessageAlert }}</p>
             <span class="password-toggle" @click="toggleNewPasswordVisibility">{{ newPasswordToggleLabel }}</span>
           </div>
-          <div class="w-50 d-inline-block col-div mb-5">
-            <p>CONFIRM PASSWORD*</p>
+          <div class="d-inline-block col-div">
+            <p class="settings-pgf">CONFIRM PASSWORD*</p>
             <input
                 v-model="passwordConfirmed"
                 name="password"
-                class="w-75  account-input"
+                class="account-input"
                 :type="confirmedNewPasswordFieldType"
                 required
             />
@@ -92,7 +92,7 @@
                 confirmedNewPasswordToggleLabel
               }}</span>
           </div>
-          <button class="btn btn-primary mb-5 save-button" @click="changePassword">Save</button>
+          <button class="btn btn-primary save-button" @click="changePassword">Save</button>
           <div v-show="showPasswordChangedSuccessfullyAlert" class="overlay">
             <transition name="fade">
               <div class="alert alert-success py-4 "
@@ -304,10 +304,20 @@ export default {
   margin-bottom: 300px;
 }
 
+.profile-div {
+  padding: 25px;
+  margin: 30px;
+}
+
 .title {
   margin-top: 130px;
   margin-bottom: 50px;
   letter-spacing: 2px;
+}
+
+.settings-pgf {
+  margin-top: 10px;
+  margin-bottom: 5px;
 }
 
 .forgot-password {
@@ -318,6 +328,10 @@ export default {
   position: relative;
   display: grid;
   width: max-content;
+}
+
+.email-pgf {
+  padding-top: 20px;
 }
 
 .forgot-password:hover {
@@ -379,6 +393,7 @@ export default {
 }
 
 .account-input {
+  width: 75%;
   border: none;
   border-bottom: 1px solid #000000;
   outline: none;
@@ -387,6 +402,8 @@ export default {
 .col-div {
   justify-content: start;
   text-align: start;
+  width: 50%;
+
 }
 
 .content-title {
@@ -396,5 +413,75 @@ export default {
 
 .save-button {
   margin-left: 70%;
+  margin-top: 3%;
+}
+
+@media (max-width: 576px) {
+  #settings-card {
+    width: 90%;
+    margin-top: 55%;
+    float: none;
+    margin-left: 20px;
+    padding: -20px;
+  }
+
+  .settings-pgf {
+    margin-top: 20px;
+    margin-bottom: 1px;
+  }
+
+  .outer-card {
+    width: 80%;
+    margin-top: -8%;
+    font-size: 14px;
+    margin-left: 40px;
+    float: none;
+  }
+
+  .profile-div {
+    padding: 5px;
+    width: 90%;
+    margin: 15px;
+  }
+
+  .title {
+    margin-top: 100px;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+  }
+
+  .col-div {
+    width: 90%;
+    margin: auto;
+    font-size: 14px;
+  }
+
+  .save-button {
+    font-size: 13px;
+    margin: 20px 0px 20px 160px;
+  }
+
+  .content-title {
+    font-size: 18px;
+    margin: 15px 0px 0px 15px;
+  }
+
+  .password-toggle, .alert-message {
+    font-size: 12px;
+  }
+
+  .password-toggle {
+    float: right;
+    transform: translateY(-110%) translateX(100%);
+  }
+
+  .account-input {
+    width: 100%;
+  }
+
+  .forgot-password {
+    font-size: 12px;
+    margin-bottom: -20px;
+  }
 }
 </style>

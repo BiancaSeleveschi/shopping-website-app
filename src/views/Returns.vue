@@ -2,13 +2,13 @@
   <div class="returns-page">
     <h2 class="title">My account</h2>
     <div class="border-top pt-5 w-100">
-      <NavProfile class="outer-card"/>
-      <div class="bg-secondary bg-opacity-50" id="orders-card">
-        <h4 class=" m-5 border border-1 bg-white p-3 order-title">My returns</h4>
+      <NavProfile class="outer-card bg-light"/>
+      <div class="bg-secondary bg-opacity-50" id="returns-card">
+        <h4 class="border border-1 bg-white p-3 return-title">My returns</h4>
         <div v-for="(returnedOrder, index) in $store.state.user?.returns" :key="index"
-             class="border border-dark bg-light rounded-2 my-3 mx-5 p-4 ">
+             class="border border-dark bg-light rounded-2 return-div">
           <h5 class="return-number mb-1 d-block fw-bold">Return: #{{ returnedOrder.returnNumber }}</h5>
-          <p class="details px-5" @click="showReturn(index, returnedOrder)">
+          <p class="details" @click="showReturn(index, returnedOrder)">
             {{ index === indexReturn ? 'close' : 'view details' }}
           </p>
           <p class="w-100 content-body">Data: <span class="fw-bold">{{ returnedOrder.returnDate }}</span></p>
@@ -27,10 +27,10 @@
             <h4 class="products-header m-auto">Returned products</h4>
             <div v-for="(item,index) in returnedOrder.productList"
                  :key="index" class="cart-item m-auto ">
-              <img :src="item.product.img"/>
+              <img :src="item.product.img" alt="Product image" class="product-image"/>
               <div>
                 <h3 class="item-product-title">{{ item.product.title }}</h3>
-                <p class="size mt-3 ">Size: <span id="size"> {{ item.size }}</span></p>
+                <p class="size ">Size: <span id="size"> {{ item.size }}</span></p>
                 <p class="quantity " type="number">Quantity: {{ item.quantity }}</p>
               </div>
             </div>
@@ -72,7 +72,7 @@ export default {
 <style scoped>
 
 
-#orders-card {
+#returns-card {
   display: grid;
   width: 65%;
   padding-bottom: 5%;
@@ -112,10 +112,10 @@ export default {
 .details:hover {
   color: grey;
 }
-
-.order-title {
+.return-title {
   text-align: center;
   letter-spacing: 2px;
+  margin: 30px 50px 30px 50px;
 }
 
 .content-body {
@@ -153,10 +153,9 @@ export default {
   text-align: start;
 }
 
-.cart-item img {
+img {
   position: relative;
-  width: 130px;
-  height: 170px;
+  width: 80%;
   display: block;
   left: 0;
   object-position: top;
@@ -166,7 +165,11 @@ export default {
   -webkit-user-select: none;
   -ms-user-select: none;
 }
-
+.size {
+  transform: translateY(100%);
+}.quantity {
+   transform: translateY(180%);
+ }
 .item-product-title {
   display: flex;
   position: relative;
@@ -177,10 +180,75 @@ export default {
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.034);
   transition: 0.5s;
 }
-
+.return-div {
+  width: 92%;
+  padding:20px;
+  margin: auto auto 15px;
+}
 .size, .quantity {
   text-align: start;
 }
+@media (max-width: 576px) {
+  #returns-card {
+    width: 90%;
+    margin-top: 55%;
+    float: none;
+    margin-left: 20px;
+  }
+  .size {
+    transform: translateY(0%);
+  }.quantity {
+     transform: translateY(0%);
+   }
+  .outer-card {
+    width: 80%;
+    margin-top:-8%;
+    font-size: 14px;
+    margin-left: 40px;
+    float: none;
+  }
+  .title {
+    margin-top: 100px;
+    margin-bottom: 20px;
+  }
+  img {
+    width: 100%;
+  }
+  .content-body {
+    font-size: 14px;
+  }
+  .returns-page {
+    padding-bottom: 50px;
+  }
+  .return-number {
+    font-size: 16px;
+  }
 
+  .details {
+    font-size: 14px;
+    margin-right: 7px;
+  }
 
+  .return-title {
+    font-size: 18px;
+    padding: 10px;
+    margin: 30px;
+  }
+
+  .return-div {
+    width: 90%;
+    padding: 15px 10px 0px 10px;
+    margin: auto auto 15px;
+  }
+  .item-product-title, .size, .quantity {
+    font-size: 13px;
+    padding-left: 15px;
+  }
+  .products-header {
+    font-size: 18px;
+  }
+  .quantity {
+    margin-top: -8px;
+  }
+}
 </style>

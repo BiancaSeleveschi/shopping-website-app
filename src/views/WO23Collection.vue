@@ -35,6 +35,7 @@ export default {
   width: 500px;
   height: 250px;
   color: #000000;
+  z-index: 2;
   padding: 60px;
   border-radius: 1px 200px 1px 220px;
   position: absolute;
@@ -50,5 +51,18 @@ export default {
   text-transform: uppercase;
   color: #777777;
   font-family: "Franklin Gothic Medium", sans-serif;
+}
+
+@media (max-width: 576px) {
+  .title {
+    font-size: 30px;
+    top: 11%;
+    color: lightblue;
+    left: 8%;
+  }
+
+  .text {
+    z-index: 0;
+  }
 }
 </style>

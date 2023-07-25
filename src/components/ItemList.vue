@@ -170,8 +170,6 @@ export default {
 
 .shop-section {
   display: grid;
-  /*grid-template-columns: repeat(auto-fill, 20em);*/
-  /*grid-gap: 0.4em;*/
   justify-content: center;
   height: fit-content;
   width: 100%;
@@ -185,7 +183,6 @@ export default {
   cursor: pointer;
   border: 0px solid rgba(56, 56, 56, 0);
   overflow: hidden;
-  /*width: 20em;*/
 }
 
 .item:hover {
@@ -232,21 +229,6 @@ export default {
   filter: brightness(80%);
 }
 
-@media (max-width: 576px) {
-  .card {
-    width: 110%;
-    height: 200px;
-    margin-bottom: 20px;
-  }
-  .card-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: cover;
-  }
-  .item-title, .item-price {
-    font-size: 15px;
-  }
-}
 
 .item:hover > .card > .card-image {
   transform: scale(1.1);
@@ -271,7 +253,36 @@ export default {
 }
 
 .item-title {
-  /*font-size: 18px;*/
   font-weight: 700;
 }
+
+@media (max-width: 576px) {
+  .card {
+    width: 110%;
+    height: 200px;
+    margin-bottom: 20px;
+  }
+
+  .card-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+  }
+
+  .item-title, .item-price {
+    font-size: 15px;
+  }
+
+  .alert-log {
+    top: 20%;
+    left: 10%;
+    width: 80%;
+  }
+  .shop-section {
+    width: 95%;
+    margin-top: -870px;
+    padding-bottom: 100px;
+  }
+}
+
 </style>

@@ -11,7 +11,7 @@ import ItemList from "@/components/ItemList";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Women",
-  components: { ItemList},
+  components: {ItemList},
   data() {
     return {
       image: "women.avif",
@@ -31,5 +31,13 @@ export default {
   position: absolute;
   display: grid;
   font-family: "Franklin Gothic Medium", sans-serif;
+}
+
+@media (max-width: 576px) {
+  .title {
+    left: 53%;
+    top: 11%;
+    font-size: 30px;
+  }
 }
 </style>

@@ -2,33 +2,36 @@
   <div class="orders-page">
     <h2 class="title">My account</h2>
     <div class="border-top pt-5 w-100">
-      <NavProfile class="outer-card"/>
+      <NavProfile class="outer-card bg-light"/>
       <div class="bg-secondary bg-opacity-50" id="orders-card">
-        <h4 class=" m-5 border border-1 bg-white p-3 order-title">My orders</h4>
+        <h4 class="border border-1 bg-white p-3 order-title">My orders</h4>
         <div v-for="(order, index) in $store.state.user?.orders" :key="index"
-             class="border border-dark bg-light rounded-2 my-3 mx-5 p-3">
+             class="border border-dark bg-light rounded-2 order-div">
           <h5 class="order-id py-2 fw-bold">Order: #{{ order.orderNumber }}</h5>
-          <button class="btn btn-dark px-5" @click="showOrder(index)">
+          <button class="btn btn-dark details " @click="showOrder(index)">
             {{ index === indexOrder ? 'Close' : 'See more' }}
           </button>
           <p class="border border-dark border-pgf"></p>
-          <p class="date-status my-3">Data: <span class="fw-bold">{{ order.orderDate }}</span></p>
-          <p class="date-status w-100">Status: <span class="fw-bold">{{ order.status }}</span></p>
+          <p class="date-status">Data: <span class="fw-bold">{{ order.orderDate }}</span></p>
           <p class="date-status w-100">Estimate arrival date: <span class="fw-bold">{{
               order.estimateArrivalDate
             }}</span></p>
+          <p class="date-status w-100">Status: <span class="fw-bold">{{ order.status }}</span></p>
+          <p class="amount me-3">Total: <span class="text-danger">${{ order.amount }}</span></p>
+
           <router-link
               v-if="order.status === 'Received' && isWithinThirtyDays(order.estimateArrivalDate) "
               :to="{name: 'ReturnItem', params: { order: order}, }"
               id="return" class="text-decoration-none w-100 fw-bold">Return
           </router-link>
-          <p class="amount me-3">Total: <span class="text-danger">${{ order.amount }}</span></p>
+
 
           <div v-show="index === indexOrder" class="pt-5 product-list-div">
+
             <h5 class="products-header d-block m-auto">Products ordered</h5>
             <div v-for="(item,index) in order.productList"
                  :key="index" class="cart-item m-auto">
-              <img :src="item.product.img"/>
+              <img :src="item.product.img" alt="Product image"/>
               <div>
                 <h3 class="item-product-title">{{ item.product.title }}</h3>
                 <p class="size mt-3 ">Size: <span id="size"> {{ item.size }}</span></p>
@@ -53,7 +56,8 @@
                 {{ order.billingAddress.blockStaircase }}</p>
               <p class="pt-5 " id="postcode">{{ order.billingAddress.postcode }}</p>
             </div>
-            <p class="payment-item m-auto"> Payment method: <span class="fw-bold">{{ order.paymentMethod }}</span></p>
+            <p class="payment-item m-auto"> Payment method: <span
+                class="payment-item-span fw-bold">{{ order.paymentMethod }}</span></p>
           </div>
         </div>
       </div>
@@ -124,11 +128,6 @@ export default {
   color: #3f3f3f;
 }
 
-.order-title {
-  text-align: center;
-  letter-spacing: 2px;
-}
-
 #size {
   text-transform: uppercase;
   font-size: 14px;
@@ -137,12 +136,25 @@ export default {
   padding: 4px;
 }
 
+.order-title {
+  text-align: center;
+  letter-spacing: 2px;
+  margin: 30px 50px 30px 50px;
+}
+
+.order-div {
+  width: 92%;
+  padding: 20px;
+  margin: auto auto 15px;
+}
+
 .orders-page {
   padding-bottom: 150px;
 }
 
 .product-list-div {
-  margin-top: 15%;
+  margin-top: 10%;
+  padding-bottom: 20px;
 }
 
 .btn {
@@ -202,10 +214,9 @@ export default {
   text-align: start;
 }
 
-.cart-item img {
+img {
   position: relative;
-  width: 130px;
-  height: 170px;
+  width: 100%;
   display: block;
   left: 0;
   object-position: top;
@@ -221,6 +232,10 @@ export default {
   position: absolute;
   float: left;
   font-size: 16px;
+}
+
+.item-product-title, .size, .quantity {
+  padding-left: 20px;
 }
 
 .address {
@@ -239,14 +254,141 @@ export default {
 }
 
 .price {
-  display: flex;
   justify-content: right;
-  transform: translateY(150%) translateX(13%);
+  display: grid;
+  position: relative;
+  margin-top: 130px;
+  margin-right: -20px;
 }
 
 .size, .quantity {
   text-align: start;
 }
 
+.size {
+  transform: translateY(100%);
+}
+
+.quantity {
+  transform: translateY(180%);
+}
+
+@media (max-width: 576px) {
+  #orders-card {
+    width: 90%;
+    margin-top: 55%;
+    float: none;
+    margin-left: 20px;
+  }
+
+  .outer-card {
+    width: 80%;
+    margin-top: -8%;
+    font-size: 14px;
+    margin-left: 40px;
+    float: none;
+  }
+
+  .title {
+    margin-top: 100px;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+  }
+
+  .date-status, .address, #postcode, .payment-item-span {
+    font-size: 14px;
+  }
+
+  img {
+    width: 80%;
+  }
+
+  .orders-page {
+    padding-bottom: 50px;
+  }
+
+  .order-id {
+    font-size: 16px;
+  }
+
+  .payment-item {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+
+  .details {
+    font-size: 14px;
+    margin-right: 7px;
+  }
+
+  .order-title {
+    font-size: 18px;
+    padding: 10px;
+    margin: 30px;
+  }
+
+  .cart-item {
+    width: 90%;
+    margin-top: 10%;
+  }
+
+  .order-div {
+    width: 90%;
+    padding: 15px 10px 20px 10px;
+    margin: auto auto 15px;
+  }
+
+  .item-product-title, .size, .quantity {
+    font-size: 13px;
+    padding-left: 10px;
+  }
+
+  .products-header {
+    font-size: 18px;
+  }
+
+  .address-title {
+    font-size: 16px;
+  }
+
+  .date-status {
+    margin-bottom: 3px;
+  }
+
+  .products-header {
+    width: 90%;
+  }
+
+  .border-pgf {
+    margin-top: 50px;
+  }
+
+  .product-list-div {
+    margin-top: 20%;
+  }
+
+  .size {
+    transform: translateY(-50%);
+  }
+
+  .quantity {
+    transform: translateY(-100%);
+  }
+
+  .amount {
+    margin-top: -22px;
+    font-size: 14px;
+  }
+
+  .price {
+    font-size: 14px;
+    margin-top: -55px;
+    margin-right: -20px;
+  }
+
+  .address-item {
+    width: 90%;
+  }
+}
 
 </style>

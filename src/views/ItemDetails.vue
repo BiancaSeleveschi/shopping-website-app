@@ -179,34 +179,9 @@ export default {
   top: 12%;
   left: 76%;
   height: max-content;
-  width: max-content;
+  width: 30%;
 }
 
-@media (max-width: 576px) {
-  .product-title, .product-price, #prod-description, #brand {
-    font-size: 13px;
-  }
-  .img-div {
-    margin: 20% auto auto;
-  }
-
-  .add-fav-button, .remove-fav-button, .add-cart,
-  .select {
-    font-size: 12px;
-  }
-  .product-details {
-    margin-top: 20px;
-    margin-left: 7%;
-  }
-  #modal-img {
-    width: 100%;
-    padding-top: 60%;
-    margin-left: 45%;
-  }
-  .modal-content {
-    margin-left: 8%;
-  }
-}
 .img-fluid {
   display: grid;
   cursor: pointer;
@@ -325,5 +300,43 @@ export default {
   font-size: 30px;
   color: #000000;
   cursor: pointer;
+}
+
+@media (max-width: 576px) {
+  .product-title, .product-price, #prod-description, #brand {
+    font-size: 13px;
+  }
+
+  .img-div {
+    margin: 20% auto auto;
+  }
+
+  .add-fav-button, .remove-fav-button, .add-cart,
+  .select {
+    font-size: 12px;
+  }
+
+  .product-details {
+    margin-top: 20px;
+    margin-left: 7%;
+  }
+
+  #modal-img {
+    width: 100%;
+    padding-top: 60%;
+    margin-left: 45%;
+  }
+
+  .modal-content {
+    margin-left: 8%;
+  }
+
+  #alert-cart, .alert-log {
+    font-size: 15px;
+    top: 15%;
+    left: 10%;
+    width: 80%;
+  }
+
 }
 </style>

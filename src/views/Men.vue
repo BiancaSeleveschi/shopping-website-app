@@ -32,4 +32,12 @@ export default {
   display: grid;
   font-family: "Franklin Gothic Medium", sans-serif;
 }
+
+@media (max-width: 576px) {
+  .title {
+    left: 32%;
+    top: 20%;
+    font-size: 50px;
+  }
+}
 </style>
