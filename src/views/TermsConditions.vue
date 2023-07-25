@@ -129,4 +129,10 @@ export default {
   margin: 100px 150px 60px 25px;
   text-align: start;
 }
+@media (max-width: 576px) {
+  .text {
+    font-size: 12px;
+    width: 80%;
+  }
+}
 </style>

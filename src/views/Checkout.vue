@@ -2,8 +2,8 @@
   <div class="checkout-page">
     <h1 class="title">Checkout</h1>
     <div v-if=" !existDeliveryAddresses">
-      <h4> Select a delivery address<span class="d-block m-auto">or</span></h4>
-      <button class="py-2 mb-4 px-4 add-button" @click="addNewDeliveryAddress">
+      <h4 class="delivery-billing-address"> Select a delivery address<span class="d-block m-auto">or</span></h4>
+      <button class="add-close-button" @click="addNewDeliveryAddress">
         {{ isAddDeliveryAddressButtonClicked ? 'Close' : 'Add delivery address' }}
       </button>
     </div>
@@ -13,16 +13,16 @@
                    :isAddressSavedInitial="false"
                    @closeAddressForm="closeAddingDeliveryAddressForm"/>
     </div>
-    <p v-show="isDeliveryAddressNotSelected" class="w-50 m-auto address-alert">Select a delivery address</p>
-
+    <p v-show="isDeliveryAddressNotSelected && !isAddDeliveryAddressButtonClicked"
+       class="w-50 m-auto delivery-address-alert">Select a delivery address</p>
     <AddressList :addresses="deliveryAddresses"
                  title="Delivery address"
                  @selectDeliveryAddress="selectDeliveryAddress"
     />
 
-    <div v-if="existBillingAddresses" class="mt-5">
-      <h4> Select a billing address<span class="d-block m-auto">or</span></h4>
-      <button class="py-2 mb-4 px-4 add-button " @click="addNewBillingAddress">
+    <div v-if="existBillingAddresses" id="select-address">
+      <h4 class="delivery-billing-address"> Select a billing address<span class="d-block m-auto">or</span></h4>
+      <button class="add-close-button " @click="addNewBillingAddress">
         Add billing address
       </button>
     </div>
@@ -32,13 +32,15 @@
                    :isAddressSavedInitial="false"
                    @closeAddressForm="closeAddingBillingAddressForm "/>
     </div>
-    <p v-show="isBillingAddressNotSelected" class="w-50 m-auto pe-3 address-alert">Select a billing address</p>
+    <p v-show="isBillingAddressNotSelected && !isAddBillingAddressButtonClicked"
+       class="w-50 m-auto pe-3 billing-address-alert">Select a billing address
+    </p>
     <AddressList :addresses="billingAddresses" title="Billing address"
                  @selectBillingAddress="selectBillingAddress"/>
 
-    <div class="summary-card border border-2 m-auto w-50 pt-3 mt-5 px-5 rounded rounded-4">
-      <div class="p-4 m-auto shipping">
-        <h4 class="mb-5 summary-title">Shipping method</h4>
+    <div class="summary-card border border-2 m-auto pt-3 mt-5 rounded rounded-4">
+      <div class="py-4 m-auto shipping">
+        <h4 class=" summary-title">Shipping method</h4>
         <p v-show="showShippingMethodAlert" class="shipping-method-alert">Please select a shipping method</p>
         <div>
           <input v-model="isCheckboxStandardChecked" @click="selectShippingMethod" type="checkbox" name="example"
@@ -52,8 +54,8 @@
           </p>
         </div>
       </div>
-      <div class="p-4 m-auto payment">
-        <h4 class="mb-5 summary-title">Payment method</h4>
+      <div class="py-4 m-auto payment">
+        <h4 class="summary-title">Payment method</h4>
         <p v-if="showPaymentMethodAlert" class="payment-method-alert">Please select a payment method</p>
         <div class="my-2">
           <input v-model="isCheckboxCreditCardChecked" @click="selectPaymentMethod" type="checkbox" name="example"
@@ -61,16 +63,16 @@
           Credit Card
           <img
               src="https://www.dolcegabbana.com/on/demandware.static/Sites-dolcegabbana-Site/-/default/dwb03681c3/images/master.png"
-              class="first-credit-card"/>
+              class="first-credit-card card-img"/>
           <img
               src="https://www.dolcegabbana.com/on/demandware.static/Sites-dolcegabbana-Site/-/default/dw14dc6ef9/images/visa.png"
-              class="m-2"/>
+              class="card-img"/>
           <img
               src="https://www.dolcegabbana.com/on/demandware.static/Sites-dolcegabbana-Site/-/default/dw26f78c16/images/maestro.png"
-              class="m-2"/>
+              class="card-img"/>
           <img
               src="https://www.dolcegabbana.com/on/demandware.static/Sites-dolcegabbana-Site/-/default/dw30c08c97/images/amex.png"
-              class="m-2"/>
+              class="card-img"/>
           <span class="payment-method my-2">FREE </span>
         </div>
         <div v-show="isCheckboxCreditCardChecked" class="my-4 border border-secondary rounded-2">
@@ -84,20 +86,20 @@
           />
         </div>
       </div>
-      <div class="p-4 m-auto order-summary">
-        <h4 class="fw-bold mb-5">ORDER SUMMARY</h4>
+      <div class="py-4 m-auto order-summary">
+        <h4 class="fw-bold order-summary-title">ORDER SUMMARY</h4>
         <div v-show="isCouponCodeValid">
           <p class="text-success">You saved: ${{ savedMoney }}</p>
         </div>
         <p>Subtotal:<span :class="{'text-decoration-line-through' : isCouponCodeValid}">${{ subtotal }}</span>
           <span> {{ isCouponCodeValid ? subtotalAfterCouponCode : '' }}</span>
         </p>
-        <div class="mb-3">
+        <div>
           <p class="coupon-code-span d-inline-block" @click="enterCouponCode">
             {{ !showEnterCouponCodeForm ? '+Enter coupon code' : '- Enter coupon code' }}</p>
-          <div v-if="showEnterCouponCodeForm" class="d-inline-block">
+          <div v-if="showEnterCouponCodeForm" class="d-inline-block coupon-code-div">
             <input v-model="couponCode" class="coupon-code-input" type="text" v-on:keyup.enter='applyCouponCode'/>
-            <p v-show="!isCouponCodeInvalid" class="coupon-code-alert">The coupon code is not valid.</p>
+            <p v-show="isCouponCodeInvalid" class="coupon-code-alert">The coupon code is not valid.</p>
             <button v-if="!isCouponCodeApplied" @click="applyCouponCode" class="coupon-code-button">Apply</button>
             <button v-else class="coupon-code-button" @click="removeCouponCode">
               {{ isCouponCodeApplied ? 'Remove' : 'Apply' }}
@@ -109,7 +111,7 @@
             {{ shippingFinalCost === 0 ? 'Free' : shippingFinalCost }}
           </span>
         </p>
-        <h5 class="fw-bold py-3 border-top border-bottom">Total: ${{ cartTotalPrice }} </h5>
+        <h5 class="fw-bold py-3 total border-top border-bottom">Total: ${{ cartTotalPrice }} </h5>
         <router-link to="/" class="back-link">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace"
                viewBox="0 0 16 16">
@@ -448,17 +450,23 @@ input[type=number] {
   border-radius: 0;
 }
 
+#select-address {
+  margin-top: 60px;
+  margin-bottom: 50px;
+}
+
 .payment-button-div {
   margin-left: 80%;
 }
 
-.add-button {
+.add-close-button {
   border: 1px solid black;
   background-color: #000000;
   color: #ffffff;
+  padding: 7px 13px 7px 13px;
 }
 
-.add-button:hover {
+.add-close-button:hover {
   background-color: white;
   color: black;
 }
@@ -468,9 +476,13 @@ input[type=number] {
   padding-bottom: 250px;
 }
 
+.card-img {
+  width: 10%;
+}
+
 .title {
-  margin-top: 6%;
-  margin-bottom: 6%;
+  margin-top: 8%;
+  margin-bottom: 4%;
   letter-spacing: 2px;
   font-weight: 100;
 }
@@ -522,28 +534,30 @@ input[type=number] {
   transform: translateX(39%);
 }
 
-.address-alert,
+.billing-address-alert,
+.delivery-address-alert,
 .payment-method-alert,
 .shipping-method-alert {
   position: absolute;
   color: red;
 }
 
-.shipping-method-alert {
-  transform: translateY(190%);
+.payment-method-alert, .shipping-method-alert {
+  transform: translateY(110%);
 }
 
-.payment-method-alert {
-  transform: translateY(230%);
+.billing-address-alert {
+  left: 141px;
+  transform: translateY(-110%);
 }
 
-.address-alert {
-  left: 165px;
+.delivery-address-alert {
+  left: 140px;
+  transform: translateY(-13%);
 }
 
 .first-credit-card {
-  margin-left: 50px;
-  margin-right: 8px;
+  margin-left: 20px;
 }
 
 .coupon-code-button {
@@ -568,4 +582,102 @@ input[type=number] {
   color: #656565;
 }
 
+.summary-card {
+  width: 50%;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.summary-title, .order-summary-title {
+  padding-bottom: 30px;
+}
+
+@media (max-width: 576px) {
+  .summary-card {
+    width: 90%;
+    font-size: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .card-img {
+    width: 12%;
+  }
+
+  .summary-title {
+    font-size: 14px;
+    padding-bottom: 18px;
+  }
+
+  .order-summary-title {
+    font-size: 16px;
+    padding-bottom: 18px;
+  }
+
+  .title {
+    font-size: 24px;
+    padding-bottom: 13px;
+  }
+
+  .coupon-code-alert {
+    font-size: 11px;
+    transform: translateX(7%);
+  }
+
+  .delivery-billing-address {
+    font-size: 16px;
+  }
+
+  .add-close-button {
+    font-size: 12px;
+    padding: 4px 7px 4px 7px;
+  }
+
+  .checkout-page {
+    padding-top: 22%;
+  }
+
+  .coupon-code-input {
+    margin-left: 10px;
+  }
+
+  .coupon-code-div {
+    padding-bottom: 30px;
+  }
+
+  .total {
+    font-size: 14px;
+  }
+
+  .first-credit-card {
+    margin-left: 2px;
+  }
+
+  #payment-button {
+    font-size: 12px;
+  }
+
+  .payment-button-div {
+    margin-left: 60%;
+  }
+
+  .delivery-address-alert, .billing-address-alert {
+    left: -14px;
+    font-size: 12px;
+    padding-top: 5px;
+  }
+
+  .shipping-method-alert {
+    transform: translateY(100%);
+  }
+
+  .payment-method-alert {
+    transform: translateY(100%);
+  }
+
+  #select-address {
+    margin-top: 20px;
+    margin-bottom: 25px;
+  }
+}
 </style>

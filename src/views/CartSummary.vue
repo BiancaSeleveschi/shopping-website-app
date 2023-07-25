@@ -5,7 +5,7 @@
     </div>
     <div v-for="(item,index) in this.$store.state.user?.cart"
          :key="index" class="cart-item m-auto mb-3">
-      <img :src="item.product.img"/>
+      <img :src="item.product.img" alt="Product image" class="pro"/>
       <div>
         <h3 class="item-product-title">{{ item.product.title }}</h3>
         <p class="size mt-3 ">Size: <span id="size"> {{ item.size }}</span></p>
@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="p-4 m-auto summary-card">
-      <h4 class="fw-bold mb-5">ORDER SUMMARY</h4>
+      <h4 class="fw-bold order-summary-title mb-4">ORDER SUMMARY</h4>
       <p>Subtotal: ${{ cartTotalPrice }}</p>
       <h5 class="fw-bold py-3 border-top border-bottom">Total: ${{ cartTotalPrice }} </h5>
 
@@ -39,7 +39,7 @@
         Back to shopping
       </router-link>
       <div>
-        <button class="py-2 px-4 " @click="continueToCheckout" id="checkout-btn">Continue to checkout</button>
+        <button class="py-2" @click="continueToCheckout" id="checkout-btn">Continue to checkout</button>
       </div>
     </div>
   </div>
@@ -107,6 +107,11 @@ export default {
   padding: 4px;
 }
 
+#checkout-btn {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 #checkout-btn:hover {
   background-color: white;
   color: black;
@@ -162,7 +167,13 @@ export default {
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.034);
   transition: 0.5s;
 }
-
+.summary-card {
+  width: 60%;
+  display: grid;
+  border-bottom: solid 1px #333;
+  background-color: #ffffff;
+  text-align: start;
+}
 .price {
   display: flex;
   justify-content: right;
@@ -178,7 +189,7 @@ export default {
   text-align: right;
   margin-right: 7px;
   margin-top: -10px;
-  transform: translateY(-3%) translateX(30%);
+  transform: translateX(30%);
   font-size: 18px;
   color: #000000;
 }
@@ -186,14 +197,6 @@ export default {
 .cancel:hover {
   color: #ffffff;
   cursor: pointer;
-}
-
-.summary-card {
-  display: grid;
-  width: 60%;
-  border-bottom: solid 1px #333;
-  background-color: #ffffff;
-  text-align: start;
 }
 
 .footer-back {
@@ -205,6 +208,36 @@ export default {
 
 .footer-back:hover {
   color: #656565;
+}
+
+@media (max-width: 576px) {
+  .item-product-title, .price, .size, .quantity {
+    font-size: 12px;
+    width: 80%;
+    padding-left: 10px;
+  }
+  .cart-item, .summary-card {
+    width: 95%;
+  }
+  .price {
+    transform: translateY(90%) translateX(80%);
+  }
+  .summary-card {
+    font-size: 12px;
+  }
+  .border-bottom {
+    font-size: 14px;
+  }
+  .order-summary-title {
+    font-size: 18px;
+  }
+  .cancel {
+    margin-top:-5px;
+  }
+  #checkout-btn {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
 }
 
 </style>

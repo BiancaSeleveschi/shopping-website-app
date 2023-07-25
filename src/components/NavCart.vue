@@ -131,6 +131,17 @@ export default {
   background-color: black;
   color: white;
   border: black 1px solid;
-
+}
+@media (max-width: 576px) {
+  .cart {
+    width: 90%;
+    height: 450px;
+  }
+  .checkout {
+    font-size: 13px;
+  }
+  .subtotal {
+    font-size: 14px;
+  }
 }
 </style>

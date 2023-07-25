@@ -1,9 +1,9 @@
 <template>
-  <div class="m-auto my-4 border border-2 w-50 m-auto p-4 rounded rounded-4 bg-white">
-    <h4 v-if="isAddressSaved" class="py-4 title">Edit address</h4>
+  <div class="address-form-page m-auto my-4 border border-2 m-auto p-4 rounded rounded-4 bg-white">
+    <h4 v-if="isAddressSaved" class=" title">Edit address</h4>
     <h4 v-else class="py-4 title">
       {{ title === 'Delivery address' ? 'Add delivery address' : 'Add billing address' }}</h4>
-    <div class="w-50 col-div mb-5 d-block m-auto">
+    <div class="col-div d-block m-auto">
       <p class="address-pgf">Country*</p>
       <input
           v-model="address.country"
@@ -13,7 +13,7 @@
       />
       <span class="address-alert" v-show="isCountryInputIncomplete">Please enter a country</span>
     </div>
-    <div class="w-50 col-div mb-5 d-block m-auto">
+    <div class="col-div d-block m-auto">
       <p class="address-pgf">Town/City*</p>
       <input
           v-model="address.city"
@@ -23,7 +23,7 @@
       />
       <span class="address-alert" v-show="isCityInputIncomplete">Please enter a city/town</span>
     </div>
-    <div class=" w-50 col-div mb-5 d-block m-auto">
+    <div class=" col-div d-block m-auto">
       <p class="address-pgf">Street*</p>
       <input
           v-model="address.street"
@@ -33,7 +33,7 @@
       />
       <span class="address-alert" v-show="isStreetInputIncomplete">Enter a street</span>
     </div>
-    <div class=" w-50 col-div mb-5 d-block m-auto">
+    <div class=" col-div d-block m-auto">
       <p class="address-pgf">Number*</p>
       <input
           v-model="address.number"
@@ -43,7 +43,7 @@
       />
       <span class="address-alert" v-show="isNumberInputIncomplete">Enter a house/block number</span>
     </div>
-    <div class=" w-50 col-div mb-5 d-block m-auto">
+    <div class=" col-div d-block m-auto">
       <p class="address-pgf">Block staircase, floor, apartment</p>
       <input
           v-model="address.blockStaircase"
@@ -51,7 +51,7 @@
           class="w-100 address-input"
       />
     </div>
-    <div class=" w-50 col-div mb-5 d-block m-auto">
+    <div class=" col-div d-block m-auto">
       <p class="address-pgf">Zip Code*</p>
       <input
           v-model="address.postcode"
@@ -61,7 +61,7 @@
       />
       <span class="address-alert" v-show="isPostcodeInputIncomplete">Please enter a postcode</span>
     </div>
-    <button @click="!isAddressSaved ? saveAddress() : updateAddress()" class="btn btn-primary mb-5">
+    <button @click="!isAddressSaved ? saveAddress() : updateAddress()" class="btn btn-primary button">
       {{ !isAddressSaved ? 'Save' : 'Update' }}
     </button>
   </div>
@@ -164,6 +164,12 @@ input[type=number] {
   font-size: 14px;
   float: left
 }
+.button {
+  margin-bottom: 30px;
+}
+.address-form-page, .col-div {
+  width: 50%;
+}
 
 .address-pgf {
   margin-bottom: 0;
@@ -171,4 +177,40 @@ input[type=number] {
   font-family: "JetBrains Mono Light", sans-serif;
 }
 
+.col-div {
+  padding-bottom: 30px;
+}
+
+.title {
+  padding-bottom: 30px;
+  padding-top: 30px;
+}
+
+@media (max-width: 576px) {
+  .address-form-page {
+    width: 90%;
+  }
+
+  .col-div {
+    width: 70%;
+    font-size: 12px;
+    padding-bottom: 18px;
+  }
+
+  .title {
+    font-size: 16px;
+    padding-bottom: 10px;
+    padding-top: 15px;
+  }
+
+  .button {
+    font-size: 12px;
+    margin-bottom: 8px;
+    margin-top: 10px;
+  }
+
+  .address-alert {
+    font-size: 11px;
+  }
+}
 </style>

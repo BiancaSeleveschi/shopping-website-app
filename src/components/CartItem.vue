@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(item, index) in this.$store.state.user?.cart" :key="index" class="cart-item">
-      <img :src="item.product.img"/>
+      <img :src="item.product.img" alt="Poduct image"/>
       <div>
         <router-link
             :to="{
@@ -110,12 +110,9 @@ img {
 .price {
   display: flex;
   justify-content: right;
-  margin-top: 1.3em;
-  font-size: 1rem;
   letter-spacing: 0.2em;
   color: black;
   font-family: "Valverde", sans-serif;
-  font-weight: 100;
 }
 
 .quantity-button {
@@ -152,5 +149,15 @@ img {
 .cancel:hover {
   color: #dedede;
   cursor: pointer;
+}
+
+@media (max-width: 576px) {
+  .item-product-title, .size, .quantity, .quantity-button {
+    font-size: 12px;
+  }
+  .price {
+    font-size: 13px;
+    margin-top: 25px;
+  }
 }
 </style>

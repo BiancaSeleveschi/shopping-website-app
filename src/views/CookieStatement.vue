@@ -65,4 +65,13 @@ export default {
 .nav-link:hover {
   color: #8d8d8d;
 }
+@media (max-width: 576px) {
+  .text-cookie {
+    font-size: 12px;
+    width: 80%;
+    margin: auto;
+    padding-top: 35%;
+    padding-bottom: 15%;
+  }
+}
 </style>

@@ -184,7 +184,7 @@ export default {
 
 @media (max-width: 576px) {
   .product-title, .product-price, #prod-description, #brand {
-    font-size: 14px;
+    font-size: 13px;
   }
   .img-div {
     margin: 20% auto auto;
