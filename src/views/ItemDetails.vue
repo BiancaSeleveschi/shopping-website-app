@@ -2,8 +2,8 @@
   <div class="item-details-page bg-black">
     <div v-if="product" class="product container">
       <div class="d-inline-block pt-5 row w-100">
-        <div class="img-div col-10 col-sm-8 col-md-10 col-lg-6 col-xxl-5">
-          <img @click="openModal" :src="product.img" alt="Image" class="img-fluid m-auto"/>
+        <div class="img-div">
+          <img @click="openModal" :src="product.img" alt="Image" class="img-fluid"/>
           <div v-if="isModalOpen" class="modal" @click="closeModal">
             <div class="modal-content">
               <span @click="closeModal" class="close">X</span>
@@ -11,17 +11,17 @@
             </div>
           </div>
         </div>
-        <div class="text-light product-details col-11 col-sm-11 col-md-11 col-lg-6 col-xxl-6">
+        <div class="text-light product-details">
           <p class="fw-bold" id="brand">{{ product.brand }}</p>
           <h1 class="product-title">{{ product.title }}</h1>
-          <p class="fs-5 product-price">${{ product.price }}</p>
+          <p class="product-price">${{ product.price }}</p>
           <p class="mt-3" id="prod-description">
             {{ product.description }}
           </p>
-          <div class="m-auto my-4">
+          <div class="m-auto">
             <div v-if="!isFavorite(product) && !product.isFavorite">
               <button @click="addToFavorite(product)"
-                      class="py-2 px-4 bg-black text-white border border-3 add-fav-button">Add favorite
+                      class="bg-black text-white border border-3 add-fav-button">Add favorite
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart"
                      viewBox="0 0 16 16">
                   <path
@@ -31,14 +31,14 @@
             </div>
             <div v-else>
               <button @click="removeFromFavorite(product)"
-                      class="remove-fav-button bg bg-white text-black border border-white">
+                      class="remove-fav-button bg-white text-black border border-white">
                 Remove favorite 🤍
               </button>
             </div>
           </div>
-          <div class="border border-white mt-5"></div>
-          <form class="product-details-bottom pt-5">
-            <select class="select px-5 py-2 me-4 m-auto" v-model="size" :class="{ error: error }">
+          <div class="border border-white mt-4"></div>
+          <form class="product-details-bottom">
+            <select class="select me-4 m-auto" v-model="size" :class="{ error: error }">
               <option value="Size" disabled>Size</option>
               <option value="xs">xs</option>
               <option value="s">s</option>
@@ -47,7 +47,7 @@
               <option value="xl">xl</option>
               <option value="xxl">xxl</option>
             </select>
-            <div class="add-cart px-4 py-2 ms-4 m-auto" @click="addToCart(product, size)">
+            <div class="add-cart ms-4 m-auto" @click="addToCart(product, size)">
               Add to cart
             </div>
           </form>
@@ -165,11 +165,9 @@ export default {
 <style scoped>
 
 #brand {
-  display: flow;
   letter-spacing: 0.2em;
   font-size: 18px;
 }
-
 
 #prod-description {
   font-size: 20px;
@@ -183,9 +181,21 @@ export default {
 }
 
 .img-fluid {
-  display: grid;
   cursor: pointer;
   position: relative;
+}
+
+.product-details {
+  width: 50%;
+  display: inline-block;
+  font-family: "JetBrains Mono Light", sans-serif;
+}
+
+.img-div {
+  width: 40%;
+  float: left;
+  margin-right: 120px;
+  display: inline-block;
 }
 
 .overlay {
@@ -210,19 +220,11 @@ export default {
   z-index: 2;
 }
 
-.product-details {
-  font-family: "JetBrains Mono Light", sans-serif;
-  /*text-align: center;*/
-  /*justify-content: center;*/
-  /*position: relative;*/
-  display: grid;
-}
-
 .product {
   margin-top: 10%;
   display: flex;
   position: relative;
-  padding-bottom: 300px;
+  padding-bottom: 100px;
 }
 
 .item-details-page {
@@ -231,9 +233,16 @@ export default {
 }
 
 .add-fav-button,
+.remove-fav-button, .select, .add-cart {
+  width: 210px;
+  padding: 10px;
+}
+
+.add-fav-button,
 .remove-fav-button {
   border-radius: 10px;
   text-transform: uppercase;
+  margin: 20px;
 }
 
 
@@ -245,6 +254,7 @@ export default {
 .product-details-bottom {
   display: flex;
   flex-direction: row;
+  margin-top: 45px;
 }
 
 .select,
@@ -257,7 +267,6 @@ export default {
   border-radius: 10px;
   text-transform: uppercase;
   border: 3px solid white;
-  padding-bottom: -30%;
 }
 
 .add-cart {
@@ -279,12 +288,10 @@ export default {
 
 .modal {
   display: block;
+  cursor: pointer;
   position: fixed;
-  padding-right: 15%;
   padding-top: 3%;
   z-index: 1;
-  width: 100%;
-  height: 100%;
   background-color: rgba(0, 0, 0, 0.9);
 }
 
@@ -292,6 +299,7 @@ export default {
   padding-top: 4%;
   background-color: transparent;
 }
+
 
 .close {
   position: absolute;
@@ -308,27 +316,35 @@ export default {
   }
 
   .img-div {
-    margin: 20% auto auto;
+    width: 70%;
+    margin: 30px 60px 10px 60px;
   }
 
   .add-fav-button, .remove-fav-button, .add-cart,
   .select {
     font-size: 12px;
+    padding: 5px;
+    width: 150px;
+    margin: 0px;
   }
 
   .product-details {
+    width: 95%;
     margin-top: 20px;
     margin-left: 7%;
   }
 
   #modal-img {
-    width: 100%;
-    padding-top: 60%;
-    margin-left: 45%;
+    width: 80%;
+    padding-top: 30%;
+  }
+
+  .product-details-bottom {
+    margin-top: 20px;
   }
 
   .modal-content {
-    margin-left: 8%;
+    margin: auto;
   }
 
   #alert-cart, .alert-log {
@@ -337,6 +353,5 @@ export default {
     left: 10%;
     width: 80%;
   }
-
 }
 </style>

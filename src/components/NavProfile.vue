@@ -32,6 +32,9 @@ export default {
             console.error('Error logging out: ', error);
           })
     },
+    closeProfile() {
+      this.$emit("closeProfile");
+    }
   }
 }
 </script>

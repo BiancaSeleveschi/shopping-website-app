@@ -223,6 +223,7 @@ export default {
   width: inherit;
   height: inherit;
   object-fit: cover;
+  margin-bottom: 13px;
   display: block;
   object-position: top;
   transition: transform 0.6s;

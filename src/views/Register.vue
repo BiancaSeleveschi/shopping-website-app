@@ -1,55 +1,55 @@
 <template>
-  <div class="mb-5 p-5">
+  <div class="register-page">
     <div class="container">
       <div class="row d-flex">
-        <h2 class="col-6 col-account d-inline-block title">
+        <h2 class="d-inline-block title">
           CREATE ACCOUNT
         </h2>
-        <router-link to="/login" class="login col-4">I Already Have It</router-link>
-        <div class="col-12 col-account mb-5">
-          <p class="col-account">TITLE*</p>
-          <select class="w-25 account-input" v-model="account.title" required>
+        <router-link to="/login" class="login">I Already Have It</router-link>
+        <div class="title-div">
+          <p class="pgf">TITLE*</p>
+          <select class="account-input" v-model="account.title" required>
             <option v-for="(title, index) in titles" :key="index">
               {{ title }}
             </option>
           </select>
           <div v-if="isGenreNotSelected" class="alert-message">Please choose a genre.</div>
         </div>
-        <div class="col-6 col-account mb-5">
-          <p>FIRST NAME*</p>
+        <div class="col-account">
+          <p class="pgf">FIRST NAME*</p>
           <input
               v-model="account.firstName"
               type="text"
-              class="w-75  account-input"
+              class="account-input"
           />
           <p v-show="!isFirstNameInputCompleted" class="alert-message">{{ firstNameMessageAlert }}</p>
         </div>
-        <div class="col-6 col-account mb-5">
-          <p>LAST NAME*</p>
+        <div class="col-account">
+          <p class="pgf">LAST NAME*</p>
           <input
               v-model="account.lastName"
               type="text"
-              class="w-75  account-input"
+              class="account-input"
           />
           <p v-show="!isLastNameInputCompleted" class="alert-message">{{ lastNameMessageAlert }}</p>
         </div>
-        <div class="col-6 col-account mb-5">
-          <p>EMAIL*</p>
+        <div class="col-account">
+          <p class="pgf">EMAIL*</p>
           <input
               v-model="account.emailAddress"
               type="email"
-              class=" w-75 account-input"
+              class="account-input"
               required
           />
           <div v-show="isEmailAddressIncomplete" class="alert-message">Please enter a valid email address</div>
         </div>
-        <div class="col-6 col-account mb-5">
-          <p>PASSWORD*</p>
+        <div class="col-account mt-2">
+          <p class="pgf">PASSWORD*</p>
           <input
               v-model="account.password"
               placeholder="Password"
               name="password"
-              class="  account-input w-75"
+              class="account-input"
               :type="passwordFieldType"
               required
           />
@@ -61,22 +61,22 @@
             uppercase and lowercase letters, numbers, and special characters
           </div>
         </div>
-        <p class="col-account fs-5 my-4">CONSENT TO PERSONAL DATA PROCESSING</p>
-        <div class="col-7 col-account  mb-5">
+        <p class="consent-pgf mt-4 mb-3">CONSENT TO PERSONAL DATA PROCESSING</p>
+        <div class="agree-div mb-5">
           <input v-model="isCheckboxChecked" type="checkbox" name="example" value="1"/>
           I agree to the collection and use of my personal data for marketing purposes
           <p v-show="isCheckboxNotClicked" class="alert-message">Please agree to the terms and conditions to create an
             account
           </p>
         </div>
-        <div class="col-4 col-account mb-5 create-button">
-          <button class="w-75 mt-5 col-4 p-2 create-account-button" @click="createAccount">Create account</button>
+        <div class="mb-5 create-button">
+          <button class="p-2 create-account-button" @click="createAccount">Create account</button>
         </div>
       </div>
     </div>
     <div v-show="accountExists" class="overlay">
       <transition name="fade">
-        <div class="alert alert-danger py-4 alert-password"
+        <div class="alert alert-danger py-4"
              role="alert">
           The email address is already in use by another account.
         </div>
@@ -189,37 +189,44 @@ export default {
 </script>
 
 <style scoped>
+.register-page {
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
 .create-button {
-  margin-left: 50px;
+  margin-left: 220px;
+  margin-top: 20px;
 }
 
 .login {
-  margin-top: 115px;
-  margin-bottom: 65px;
-  margin-left: 50px;
-  justify-content: end;
-  text-align: end;
+  margin-left: 26%;
+  margin-top: -90px;
   color: #727272;
 }
 
 .login:hover {
   color: #000000;
 }
-
+.pgf {
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
 .create-account-button {
   background-color: black;
   border: 1px solid black;
   color: white;
-  width: 300px;
+  width: 30%;
   right: 50px;
 }
-
+.title {
+  margin-bottom: 5%;
+}
 .create-account-button:hover {
   background-color: white;
   color: black;
 }
 
-.col-account {
+.col-account, .consent-pgf, .title, .agree-div {
   justify-content: start;
   text-align: start;
   font-family: "JetBrains Mono Light", sans-serif;
@@ -254,7 +261,10 @@ export default {
   height: max-content;
   z-index: 2;
 }
+.title {
+  margin-top:80px;
 
+}
 .alert-message {
   color: red;
   font-size: 12px;
@@ -268,5 +278,64 @@ export default {
   font-size: 14px;
   color: #999;
   cursor: pointer;
+}
+.consent-pgf {
+  font-size: 20px;
+}
+.title-div {
+  width: 100%;
+  justify-content: start;
+  text-align: start;
+  font-family: "JetBrains Mono Light", sans-serif;
+}
+.col-account {
+  width: 50%;
+}
+@media (max-width: 576px) {
+  .title {
+    margin-top:30px;
+    margin-bottom: 30px;
+    font-size: 20px;
+  }
+  .login {
+    justify-content: start;
+    text-align: start;
+    margin-bottom: 20px;
+    margin-left: 0px;
+    margin-top: 0px;
+  }
+  .account-input {
+    width: 250px;
+    font-size: 14px;
+  }
+  .register-page {
+    margin-bottom: 50px;
+  }
+  .col-account, .title-div {
+    width: 230px;
+  }
+  .password-toggle {
+    left: 205px;
+    bottom: 22px;
+  }
+  .pgf {
+    margin-bottom: 0px;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  .col-account, .consent-pgf {
+    font-size: 14px;
+  }
+  .create-button {
+    margin-left:  30px;
+    margin-top:  0px;
+  }
+  .create-account-button {
+    width: 60%;
+    font-size: 12px;
+  }
+  .agree-div {
+    font-size: 12px;
+  }
 }
 </style>

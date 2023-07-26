@@ -167,6 +167,7 @@ export default {
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.034);
   transition: 0.5s;
 }
+
 .summary-card {
   width: 60%;
   display: grid;
@@ -174,6 +175,7 @@ export default {
   background-color: #ffffff;
   text-align: start;
 }
+
 .price {
   display: flex;
   justify-content: right;
@@ -216,24 +218,35 @@ export default {
     width: 80%;
     padding-left: 10px;
   }
+
   .cart-item, .summary-card {
     width: 95%;
   }
+
+  .order-summary-page {
+    padding-bottom: 100px;
+  }
+
   .price {
     transform: translateY(90%) translateX(80%);
   }
+
   .summary-card {
     font-size: 12px;
   }
+
   .border-bottom {
     font-size: 14px;
   }
+
   .order-summary-title {
     font-size: 18px;
   }
+
   .cancel {
-    margin-top:-5px;
+    margin-top: -5px;
   }
+
   #checkout-btn {
     padding-left: 11px;
     padding-right: 11px;

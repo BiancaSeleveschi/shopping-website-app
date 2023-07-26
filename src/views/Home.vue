@@ -29,8 +29,7 @@ export default {
 </script>
 <style>
 .video-home {
-  position: absolute;
-  display: flex;
+  display: grid;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -81,5 +80,21 @@ export default {
 .nav-button:hover {
   background: #525252;
   opacity: 0.8;
+}
+
+@media (max-width: 576px) {
+  .home-page {
+    width: 25em;
+    height: 40em;
+  }
+.coupon {
+  z-index: 2;
+  font-size: 16px;
+}
+.nav-button {
+  font-size: 14px;
+  width: 200px;
+  padding: 7px;
+}
 }
 </style>

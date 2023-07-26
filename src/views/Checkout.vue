@@ -217,8 +217,10 @@ export default {
     shippingFinalCost() {
       if (this.isCheckboxStandardChecked) {
         return 0
+      } else if(this.isCheckboxExpressChecked) {
+        return this.expressShippingPrice;
       }
-      return this.expressShippingPrice;
+        return  ''
     },
     subtotalAfterCouponCode() {
       let total
@@ -634,7 +636,7 @@ input[type=number] {
   }
 
   .checkout-page {
-    padding-top: 22%;
+    padding-bottom: 100px;
   }
 
   .coupon-code-input {

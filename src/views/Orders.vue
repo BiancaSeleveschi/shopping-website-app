@@ -276,17 +276,12 @@ img {
 @media (max-width: 576px) {
   #orders-card {
     width: 90%;
-    margin-top: 55%;
     float: none;
     margin-left: 20px;
   }
 
   .outer-card {
-    width: 80%;
-    margin-top: -8%;
-    font-size: 14px;
-    margin-left: 40px;
-    float: none;
+    display: none;
   }
 
   .title {
@@ -304,7 +299,7 @@ img {
   }
 
   .orders-page {
-    padding-bottom: 50px;
+    padding-bottom:  50px;
   }
 
   .order-id {

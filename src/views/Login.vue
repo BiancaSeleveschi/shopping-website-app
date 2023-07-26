@@ -24,14 +24,14 @@
       />
       <span class="password-toggle" @click="togglePasswordVisibility">{{ passwordToggleLabel }}</span>
       <router-link to="/password" class="m-auto mb-3 forgot-password">Forgot my password</router-link>
-      <div class="account-pgf mb-5">
+      <div class="account-pgf">
         <input type="checkbox" name="example" value="1"/>
         Sign-up for newsletter
       </div>
-      <button class=" d-block m-auto my-4 login" @click="login">Login</button>
-      <h5 class=" mb-4 d-block">or</h5>
-      <h4 class=" mb-4 d-block">SIGN IN WITH</h4>
-      <button class="google-button mb-5" @click="loginWithGoogle">
+      <button class="d-block m-auto my-3 login" @click="login">Login</button>
+      <h5 class="  d-block text">or</h5>
+      <h4 class=" d-block text">SIGN IN WITH</h4>
+      <button class="google-button" @click="loginWithGoogle">
       <span class="google-button-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
       <path fill="#4285F4"
@@ -46,7 +46,7 @@
   </span>
         <span class="google-button-text ms-2">Google</span>
       </button>
-      <router-link to="/register" class="create-account-button d-block my-5 p-2 m-auto">Create account</router-link>
+      <router-link to="/register" class="create-account-button d-block m-auto">Create account</router-link>
     </div>
   </div>
 </template>
@@ -206,6 +206,10 @@ export default {
   margin-right: 150px;
 }
 
+.text {
+  margin-bottom: 20px;
+}
+
 .login {
   width: 200px;
   padding: 5px;
@@ -213,9 +217,7 @@ export default {
   background-color: #ffffff;
   color: #000000;
   cursor: pointer;
-  margin-top: 100px;
   border: 2px solid black;
-  margin-bottom: 300px;
 }
 
 .login:hover {
@@ -226,6 +228,8 @@ export default {
 
 .create-account-button {
   cursor: pointer;
+  display: grid;
+  padding: 7px;
   background-color: #000000;
   border: 1px solid black;
   color: #ffffff;
@@ -244,6 +248,7 @@ export default {
 
 .google-button {
   display: inline-flex;
+  margin-bottom: 75px;
   align-items: center;
   justify-content: center;
   padding: 10px 20px;
@@ -269,9 +274,63 @@ export default {
   height: 18px;
 }
 
+.account-pgf {
+  margin-bottom: 30px;
+}
+
 .google-button:hover,
 .google-button:focus {
   background-color: #f5f5f5;
   outline: none;
+}
+
+@media (max-width: 576px) {
+  #signIn-title {
+    margin-top: 80px;
+    margin-bottom: 30px;
+    font-size: 22px;
+  }
+
+  .password-toggle, .alert-message {
+    font-size: 12px;
+  }
+
+  .password-toggle {
+    left: 90px;
+  }
+
+  .email-pass {
+    font-size: 14px;
+    width: 230px;
+  }
+
+  .login {
+    font-size: 14px;
+    width: 100px;
+    padding: 3px;
+  }
+
+  .create-account-button {
+    font-size: 14px;
+    width: 150px;
+    padding: 5px;
+    margin-top: 15px;
+  }
+
+  .google-button {
+    padding: 7px;
+    font-size: 12px;
+    margin-bottom: 45px;
+  }
+
+  .account-pgf {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .text {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
 }
 </style>

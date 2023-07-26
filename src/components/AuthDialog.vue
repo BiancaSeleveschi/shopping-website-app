@@ -116,5 +116,17 @@ export default {
   background-color: #006b6e;
   color: black;
 }
-
+@media (max-width: 576px) {
+  .login-div, .create-account, . {
+    font-size: 14px;
+  }
+  .outer-card {
+    width: 80%;
+    margin-left: 13%;
+    top: 10%;
+  }
+  .card:before {
+    border-color: transparent transparent transparent transparent;
+  }
+}
 </style>

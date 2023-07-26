@@ -1,9 +1,9 @@
 <template>
   <div class="order-confirmation-page">
-    <h4>Your order has been placed successfully. </h4>
-    <h4 class="mb-4">You will receive an email confirmation shortly.</h4>
-    <router-link to="/orders" class="btn btn-dark m-4 py-2 px-4">Go to Orders</router-link>
-    <router-link to="/" class="btn btn-dark m-4 py-2 ">Return to Home</router-link>
+    <h4 class="text">Your order has been placed successfully. </h4>
+    <h4 class="mb-4 text">You will receive an email confirmation shortly.</h4>
+    <router-link to="/orders" class="btn btn-dark">Go to Orders</router-link>
+    <router-link to="/" class="btn btn-dark">Return to Home</router-link>
   </div>
 </template>
 
@@ -24,5 +24,23 @@ export default {
   margin-top: 22%;
   position: relative;
   padding-bottom: 400px;
+}
+
+.btn {
+  width: 150px;
+  margin: 20px;
+  padding: 10px
+}
+
+@media (max-width: 576px) {
+  .text {
+    font-size: 14px;
+  }
+
+  .btn {
+    width: 130px;
+    margin: 10px;
+    font-size: 14px;
+  }
 }
 </style>

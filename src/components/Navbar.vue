@@ -1,11 +1,11 @@
 <template>
   <div class="navbar-grid">
-    <nav class="navbar navbar-expand-lg p-3" id="navbar">
+    <nav class="navbar navbar-expand-lg" id="navbar">
       <div class="container-fluid">
         <h1 class="navbar-brand text-light">M.E.D.U.Z.Z.A</h1>
         <div class="collapse navbar-collapse" :class="{ show: isCollapsed }" id="navbarNavAltMarkup">
-          <div class="navbar-nav fw-bold ">
-              <router-link v-show="this.$store.state.user?.emailAddress === 'bianca.seleveschi.com'" class="nav-link"
+          <div class="navbar-nav fw-bold" :class="{ show: !isCollapsed }">
+            <router-link v-show="this.$store.state.user?.emailAddress === 'bianca.seleveschi.com'" class="nav-link"
                          to="/admin/products">Admin
             </router-link>
             <router-link class="nav-link" to="/">Home</router-link>
@@ -64,6 +64,7 @@
       <button class="navbar-toggler" type="button" @click="toggleCollapse" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
     </nav>
     <div v-show="showLogin">
       <AuthDialog @toggleLoginButton="showLogin = !showLogin"/>
@@ -72,7 +73,7 @@
       <NavCart @toggleCart="showCartDetails = false"/>
     </div>
     <div v-show="showProfile">
-      <NavProfile id="profile-div" @closeProfile="showProfile = !showProfile"/>
+      <NavProfile class="profile-div" @closeProfile="showProfile = !showProfile"/>
     </div>
   </div>
 </template>
@@ -123,7 +124,6 @@ export default {
       this.showCartDetails = false;
     },
     toggleCollapse() {
-      // Toggle the collapse state
       this.isCollapsed = !this.isCollapsed;
     },
   },
@@ -141,7 +141,7 @@ export default {
   left: 0;
   position: fixed;
   margin: 0;
-  padding: 0;
+  padding: 12px;
   z-index: 2;
 }
 
@@ -149,7 +149,7 @@ export default {
   cursor: pointer;
 }
 
-#profile-div {
+.profile-div {
   position: fixed;
   cursor: pointer;
   display: flex;
@@ -159,11 +159,10 @@ export default {
   z-index: 2;
   flex-direction: column;
   width: 300px;
-  height: 250px;
   background-color: #ffffff;
 }
 
-#profile-div:before {
+.profile-div:before {
   content: "";
   position: fixed;
   height: 0;
@@ -252,4 +251,37 @@ export default {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
+@media (max-width: 576px) {
+  .nav-link, .navbar-brand {
+    font-size: 14px;
+  }
+
+  #navbar {
+    padding: 5px;
+  }
+
+  .profile-div {
+    top: 9%;
+    border: 1px solid black;
+  }
+
+  .profile-div:before {
+    border-color: transparent transparent transparent transparent;
+  }
+
+  .navbar-toggler {
+    float: right;
+    margin-left: 150px;
+  }
+
+  .navbar-nav {
+    display: none;
+  }
+
+  .show .navbar-nav {
+    display: flex;
+  }
+
+
+}
 </style>

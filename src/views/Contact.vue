@@ -106,4 +106,13 @@ input[type=submit] {
 input[type=submit]:hover {
   background-color: #45a049;
 }
+@media (max-width: 576px) {
+  .container {
+    width: 90%;
+    font-size: 14px;
+  }
+  .btn {
+    font-size: 14px;
+  }
+}
 </style>

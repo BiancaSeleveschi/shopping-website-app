@@ -419,10 +419,11 @@ export default {
 @media (max-width: 576px) {
   #settings-card {
     width: 90%;
-    margin-top: 55%;
     float: none;
     margin-left: 20px;
     padding: -20px;
+    margin-bottom: 100px;
+
   }
 
   .settings-pgf {
@@ -431,11 +432,7 @@ export default {
   }
 
   .outer-card {
-    width: 80%;
-    margin-top: -8%;
-    font-size: 14px;
-    margin-left: 40px;
-    float: none;
+    display: none;
   }
 
   .profile-div {
