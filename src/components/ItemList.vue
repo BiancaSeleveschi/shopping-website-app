@@ -265,9 +265,7 @@ export default {
   }
 
   .card-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: cover;
+    margin-bottom: 0px;
   }
 
   .item-title, .item-price {
@@ -279,6 +277,7 @@ export default {
     left: 10%;
     width: 80%;
   }
+
   .shop-section {
     width: 95%;
     margin-top: -870px;

@@ -124,8 +124,8 @@ export default {
 }
 
 .title {
-  margin-top: 120px;
-  margin-bottom: 100px;
+  margin-top: 130px;
+  margin-bottom: 80px;
   letter-spacing: 0.1em;
   font-weight: 100;
 }
@@ -225,6 +225,11 @@ export default {
 
   .order-summary-page {
     padding-bottom: 100px;
+  }
+
+  .title {
+    margin-top: 80px;
+    margin-bottom: 40px;
   }
 
   .price {

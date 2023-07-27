@@ -76,6 +76,7 @@
           <span class="payment-method my-2">FREE </span>
         </div>
         <div v-show="isCheckboxCreditCardChecked" class="my-4 border border-secondary rounded-2">
+          <span>For the card no. use: 4242 4242 4242 4242</span>
           <stripe-element-payment
               class="p-5"
               ref="paymentRef"
@@ -194,7 +195,7 @@ export default {
         clientSecret: this.clientSecret
       },
       confirmParams: {
-        return_url: 'https://shopping-app-meduzza.netlify.app/order/confirmation',
+        return_url: 'http://localhost:8888/order/confirmation',
       },
     };
   },

@@ -636,6 +636,15 @@ export default new Vuex.Store({
         },
     },
     actions: {
+        updateWomen({ commit }, womenData) {
+            commit('UPDATE_WOMEN', womenData);
+        },
+        updateMen({ commit }, menData) {
+            commit('UPDATE_MEN', menData);
+        },
+        updateUser({ commit }, userData) {
+            commit('UPDATE_USER', userData);
+        },
         async saveWomenProducts(state) {
             for (let product of state.women) {
                 try {

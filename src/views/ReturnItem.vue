@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div class="return-item-page">
     <div class="border-top pt-5 w-100">
       <NavProfile class="outer-card"/>
       <div v-if="order" class="bg-secondary bg-opacity-50" id="orders-card">
-        <h3 class="order-id py-5 fw-bold">Order: #{{ orderNumber }}</h3>
+        <h3 class="order-id fw-bold">Order: #{{ orderNumber }}</h3>
         <h5 class="products-header d-block m-auto">Products ordered</h5>
         <div v-for="(item,index) in order.productList"
              :key="index" class="cart-item m-auto">
-          <img :src="item.product.img"/>
-          <div>
+          <img :src="item.product.img"  alt="Product image" class="product-img"/>
+          <div class="product-content">
             <h3 class="item-product-title">{{ item.product.title }}</h3>
             <p class="size mt-3 ">Size: <span id="size"> {{ item.size }}</span></p>
             <p class="quantity " type="number">Quantity: {{ item.quantity }}
@@ -131,9 +131,6 @@ export default {
 </script>
 
 <style scoped>
-.order-id {
-  float: left;
-}
 
 #orders-card {
   display: grid;
@@ -152,7 +149,9 @@ export default {
   border: 1px solid #000000;
   padding: 4px;
 }
-
+.order-id {
+  padding: 50px;
+}
 .overlay {
   width: 100%;
   border-bottom: solid 1px #333;
@@ -174,7 +173,9 @@ export default {
   height: max-content;
   z-index: 2;
 }
-
+.return-item-page {
+  padding-top: 10%;
+}
 .outer-card {
   text-align: left;
   float: left;
@@ -212,17 +213,14 @@ export default {
 }
 
 
-.cart-item img {
+.product-img {
   position: relative;
-  width: 130px;
-  height: 170px;
+  width: 100%;
   display: block;
+  padding-right: 30px;
   object-position: top;
   animation: fade-in 0.5s forwards;
   user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
 }
 
 .item-product-title {
@@ -241,7 +239,6 @@ export default {
   display: flex;
   justify-content: right;
   transform: translateY(70%) translateX(13%);
-
 }
 
 .size, .quantity {
@@ -252,8 +249,72 @@ export default {
   text-align: start;
   transform: translateY(140%);
 }
-@media (max-width: 576px) {
 
+@media (max-width: 576px) {
+  #orders-card {
+    width: 90%;
+    margin-top: 15%;
+    float: none;
+    margin-left: 20px;
+    font-size: 14px;
+  }
+
+  .outer-card {
+    display: none;
+  }
+
+  .product-img {
+    padding-right: 15px;
+  }
+  .select {
+    transform: translateY(0%);
+  }
+  .order-id {
+    font-size: 16px;
+    padding: 20px;
+  }
+  .price {
+    justify-content: left;
+    transform: translateY(-70%) translateX(0%);
+  }
+  .btn {
+    font-size: 14px;
+  }
+  .cart-item {
+    width: 90%;
+  }
+  .return-item-page {
+    padding-top: 2%;
+  }
+  .item-product-title, .size, .quantity {
+    font-size: 13px;
+    width: 120%;
+  }
+  .products-header {
+    font-size: 18px;
+  }
+  .products-header {
+    width: 90%;
+  }
+
+  .size {
+    transform: translateY(-50%);
+  }
+
+  .quantity {
+    transform: translateY(-100%);
+  }
+
+  .price {
+    font-size: 14px;
+    margin-top: -55px;
+    margin-right: -20px;
+  }
+  .message {
+    width: 80%;
+    height: 100px;
+    background-color: #ffffff;
+  }
 }
 
 </style>
