@@ -285,7 +285,7 @@ img {
   }
 
   .title {
-    margin-top: 100px;
+    margin-top: 120px;
     margin-bottom: 20px;
     letter-spacing: 2px;
   }
@@ -340,6 +340,7 @@ img {
 
   .products-header {
     font-size: 18px;
+    width: 90%;
   }
 
   .address-title {
@@ -348,10 +349,6 @@ img {
 
   .date-status {
     margin-bottom: 3px;
-  }
-
-  .products-header {
-    width: 90%;
   }
 
   .border-pgf {

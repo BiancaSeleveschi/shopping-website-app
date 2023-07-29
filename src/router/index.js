@@ -292,28 +292,26 @@ const router = new VueRouter({
     routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     console.log(to.path, to.meta)
-
     console.log(to.meta.requiresAuth)
     if (to.meta.requiresAuth) {
-        console.log(firebase.auth().currentUser)
+        await new Promise((resolve) => {
+            const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+                unsubscribe();
+                if (user) {
+                    console.log(user);
+                    resolve();
+                } else {
+                    alert("You must be logged in")
 
-        if (firebase.auth().currentUser) {
-            // if(to.meta.roles.includes(auth.currentUser.role)){
-            // if(to.meta.roles.includes("Admin") && auth?.currentUser.emailAddress === "bianca.seleveschi@gmail.com"){
-            //             //     next()
-            //             // }else{
-            //             //     alert("You are not authorized to go on this path")
-            //             // }
-            next();
-        } else {
-            alert("You must be logged in")
-            next({path: "/login"})
-        }
-    } else {
-        next();
+                    next('/login');
+                    resolve();
+                }
+            });
+        });
     }
+    next();
 })
 
 export default router;

@@ -28,5 +28,8 @@ export default {
     width: 90%;
     margin: auto;
   }
+  .message-confirmation-page {
+    margin-top: 45%;
+  }
 }
 </style>

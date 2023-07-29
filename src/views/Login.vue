@@ -286,7 +286,7 @@ export default {
 
 @media (max-width: 576px) {
   #signIn-title {
-    margin-top: 80px;
+    margin-top: 90px;
     margin-bottom: 30px;
     font-size: 22px;
   }

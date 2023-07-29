@@ -442,7 +442,7 @@ export default {
   }
 
   .title {
-    margin-top: 100px;
+    margin-top: 120px;
     margin-bottom: 20px;
     letter-spacing: 2px;
   }

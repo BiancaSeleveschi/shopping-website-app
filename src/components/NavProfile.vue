@@ -69,6 +69,7 @@ export default {
     width: 80%;
     font-size: 14px;
     float: none;
+    margin-top: 10%;
   }
 }
 </style>

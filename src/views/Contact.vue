@@ -109,6 +109,7 @@ input[type=submit]:hover {
 @media (max-width: 576px) {
   .container {
     width: 90%;
+    margin-top: 32%;
     font-size: 14px;
   }
   .btn {

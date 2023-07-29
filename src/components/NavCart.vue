@@ -136,12 +136,16 @@ export default {
   .cart {
     width: 90%;
     height: 450px;
+    margin-top: 10%;
   }
   .checkout {
     font-size: 13px;
   }
   .subtotal {
     font-size: 14px;
+  }
+  .cart-header:before {
+    border-color: transparent transparent transparent transparent;
   }
 }
 </style>

@@ -123,7 +123,7 @@ export default {
   .outer-card {
     width: 80%;
     margin-left: 13%;
-    top: 10%;
+    top: 12%;
   }
   .card:before {
     border-color: transparent transparent transparent transparent;

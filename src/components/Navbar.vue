@@ -1,14 +1,19 @@
 <template>
-  <div class="navbar-grid">
+  <div>
     <nav class="navbar navbar-expand-lg" id="navbar">
       <div class="container-fluid">
         <h1 class="navbar-brand text-light">M.E.D.U.Z.Z.A</h1>
+        <button @click="toggleCollapse" class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" :class="{ show: isCollapsed }" id="navbarNavAltMarkup">
-          <div class="navbar-nav fw-bold" :class="{ show: !isCollapsed }">
+          <div @click="toggleCollapse" class="navbar-nav fw-bold">
             <router-link v-show="this.$store.state.user?.emailAddress === 'bianca.seleveschi.com'" class="nav-link"
                          to="/admin/products">Admin
             </router-link>
-            <router-link class="nav-link" to="/">Home</router-link>
+            <router-link class="nav-link " to="/">Home</router-link>
             <router-link class="nav-link" to="/women">Women</router-link>
             <router-link class="nav-link" to="/men">Men</router-link>
             <router-link class="nav-link" to="/about">About</router-link>
@@ -61,10 +66,6 @@
           </div>
         </div>
       </div>
-      <button class="navbar-toggler" type="button" @click="toggleCollapse" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
     </nav>
     <div v-show="showLogin">
       <AuthDialog @toggleLoginButton="showLogin = !showLogin"/>
@@ -75,6 +76,7 @@
     <div v-show="showProfile">
       <NavProfile class="profile-div" @closeProfile="showProfile = !showProfile"/>
     </div>
+
   </div>
 </template>
 
@@ -141,7 +143,7 @@ export default {
   left: 0;
   position: fixed;
   margin: 0;
-  padding: 12px;
+  padding: 28px;
   z-index: 2;
 }
 
@@ -193,11 +195,6 @@ export default {
 .navbar-brand {
   font-size: 24px;
   display: flex;
-}
-
-.navbar-grid {
-  display: grid;
-  align-items: center;
 }
 
 .navbar-nav {
@@ -252,12 +249,11 @@ export default {
 }
 
 @media (max-width: 576px) {
-  .nav-link, .navbar-brand {
-    font-size: 14px;
-  }
-
-  #navbar {
-    padding: 5px;
+  .nav-link {
+    font-size: 12px;
+    padding: 0px;
+    text-align: start;
+    margin-left: 90px;
   }
 
   .profile-div {
@@ -265,13 +261,26 @@ export default {
     border: 1px solid black;
   }
 
-  .profile-div:before {
-    border-color: transparent transparent transparent transparent;
+  .navbar-nav {
+    width: 100%;
   }
 
   .navbar-toggler {
-    float: right;
-    margin-left: 150px;
+    margin-left: -10%;
+  }
+
+  .navbar-brand {
+    display: none;
+  }
+
+  .right {
+    padding: 5px;
+    font-size: 14px;
+    transform: translateY(-130%);
+  }
+
+  .profile-div:before {
+    border-color: transparent transparent transparent transparent;
   }
 
   .navbar-nav {

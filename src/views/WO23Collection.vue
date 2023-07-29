@@ -56,7 +56,7 @@ export default {
 @media (max-width: 576px) {
   .title {
     font-size: 30px;
-    top: 11%;
+    top: 17%;
     color: lightblue;
     left: 8%;
   }

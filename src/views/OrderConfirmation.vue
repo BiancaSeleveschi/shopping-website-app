@@ -37,6 +37,10 @@ export default {
     font-size: 14px;
   }
 
+  .order-confirmation-page {
+    margin-top: 45%;
+  }
+
   .btn {
     width: 130px;
     margin: 10px;

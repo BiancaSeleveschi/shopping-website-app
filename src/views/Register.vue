@@ -193,6 +193,7 @@ export default {
   margin-top: 100px;
   margin-bottom: 100px;
 }
+
 .create-button {
   margin-left: 220px;
   margin-top: 20px;
@@ -207,10 +208,12 @@ export default {
 .login:hover {
   color: #000000;
 }
+
 .pgf {
   margin-top: 20px;
   margin-bottom: 0px;
 }
+
 .create-account-button {
   background-color: black;
   border: 1px solid black;
@@ -218,9 +221,11 @@ export default {
   width: 30%;
   right: 50px;
 }
+
 .title {
   margin-bottom: 5%;
 }
+
 .create-account-button:hover {
   background-color: white;
   color: black;
@@ -261,10 +266,12 @@ export default {
   height: max-content;
   z-index: 2;
 }
+
 .title {
-  margin-top:80px;
+  margin-top: 80px;
 
 }
+
 .alert-message {
   color: red;
   font-size: 12px;
@@ -279,24 +286,29 @@ export default {
   color: #999;
   cursor: pointer;
 }
+
 .consent-pgf {
   font-size: 20px;
 }
+
 .title-div {
   width: 100%;
   justify-content: start;
   text-align: start;
   font-family: "JetBrains Mono Light", sans-serif;
 }
+
 .col-account {
   width: 50%;
 }
+
 @media (max-width: 576px) {
   .title {
-    margin-top:30px;
+    margin-top: 30px;
     margin-bottom: 30px;
     font-size: 20px;
   }
+
   .login {
     justify-content: start;
     text-align: start;
@@ -304,36 +316,45 @@ export default {
     margin-left: 0px;
     margin-top: 0px;
   }
+
   .account-input {
     width: 250px;
     font-size: 14px;
   }
+
   .register-page {
     margin-bottom: 50px;
   }
+
   .col-account, .title-div {
     width: 230px;
   }
+
   .password-toggle {
     left: 205px;
     bottom: 22px;
   }
+
   .pgf {
     margin-bottom: 0px;
     margin-top: 10px;
     font-size: 14px;
   }
+
   .col-account, .consent-pgf {
     font-size: 14px;
   }
+
   .create-button {
-    margin-left:  30px;
-    margin-top:  0px;
+    margin-left: 30px;
+    margin-top: 0px;
   }
+
   .create-account-button {
     width: 60%;
     font-size: 12px;
   }
+
   .agree-div {
     font-size: 12px;
   }

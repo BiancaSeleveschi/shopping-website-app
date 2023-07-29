@@ -28,6 +28,10 @@ export default {
 }
 
 @media (max-width: 576px) {
+  .return-confirmation-page {
+    margin-top: 45%;
+  }
+
   .text {
     font-size: 14px;
     width: 90%;

@@ -82,7 +82,7 @@
               ref="paymentRef"
               :pk="pk"
               :elements-options="elementsOptions"
-              :confirm-params="confirmParams"
+              :confirm-params="confirmParams || {}"
               @error="displayStripeError"
           />
         </div>
@@ -218,10 +218,10 @@ export default {
     shippingFinalCost() {
       if (this.isCheckboxStandardChecked) {
         return 0
-      } else if(this.isCheckboxExpressChecked) {
+      } else if (this.isCheckboxExpressChecked) {
         return this.expressShippingPrice;
       }
-        return  ''
+      return ''
     },
     subtotalAfterCouponCode() {
       let total
@@ -597,7 +597,7 @@ input[type=number] {
 
 @media (max-width: 576px) {
   .summary-card {
-    width: 90%;
+    width: 120%;
     font-size: 13px;
     padding-left: 10px;
     padding-right: 10px;
@@ -637,7 +637,7 @@ input[type=number] {
   }
 
   .checkout-page {
-    padding-bottom: 100px;
+    padding-top: 27%;
   }
 
   .coupon-code-input {
