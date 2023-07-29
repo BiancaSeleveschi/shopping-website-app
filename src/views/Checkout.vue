@@ -484,7 +484,7 @@ input[type=number] {
 }
 
 .title {
-  margin-top: 8%;
+  margin-top: 10%;
   margin-bottom: 4%;
   letter-spacing: 2px;
   font-weight: 100;

@@ -56,7 +56,7 @@ export default {
   justify-content: right;
   width: 100%;
   height: 100%;
-  top: 75px;
+  top: 85px;
   z-index: 2;
 }
 

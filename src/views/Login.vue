@@ -160,7 +160,7 @@ export default {
 
 <style scoped>
 #signIn-title {
-  margin-top: 150px;
+  margin-top: 130px;
   margin-bottom: 50px;
 }
 

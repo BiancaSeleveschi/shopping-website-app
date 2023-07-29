@@ -70,8 +70,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 #returns-card {
   display: grid;
   width: 65%;
@@ -95,7 +93,7 @@ export default {
 }
 
 .title {
-  margin-top: 130px;
+  margin-top: 150px;
   margin-bottom: 50px;
   letter-spacing: 2px;
 }

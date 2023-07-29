@@ -124,8 +124,8 @@ export default {
 }
 
 .title {
-  margin-top: 130px;
-  margin-bottom: 80px;
+  margin-top: 150px;
+  margin-bottom: 70px;
   letter-spacing: 0.1em;
   font-weight: 100;
 }

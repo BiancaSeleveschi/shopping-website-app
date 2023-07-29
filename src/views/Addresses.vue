@@ -142,7 +142,7 @@ input[type=number] {
 }
 
 .title {
-  margin-top: 130px;
+  margin-top: 150px;
   margin-bottom: 50px;
   letter-spacing: 2px;
 }
