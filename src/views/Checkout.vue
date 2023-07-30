@@ -76,7 +76,7 @@
           <span class="payment-method my-2">FREE </span>
         </div>
         <div v-show="isCheckboxCreditCardChecked" class="my-4 border border-secondary rounded-2">
-          <span>For the card no. use: 4242 4242 4242 4242</span>
+          <p class="mx-4 mt-3">For the card no. use: <span class="fw-bold">4242 4242 4242 4242</span></p>
           <stripe-element-payment
               class="p-5"
               ref="paymentRef"
@@ -597,7 +597,7 @@ input[type=number] {
 
 @media (max-width: 576px) {
   .summary-card {
-    width: 120%;
+    width: 90%;
     font-size: 13px;
     padding-left: 10px;
     padding-right: 10px;

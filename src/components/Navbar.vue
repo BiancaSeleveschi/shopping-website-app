@@ -135,8 +135,6 @@ export default {
 <style scoped>
 #navbar {
   display: grid;
-  align-items: center;
-  grid-template-columns: 3fr 1fr 1fr;
   background: #3f3f3f;
   width: 100%;
   top: 0;

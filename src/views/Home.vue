@@ -84,17 +84,19 @@ export default {
 
 @media (max-width: 576px) {
   .home-page {
-    width: 25em;
     height: 40em;
   }
-.coupon {
-  z-index: 2;
-  font-size: 16px;
-}
-.nav-button {
-  font-size: 14px;
-  width: 200px;
-  padding: 7px;
-}
+
+  .coupon {
+    z-index: 2;
+    font-size: 16px;
+    transform: translateY(-200%);
+  }
+
+  .nav-button {
+    font-size: 14px;
+    width: 200px;
+    padding: 7px;
+  }
 }
 </style>

@@ -2,10 +2,7 @@
   <div class="login-page mb-5 p-5">
     <div>
       <h1 id="signIn-title">SIGN IN</h1>
-      <p v-show="isAuthInvalid"
-         class="alert-message mb-1">
-        {{ message }}
-      </p>
+      <p v-show="isAuthInvalid" class="alert-message mb-1">{{ message }}</p>
       <input
           v-model="emailAddress"
           class="d-flex m-auto mb-4 email-pass"
