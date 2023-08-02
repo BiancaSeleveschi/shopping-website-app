@@ -276,7 +276,7 @@ export default {
   }
 
   .profile-div:before {
-    border-color: transparent transparent transparent transparent;
+    top: 8%;
   }
 
   .navbar-nav {

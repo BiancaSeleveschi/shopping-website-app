@@ -336,8 +336,10 @@ export default {
 
   #alert-cart, .alert-log {
     font-size: 15px;
-    top: -15%;
+    top: -32%;
     width: 80%;
+    left: 0%;
+    margin: auto;
   }
 }
 </style>

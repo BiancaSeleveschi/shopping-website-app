@@ -18,7 +18,7 @@ import Login from "@/views/Login";
 import Favorites from "@/views/Favorites";
 import PasswordReset from "@/views/PasswordReset";
 import Settings from "@/views/Settings";
-// import Orders from "@/views/Orders";
+import Orders from "@/views/Orders";
 import Returns from "@/views/Returns";
 import Addresses from "@/views/Addresses";
 import CartSummary from "@/views/CartSummary";
@@ -89,7 +89,6 @@ const routes = [
         component: Women,
         meta: {
             requiresAuth: false,
-            roles: [Role.User, Role.Admin]
         }
     }, {
         path: "/contact",
@@ -106,7 +105,7 @@ const routes = [
         component: ProductCreate,
         meta: {
             requiresAuth: false,
-            roles: [Role.Admin, Role.User]
+            roles: [Role.Admin]
         }
     },
     {
@@ -176,8 +175,8 @@ const routes = [
         name: "OrderConfirmation",
         component: OrderConfirmation,
         meta: {
-            requiresAuth: false,
-            roles: [Role.User]
+            requiresAuth: true,
+            roles: [Role.User, Role.Admin]
         }
     },
     {
@@ -186,7 +185,7 @@ const routes = [
         component: ReturnConfirmation,
         meta: {
             requiresAuth: true,
-            roles: [Role.User]
+            roles: [Role.User, Role.Admin]
         }
     },
     {
@@ -195,13 +194,12 @@ const routes = [
         component: MessageSentConfirmation,
         meta: {
             requiresAuth: true,
-            roles: [Role.User]
+            roles: [Role.User, Role.Admin]
         }
     }, {
         path: "/orders",
         name: "Orders",
-        component: () => import(/* webpackChunkName: "protected" */ '../views/Orders.vue'),
-        // component: Orders,
+        component: Orders,
         meta: {
             requiresAuth: true,
             roles: [Role.User, Role.Admin]
@@ -220,7 +218,7 @@ const routes = [
         component: ReturnItem,
         props: true,
         meta: {
-            requiresAuth: false,
+            requiresAuth: true,
             roles: [Role.User, Role.Admin]
         }
     }, {
@@ -260,6 +258,10 @@ const routes = [
         name: "Checkout",
         component: Checkout,
         props: true,
+        meta: {
+            requiresAuth: true,
+            roles: [Role.User, Role.Admin]
+        }
     },
     {
         path: "/login",

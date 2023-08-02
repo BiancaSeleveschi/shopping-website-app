@@ -62,6 +62,7 @@ export default {
 .body-pgf:hover {
   background-color: #e5e5e5;
 }
+
 @media (max-width: 576px) {
   .outer-card {
     width: 80%;
