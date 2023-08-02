@@ -183,6 +183,7 @@ export default {
   cursor: pointer;
   border: 0px solid rgba(56, 56, 56, 0);
   overflow: hidden;
+  width: 20em;
 }
 
 .item:hover {
@@ -192,6 +193,7 @@ export default {
 .item:hover > .card > .card-bottom {
   opacity: 1;
 }
+
 
 .card {
   display: flex;
@@ -208,14 +210,6 @@ export default {
   align-items: center;
   background-color: rgba(0, 0, 0);
   text-decoration: none;
-}
-
-.item:hover {
-  transform: translateY(-0.5em);
-}
-
-.item:hover > .card > .card-bottom {
-  opacity: 1;
 }
 
 .card-image {
@@ -263,7 +257,10 @@ export default {
     height: 200px;
     margin-bottom: 20px;
   }
-
+.item {
+  width: 10em;
+  margin:auto;
+}
   .card-image {
     margin-bottom: 0px;
   }

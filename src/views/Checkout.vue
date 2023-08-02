@@ -356,7 +356,7 @@ export default {
     },
     sendEmail(orderNumber, estimateArrivalDate) {
       try {
-        emailjs.send('service_td12fy6', 'template_pxs7hyg',
+        emailjs.send('service_20w2uzf', 'template_i8ska0c',
             {
               from_name: this.name,
               to_name: this.$store.state.user?.firstName,
@@ -364,7 +364,7 @@ export default {
               to_email: this.$store.state.user?.emailAddress,
               order_no: orderNumber,
               estimateArrivalDate: estimateArrivalDate,
-            }, 'aDIfVs3j8DVwr2L7K')
+            }, '9B6JS9bqMJz1wQsZ1')
       } catch (error) {
         console.log({error})
       }

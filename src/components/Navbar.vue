@@ -149,6 +149,33 @@ export default {
   cursor: pointer;
 }
 
+.profile-div {
+  position: fixed;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  top: 84px;
+  right: 30px;
+  z-index: 2;
+  flex-direction: column;
+  width: 300px;
+  background-color: #ffffff;
+}
+
+.profile-div:before {
+  content: "";
+  position: fixed;
+  height: 0;
+  width: 0;
+  right: 148px;
+  top: 54px;
+  border-width: 15px;
+  border-color: transparent #ffffff transparent transparent;
+  border-style: solid;
+  transform: rotate(90deg);
+  z-index: -6;
+}
+
 #notification-counter {
   float: right;
   position: absolute;
@@ -227,6 +254,11 @@ export default {
     margin-left: 90px;
   }
 
+  .profile-div {
+    top: 11%;
+    border: 1px solid black;
+  }
+
   .navbar-nav {
     width: 100%;
   }
@@ -241,6 +273,10 @@ export default {
 
   .right {
     font-size: 14px;
+  }
+
+  .profile-div:before {
+    border-color: transparent transparent transparent transparent;
   }
 
   .navbar-nav {

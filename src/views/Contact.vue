@@ -43,12 +43,12 @@ export default {
   methods: {
     sendEmail() {
       try {
-        emailjs.send('service_7lazobg', 'template_siye7am',
+        emailjs.send('service_20w2uzf', 'template_rcjw86l',
             {
               from_name: this.name,
               from_email: this.email,
               message: this.message
-            }, 'aDIfVs3j8DVwr2L7K')
+            }, '9B6JS9bqMJz1wQsZ1')
         this.$router.push('/message/sent/confirmation');
       } catch (error) {
         console.log({error})

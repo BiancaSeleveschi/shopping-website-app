@@ -136,7 +136,7 @@ export default {
   .cart {
     width: 90%;
     height: 450px;
-    margin-top: 10%;
+    margin-top: 8%;
   }
   .checkout {
     font-size: 13px;

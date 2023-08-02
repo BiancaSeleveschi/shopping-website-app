@@ -6,7 +6,6 @@
           <img @click="openModal" :src="product.img" alt="Image" class="img-fluid"/>
           <div v-if="isModalOpen" class="modal" @click="closeModal">
             <div class="modal-content">
-              <span @click="closeModal" class="close">X</span>
               <img :src="product.img" alt="Image" id="modal-img" class="m-auto"/>
             </div>
           </div>
@@ -298,16 +297,6 @@ export default {
 .modal-content {
   padding-top: 4%;
   background-color: transparent;
-}
-
-
-.close {
-  position: absolute;
-  left: 170%;
-  z-index: 4;
-  font-size: 30px;
-  color: #000000;
-  cursor: pointer;
 }
 
 @media (max-width: 576px) {

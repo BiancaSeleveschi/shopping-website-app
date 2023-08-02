@@ -432,7 +432,7 @@ export default {
   }
 
   .outer-card {
-    /*display: none;*/
+    display: none;
   }
 
   .profile-div {
