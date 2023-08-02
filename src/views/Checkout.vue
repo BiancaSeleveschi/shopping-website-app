@@ -356,7 +356,7 @@ export default {
     },
     sendEmail(orderNumber, estimateArrivalDate) {
       try {
-        emailjs.send('service_7lazobg', 'template_pxs7hyg',
+        emailjs.send('service_td12fy6', 'template_pxs7hyg',
             {
               from_name: this.name,
               to_name: this.$store.state.user?.firstName,

@@ -9,7 +9,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" :class="{ show: isCollapsed }" id="navbarNavAltMarkup">
-          <div @click="toggleCollapse" class="navbar-nav fw-bold">
+          <div @click="toggleCollapse" class="navbar-nav fw-bold" :class="{'ps-4' : isCollapsed}">
             <router-link v-show="this.$store.state.user?.emailAddress === 'bianca.seleveschi.com'" class="nav-link"
                          to="/admin/products">Admin
             </router-link>
@@ -149,33 +149,6 @@ export default {
   cursor: pointer;
 }
 
-.profile-div {
-  position: fixed;
-  cursor: pointer;
-  display: flex;
-  flex-wrap: wrap;
-  top: 84px;
-  right: 30px;
-  z-index: 2;
-  flex-direction: column;
-  width: 300px;
-  background-color: #ffffff;
-}
-
-.profile-div:before {
-  content: "";
-  position: fixed;
-  height: 0;
-  width: 0;
-  right: 148px;
-  top: 54px;
-  border-width: 15px;
-  border-color: transparent #ffffff transparent transparent;
-  border-style: solid;
-  transform: rotate(90deg);
-  z-index: -6;
-}
-
 #notification-counter {
   float: right;
   position: absolute;
@@ -254,11 +227,6 @@ export default {
     margin-left: 90px;
   }
 
-  .profile-div {
-    top: 9%;
-    border: 1px solid black;
-  }
-
   .navbar-nav {
     width: 100%;
   }
@@ -272,12 +240,7 @@ export default {
   }
 
   .right {
-    padding: 5px;
     font-size: 14px;
-  }
-
-  .profile-div:before {
-    border-color: transparent transparent transparent transparent;
   }
 
   .navbar-nav {

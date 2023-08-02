@@ -628,6 +628,7 @@ export default new Vuex.Store({
         },
         SET_ORDER(state, order) {
             state.user?.orders.push(order);
+            this.state.user.cart = [];
             localStorage.setItem("user", JSON.stringify(state.user));
         },
         SET_RETURN(state, orderToReturn) {
@@ -636,13 +637,13 @@ export default new Vuex.Store({
         },
     },
     actions: {
-        updateWomen({ commit }, womenData) {
+        updateWomen({commit}, womenData) {
             commit('UPDATE_WOMEN', womenData);
         },
-        updateMen({ commit }, menData) {
+        updateMen({commit}, menData) {
             commit('UPDATE_MEN', menData);
         },
-        updateUser({ commit }, userData) {
+        updateUser({commit}, userData) {
             commit('UPDATE_USER', userData);
         },
         async saveWomenProducts(state) {
@@ -734,7 +735,6 @@ export default new Vuex.Store({
                 context.commit("ADD_TO_CART", item);
                 docRef.update({cart: this.state.user?.cart})
                     .then(() => {
-                        sessionStorage.setItem('user', JSON.stringify(this.state.user))
                         console.log('Product added to cart successfully');
                     }).catch(e => console.log(e))
             } catch (error) {

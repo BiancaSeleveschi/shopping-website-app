@@ -135,6 +135,7 @@ export default {
                 .get()
                 .then((querySnapshot) => {
                   const actualUser = {id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data()}
+                  actualUser.cart = [];
                   this.$store.commit("SET_USER", actualUser)
                   this.$router.push('/');
                 })

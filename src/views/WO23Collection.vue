@@ -62,7 +62,7 @@ export default {
   }
 
   .text {
-    z-index: 0;
+   display: none;
   }
 }
 </style>

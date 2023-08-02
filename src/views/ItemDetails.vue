@@ -174,7 +174,7 @@ export default {
 }
 
 #alert-cart {
-  top: 12%;
+  top: 15%;
   left: 66%;
   height: max-content;
   width: 30%;
@@ -213,7 +213,7 @@ export default {
 
 .alert-log {
   position: absolute;
-  top: 11%;
+  top: 15%;
   left: 48%;
   width: 36%;
   height: max-content;

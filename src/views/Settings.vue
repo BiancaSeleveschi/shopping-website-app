@@ -382,6 +382,7 @@ export default {
 
 .outer-card {
   text-align: left;
+  z-index: 5;
   float: left;
   margin-left: 13%;
   font-family: "Malgun Gothic Semilight", sans-serif;
@@ -423,7 +424,6 @@ export default {
     margin-left: 20px;
     padding: -20px;
     margin-bottom: 100px;
-
   }
 
   .settings-pgf {
@@ -432,7 +432,7 @@ export default {
   }
 
   .outer-card {
-    display: none;
+    /*display: none;*/
   }
 
   .profile-div {
