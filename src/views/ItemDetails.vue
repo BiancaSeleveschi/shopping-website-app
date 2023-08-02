@@ -173,7 +173,7 @@ export default {
 }
 
 #alert-cart {
-  top: 15%;
+  top: 16%;
   left: 66%;
   height: max-content;
   width: 30%;
@@ -211,10 +211,8 @@ export default {
 }
 
 .alert-log {
-  position: absolute;
-  top: 15%;
-  left: 48%;
   width: 36%;
+  margin: auto;
   height: max-content;
   z-index: 2;
 }
@@ -338,8 +336,7 @@ export default {
 
   #alert-cart, .alert-log {
     font-size: 15px;
-    top: 15%;
-    left: 10%;
+    top: -15%;
     width: 80%;
   }
 }

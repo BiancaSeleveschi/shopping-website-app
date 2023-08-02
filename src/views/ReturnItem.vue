@@ -7,7 +7,7 @@
         <h5 class="products-header d-block m-auto">Products ordered</h5>
         <div v-for="(item,index) in order.productList"
              :key="index" class="cart-item m-auto">
-          <img :src="item.product.img"  alt="Product image" class="product-img"/>
+          <img :src="item.product.img" alt="Product image" class="product-img"/>
           <div class="product-content">
             <h3 class="item-product-title">{{ item.product.title }}</h3>
             <p class="size mt-3 ">Size: <span id="size"> {{ item.size }}</span></p>
@@ -88,15 +88,7 @@ export default {
       return formattedDate;
     },
     async sendProductToReturn() {
-      let randomDays = Math.floor(Math.random() * (5 - 3 + 1)) + 3;
       let randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-      let estimatedDate = new Date(this.currentDate.getTime() + randomDays * 24 * 60 * 60 * 1000);
-      if (this.currentDate > estimatedDate) {
-        this.status = 'Received';
-      } else {
-        this.status = 'Pending';
-      }
-      console.log('order num', this.orderNumber)
       let orderToReturn = {
         productList: this.getSelectedProducts(),
         returnDate: this.getCurrentDate(),
@@ -104,7 +96,7 @@ export default {
         orderNumber: this.orderNumber,
         message: this.message,
         estimatedPickupDate: this.getEstimatedPickupDate(),
-        status: this.status,
+        status: 'Pending',
       }
       if (orderToReturn.productList.length > 0) {
         if (this.isFirstClick) {
@@ -149,9 +141,11 @@ export default {
   border: 1px solid #000000;
   padding: 4px;
 }
+
 .order-id {
   padding: 50px;
 }
+
 .overlay {
   width: 100%;
   border-bottom: solid 1px #333;
@@ -173,9 +167,11 @@ export default {
   height: max-content;
   z-index: 2;
 }
+
 .return-item-page {
   padding-top: 10%;
 }
+
 .outer-card {
   text-align: left;
   float: left;
@@ -266,33 +262,42 @@ export default {
   .product-img {
     padding-right: 15px;
   }
+
   .select {
     transform: translateY(0%);
   }
+
   .order-id {
     font-size: 16px;
     padding: 20px;
   }
+
   .price {
     justify-content: left;
     transform: translateY(-70%) translateX(0%);
   }
+
   .btn {
     font-size: 14px;
   }
+
   .cart-item {
     width: 90%;
   }
+
   .return-item-page {
     padding-top: 2%;
   }
+
   .item-product-title, .size, .quantity {
     font-size: 13px;
     width: 120%;
   }
+
   .products-header {
     font-size: 18px;
   }
+
   .products-header {
     width: 90%;
   }
@@ -310,6 +315,7 @@ export default {
     margin-top: -55px;
     margin-right: -20px;
   }
+
   .message {
     width: 80%;
     height: 100px;

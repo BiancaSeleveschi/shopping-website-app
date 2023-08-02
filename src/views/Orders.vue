@@ -16,7 +16,7 @@
           <p class="date-status w-100">Estimate arrival date: <span class="fw-bold">{{
               order.estimateArrivalDate
             }}</span></p>
-          <p class="date-status w-100">Status: <span class="fw-bold">{{ order.status }}</span></p>
+          <p class="date-status w-100">Status: <span class="fw-bold">{{ getStatus(order) }}</span></p>
           <p class="amount me-3">Total: <span class="text-danger">${{ order.amount }}</span></p>
 
           <router-link
@@ -75,17 +75,24 @@ export default {
   data() {
     return {
       indexOrder: -1,
+      currentDate: new Date(),
     }
   },
   methods: {
     showOrder(index) {
       this.indexOrder = this.indexOrder !== index ? index : -1;
     },
+    getStatus(order) {
+      let estimatedArrivalDate = new Date(order.estimateArrivalDate);
+      if (this.currentDate < estimatedArrivalDate) {
+        return "Processing";
+      }
+      return "Received";
+    },
     isWithinThirtyDays(arrivalDate) {
-      const currentDate = new Date();
       const parsedArrivalDate = new Date(arrivalDate);
       const thirtyDays = 30 * 24 * 60 * 60 * 1000;
-      const timeDifference = currentDate.getTime() - parsedArrivalDate.getTime();
+      const timeDifference = this.currentDate.getTime() - parsedArrivalDate.getTime();
       return timeDifference < thirtyDays;
     },
   }
@@ -299,7 +306,7 @@ img {
   }
 
   .orders-page {
-    padding-bottom:  50px;
+    padding-bottom: 50px;
   }
 
   .order-id {
@@ -381,6 +388,7 @@ img {
   .address-item {
     width: 90%;
   }
+
   #return {
     font-size: 14px;
     margin-top: -15px;

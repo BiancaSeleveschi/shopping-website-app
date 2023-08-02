@@ -44,7 +44,7 @@
         <p v-show="showShippingMethodAlert" class="shipping-method-alert">Please select a shipping method</p>
         <div>
           <input v-model="isCheckboxStandardChecked" @click="selectShippingMethod" type="checkbox" name="example"
-                 value="1"/>STANDARD
+                 value="1"/><span class="ms-1">STANDARD</span>
           <p class="shipping-method">4-5 working days <span class="shipping-standard">Free</span></p></div>
         <div>
           <input v-model="isCheckboxExpressChecked" @click="selectShippingMethod" type="checkbox" name="example"
@@ -97,7 +97,7 @@
         </p>
         <div>
           <p class="coupon-code-span d-inline-block" @click="enterCouponCode">
-            {{ !showEnterCouponCodeForm ? '+Enter coupon code' : '- Enter coupon code' }}</p>
+            {{ !showEnterCouponCodeForm ? '+ Enter coupon code' : '- Enter coupon code' }}</p>
           <div v-if="showEnterCouponCodeForm" class="d-inline-block coupon-code-div">
             <input v-model="couponCode" class="coupon-code-input" type="text" v-on:keyup.enter='applyCouponCode'/>
             <p v-show="isCouponCodeInvalid" class="coupon-code-alert">The coupon code is not valid.</p>
@@ -314,14 +314,11 @@ export default {
       this.showEnterCouponCodeForm = !this.showEnterCouponCodeForm
     },
     applyCouponCode() {
-      if (this.showEnterCouponCodeForm && (this.couponCode.toLowerCase() !== this.couponCodeName.toLowerCase())) {
-        this.isCouponCodeInvalid = true;
-      } else {
-        this.isCouponCodeInvalid = false;
-      }
+      this.isCouponCodeInvalid = this.showEnterCouponCodeForm && (this.couponCode.toLowerCase() !== this.couponCodeName.toLowerCase());
       this.isCouponCodeValid = !this.isCouponCodeInvalid;
       this.isCouponCodeApplied = true;
     },
+
     removeCouponCode() {
       if (this.couponCode !== "") {
         this.couponCode = '';
@@ -369,14 +366,6 @@ export default {
         console.log({error})
       }
     },
-    getStatus() {
-      let estimatedArrivalDate = new Date(this.getEstimateArrivalDate());
-      if (this.currentDate < estimatedArrivalDate) {
-        return "Processing";
-      } else {
-        return "Received";
-      }
-    },
     async pay() {
       let randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
       if (this.deliveryAddressSelected === null) {
@@ -395,7 +384,7 @@ export default {
         deliveryAddress: this.deliveryAddressSelected,
         billingAddress: this.billingAddressSelected,
         paymentMethod: 'Credit Card',
-        status: this.getStatus(),
+        status: 'Processing',
       }
 
       this.showShippingMethodAlert = !this.isCheckboxStandardChecked && !this.isCheckboxExpressChecked

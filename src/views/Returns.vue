@@ -20,7 +20,7 @@
             <p class="refund-type w-100 content-body">Money refund option:
               <span class="fw-bold">Refund to the card</span></p>
             <p class="refund-type w-100 content-body">Status:
-              <span class="fw-bold">{{ returnedOrder.status }}</span></p>
+              <span class="fw-bold">{{ getStatus(returnedOrder) }}</span></p>
             <p v-show="returnedOrder.status === 'Pending'" class="pickup-date w-100 content-body">Estimate pickup date:
               <span class="fw-bold">{{ returnedOrder.estimatedPickupDate }}</span></p>
             <p class="message content-body">Message: {{ returnedOrder.message }}</p>
@@ -51,6 +51,7 @@ export default {
   data() {
     return {
       indexReturn: -1,
+      currentDate: new Date(),
     }
   },
   methods: {
@@ -58,11 +59,18 @@ export default {
       this.indexReturn = this.indexReturn !== index ? index : -1;
       this.getReturnDate(returnedOrder.returnDate)
     },
+    getStatus(returnedOrder) {
+      let randomDays = Math.floor(Math.random() * (5 - 3 + 1)) + 3;
+      let estimatedDate = new Date(returnedOrder.estimatedPickupDate.getTime() + randomDays * 24 * 60 * 60 * 1000);
+      if (this.currentDate > estimatedDate) {
+        return 'Pending';
+      }
+      return 'Received';
+    },
     getReturnDate(returnDate) {
-      const currentDate = new Date();
       let estimatedArrivalDate = new Date(returnDate);
       const thirtyDaysInMilliseconds = 30 * 24 * 60 * 60 * 1000;
-      const difference = currentDate.getTime() - estimatedArrivalDate.getTime();
+      const difference = this.currentDate.getTime() - estimatedArrivalDate.getTime();
       return difference > thirtyDaysInMilliseconds;
     }
   }
