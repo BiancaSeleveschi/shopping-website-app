@@ -35,7 +35,7 @@ export default {
   width: 500px;
   height: 250px;
   color: #000000;
-  z-index: 2;
+  z-index: 1;
   padding: 60px;
   border-radius: 1px 200px 1px 220px;
   position: absolute;

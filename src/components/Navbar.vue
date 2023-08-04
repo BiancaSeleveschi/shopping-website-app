@@ -276,7 +276,8 @@ export default {
   }
 
   .profile-div:before {
-    top: 8%;
+    top: 7%;
+    right: 142px;
   }
 
   .navbar-nav {
@@ -286,7 +287,5 @@ export default {
   .show .navbar-nav {
     display: flex;
   }
-
-
 }
 </style>

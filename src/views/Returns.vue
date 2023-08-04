@@ -15,13 +15,13 @@
           <p class="w-100 content-body">Returned products from the order:
             <span class="fw-bold">#{{ returnedOrder.orderNumber }}</span></p>
           <div v-show="index === indexReturn" class="my-5 pt-5">
+            <p class="refund-type w-100 content-body">Status:
+              <span class="fw-bold">{{ getStatus(returnedOrder) }}</span></p>
             <p class="return-type w-100 content-body">Return type:
               <span class="fw-bold">Courier</span></p>
             <p class="refund-type w-100 content-body">Money refund option:
               <span class="fw-bold">Refund to the card</span></p>
-            <p class="refund-type w-100 content-body">Status:
-              <span class="fw-bold">{{ getStatus(returnedOrder) }}</span></p>
-            <p v-show="returnedOrder.status === 'Pending'" class="pickup-date w-100 content-body">Estimate pickup date:
+            <p v-show="returnedOrder.status === 'Pending'" class="pickup-date w-100 content-body">Pickup date:
               <span class="fw-bold">{{ returnedOrder.estimatedPickupDate }}</span></p>
             <p class="message content-body">Message: {{ returnedOrder.message }}</p>
             <h4 class="products-header m-auto">Returned products</h4>
@@ -60,12 +60,15 @@ export default {
       this.getReturnDate(returnedOrder.returnDate)
     },
     getStatus(returnedOrder) {
+      let estimatedPickupDate = new Date(returnedOrder.returnDate);
       let randomDays = Math.floor(Math.random() * (5 - 3 + 1)) + 3;
-      let estimatedDate = new Date(returnedOrder.estimatedPickupDate.getTime() + randomDays * 24 * 60 * 60 * 1000);
+      let estimatedDate = new Date(estimatedPickupDate.getTime() + randomDays * 24 * 60 * 60 * 1000);
       if (this.currentDate > estimatedDate) {
-        return 'Pending';
+        returnedOrder.status = 'Received';
+      } else {
+        returnedOrder.status ='Pending';
       }
-      return 'Received';
+      return returnedOrder.status
     },
     getReturnDate(returnDate) {
       let estimatedArrivalDate = new Date(returnDate);
@@ -205,6 +208,7 @@ img {
 @media (max-width: 576px) {
   #returns-card {
     width: 90%;
+    margin-top: 20%;
     float: none;
     margin-left: 20px;
   }
@@ -217,13 +221,8 @@ img {
     transform: translateY(0%);
   }
 
-  .outer-card {
+  .outer-card, .title {
     display: none;
-  }
-
-  .title {
-    margin-top: 120px;
-    margin-bottom: 20px;
   }
 
   img {

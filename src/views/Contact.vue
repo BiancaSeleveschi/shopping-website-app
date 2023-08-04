@@ -15,13 +15,15 @@
           name="email"
           placeholder="Your Email"
       >
-      <label>Message</label>
+      <p class="ms-1 alert-contact " v-show="isEmailInputEmpty">Enter your email address</p>
+      <label class="mt-2">Message</label>
       <textarea
           name="message"
           v-model="message"
           cols="30" rows="5"
           placeholder="Message">
           </textarea>
+      <p class="ms-1 alert-contact" v-show="isMessageTextareaEmpty">Enter a message</p>
       <button class="btn btn-dark px-4 mt-2" @click="sendEmail">Send</button>
     </div>
   </div>
@@ -38,18 +40,24 @@ export default {
       email: '',
       message: '',
       name: '',
+      isEmailInputEmpty: false,
+      isMessageTextareaEmpty: false,
     }
   },
   methods: {
     sendEmail() {
       try {
-        emailjs.send('service_20w2uzf', 'template_rcjw86l',
-            {
-              from_name: this.name,
-              from_email: this.email,
-              message: this.message
-            }, '9B6JS9bqMJz1wQsZ1')
-        this.$router.push('/message/sent/confirmation');
+        this.isEmailInputEmpty = this.email === '';
+        this.isMessageTextareaEmpty = this.message === '';
+        if (!this.isEmailInputEmpty && !this.isMessageTextareaEmpty) {
+          emailjs.send('service_20w2uzf', 'template_rcjw86l',
+              {
+                from_name: this.name,
+                from_email: this.email,
+                message: this.message
+              }, '9B6JS9bqMJz1wQsZ1')
+          this.$router.push('/message/sent/confirmation');
+        }
       } catch (error) {
         console.log({error})
       }
@@ -106,14 +114,28 @@ input[type=submit] {
 input[type=submit]:hover {
   background-color: #45a049;
 }
+
+.alert-contact {
+  color: red;
+  float: left;
+  margin-top: -16px;
+  font-size: 14px;
+  position: absolute;
+}
+
 @media (max-width: 576px) {
   .container {
     width: 90%;
     margin-top: 32%;
     font-size: 14px;
   }
+
   .btn {
     font-size: 14px;
+  }
+
+  .alert-contact {
+    font-size: 13px;
   }
 }
 </style>

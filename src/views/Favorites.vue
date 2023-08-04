@@ -26,7 +26,7 @@ export default {
   font-size: 50px;
   z-index: 1;
   left: 50%;
-  top: 20%;
+  top: 250px;
   text-transform: uppercase;
   position: absolute;
   display: grid;
@@ -34,16 +34,18 @@ export default {
   font-family: "JetBrains Mono Light", sans-serif;
 }
 
-
 .card-item {
   margin-bottom: 50px;
-  margin-top: -10%;
+  margin-top: -200px;
 }
 
 @media (max-width: 576px) {
   .title {
-    top: 17%;
     font-size: 28px;
+  }
+
+  .card-item {
+    margin-top: 30px;
   }
 }
 </style>

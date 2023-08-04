@@ -420,6 +420,7 @@ export default {
 @media (max-width: 576px) {
   #settings-card {
     width: 90%;
+    margin-top: 20%;
     float: none;
     margin-left: 20px;
     padding: -20px;
@@ -431,7 +432,7 @@ export default {
     margin-bottom: 1px;
   }
 
-  .outer-card {
+  .outer-card, .title {
     display: none;
   }
 
@@ -439,12 +440,6 @@ export default {
     padding: 5px;
     width: 90%;
     margin: 15px;
-  }
-
-  .title {
-    margin-top: 120px;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
   }
 
   .col-div {
@@ -469,13 +464,20 @@ export default {
 
   .password-toggle {
     float: right;
-    transform: translateY(-110%) translateX(100%);
+    transform: translateY(-110%) translateX(110%);
   }
 
   .account-input {
     width: 100%;
   }
 
+  .alert {
+    position: absolute;
+    top: 20%;
+    left:  10%;
+    font-size: 14px;
+    width: 80%;
+  }
   .forgot-password {
     font-size: 12px;
     margin-bottom: -20px;

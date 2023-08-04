@@ -53,7 +53,7 @@ export default {
   transition: 0.2s ease-out;
   position: absolute;
   display: grid;
-  top: 30%;
+  top: 300px;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
@@ -66,7 +66,7 @@ export default {
 .title {
   position: absolute;
   display: grid;
-  top: 20%;
+  top: 200px;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
@@ -76,18 +76,21 @@ export default {
 }
 
 .card-item {
-  margin-top: -5%;
+  margin-top: -150px;
 }
 
 @media (max-width: 576px) {
   .title {
-    top: 15%;
     font-size: 28px;
   }
 
   .input-search {
     font-size: 16px;
-    top: 22%;
+    top: 260px;
+  }
+
+  .card-item {
+    margin-top: 20px;
   }
 }
 </style>

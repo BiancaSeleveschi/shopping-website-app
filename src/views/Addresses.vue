@@ -177,7 +177,7 @@ input[type=number] {
 }
 
 .alert-address {
-  bottom: 200px;
+  bottom: 40px;
   width: 500px;
   display: flow;
   margin: auto;
@@ -185,18 +185,19 @@ input[type=number] {
 }
 
 .add-address-div {
-  margin: 60px
+  margin: 40px
 }
 
 @media (max-width: 576px) {
   #address-card {
     width: 90%;
+    margin-top: 20%;
     float: none;
     margin-left: 20px;
     padding: -20px;
   }
 
-  .outer-card {
+  .outer-card, .title {
     display: none;
   }
 
@@ -206,17 +207,15 @@ input[type=number] {
     margin: 30px;
   }
 
-  .title {
-    margin-top: 120px;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
-  }
-
   .addresses-page {
     padding-bottom: 50px;
 
   }
-
+  .alert-address {
+    bottom: 10px;
+    width: 300px;
+    font-size: 14px;
+  }
   .add-address-button {
     font-size: 14px;
     margin: 10px;

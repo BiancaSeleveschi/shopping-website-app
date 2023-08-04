@@ -24,8 +24,6 @@
               :to="{name: 'ReturnItem', params: { order: order}, }"
               id="return" class="text-decoration-none w-100 fw-bold">Return
           </router-link>
-
-
           <div v-show="index === indexOrder" class="pt-5 product-list-div">
 
             <h5 class="products-header d-block m-auto">Products ordered</h5>
@@ -85,9 +83,11 @@ export default {
     getStatus(order) {
       let estimatedArrivalDate = new Date(order.estimateArrivalDate);
       if (this.currentDate < estimatedArrivalDate) {
-        return "Processing";
+        order.status = "Processing";
+      } else {
+        order.status = "Received";
       }
-      return "Received";
+      return order.status
     },
     isWithinThirtyDays(arrivalDate) {
       const parsedArrivalDate = new Date(arrivalDate);
@@ -283,18 +283,13 @@ img {
 @media (max-width: 576px) {
   #orders-card {
     width: 90%;
+    margin-top: 20%;
     float: none;
     margin-left: 20px;
   }
 
-  .outer-card {
+  .outer-card, .title {
     display: none;
-  }
-
-  .title {
-    margin-top: 120px;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
   }
 
   .date-status, .address, #postcode, .payment-item-span {

@@ -2,7 +2,7 @@
   <div class="login-page mb-5 p-5">
     <div>
       <h1 id="signIn-title">SIGN IN</h1>
-      <p v-show="isAuthInvalid" class="alert-message mb-1">{{ message }}</p>
+      <p v-show="isAuthInvalid" class="alert-email-password mb-1">{{ message }}</p>
       <input
           v-model="emailAddress"
           class="d-flex m-auto mb-4 email-pass"
@@ -109,6 +109,7 @@ export default {
                   .get()
                   .then((querySnapshot) => {
                     const actualUser = {id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data()}
+                    actualUser.cart = [];
                     this.$store.commit("SET_USER", actualUser)
                     this.$router.push('/');
                   })
@@ -198,7 +199,7 @@ export default {
   font-family: "JetBrains Mono Light", sans-serif;
 }
 
-.alert-message {
+.alert-email-password {
   color: red;
   font-size: 16px;
   margin-right: 150px;
@@ -289,12 +290,15 @@ export default {
     font-size: 22px;
   }
 
-  .password-toggle, .alert-message {
+  .password-toggle {
     font-size: 12px;
+    left: 90px;
   }
 
-  .password-toggle {
-    left: 90px;
+  .alert-email-password {
+    font-size: 12px;
+    width: 100%;
+    margin: auto;
   }
 
   .email-pass {

@@ -18,7 +18,7 @@
             {{ product.description }}
           </p>
           <div class="m-auto">
-            <div v-if="!isFavorite(product) && !product.isFavorite">
+            <div v-if="!isFavorite(product)">
               <button @click="addToFavorite(product)"
                       class="bg-black text-white border border-3 add-fav-button">Add favorite
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart"
@@ -138,21 +138,18 @@ export default {
     isFavorite(product) {
       return this.$store.state.user?.favorites?.some(favoriteProduct => favoriteProduct.id === product.id);
     },
-
     async addToFavorite(product) {
-      if (this.isUserLoggedIn && !product.isFavorite) {
-        product.isFavorite = true;
-        this.$store.commit("ADD_TO_FAVORITES", product);
-        await this.$store.dispatch("addToFavorites", product);
-      }
-      if (!this.isUserLoggedIn) {
+      if (!this.$store.getters.isUserLoggedIn) {
         this.showLoginMessageForFav = true;
         let clear = () => (this.showLoginMessageForFav = false)
         if (this.showLoginMessageForFav) {
           setTimeout(clear, 3000);
         }
       }
-
+      if (!product.isFavorite) {
+        product.isFavorite = true;
+        await this.$store.dispatch("addToFavorites", product);
+      }
     },
     async removeFromFavorite(product) {
       product.isFavorite = false;

@@ -168,6 +168,7 @@ export default {
   .text {
     font-size: 12px;
     width: 80%;
+    margin-top: 120px;
   }
 }
 </style>

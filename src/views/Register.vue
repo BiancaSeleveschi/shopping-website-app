@@ -13,7 +13,7 @@
               {{ title }}
             </option>
           </select>
-          <div v-if="isGenreNotSelected" class="alert-message">Please choose a genre.</div>
+          <div v-if="isGenreNotSelected" class="alert-register">Please choose a genre.</div>
         </div>
         <div class="col-account">
           <p class="pgf">FIRST NAME*</p>
@@ -22,7 +22,7 @@
               type="text"
               class="account-input"
           />
-          <p v-show="!isFirstNameInputCompleted" class="alert-message">{{ firstNameMessageAlert }}</p>
+          <p v-show="!isFirstNameInputCompleted" class="alert-register">{{ firstNameMessageAlert }}</p>
         </div>
         <div class="col-account">
           <p class="pgf">LAST NAME*</p>
@@ -31,7 +31,7 @@
               type="text"
               class="account-input"
           />
-          <p v-show="!isLastNameInputCompleted" class="alert-message">{{ lastNameMessageAlert }}</p>
+          <p v-show="!isLastNameInputCompleted" class="alert-register">{{ lastNameMessageAlert }}</p>
         </div>
         <div class="col-account">
           <p class="pgf">EMAIL*</p>
@@ -41,7 +41,7 @@
               class="account-input"
               required
           />
-          <div v-show="isEmailAddressIncomplete" class="alert-message">Please enter a valid email address</div>
+          <div v-show="isEmailAddressIncomplete" class="alert-register">Please enter a valid email address</div>
         </div>
         <div class="col-account mt-2">
           <p class="pgf">PASSWORD*</p>
@@ -56,7 +56,7 @@
           <span class="password-toggle" @click="togglePasswordVisibility">{{
               passwordToggleLabel
             }}</span>
-          <div v-show="isPasswordIncomplete" class="alert-message">Password must contain at least 8 characters
+          <div v-show="isPasswordIncomplete" class="alert-register">Password must contain at least 8 characters
             including
             uppercase and lowercase letters, numbers, and special characters
           </div>
@@ -65,7 +65,7 @@
         <div class="agree-div mb-5">
           <input v-model="isCheckboxChecked" type="checkbox" name="example" value="1"/>
           I agree to the collection and use of my personal data for marketing purposes
-          <p v-show="isCheckboxNotClicked" class="alert-message">Please agree to the terms and conditions to create an
+          <p v-show="isCheckboxNotClicked" class="alert-register">Please agree to the terms and conditions to create an
             account
           </p>
         </div>
@@ -76,7 +76,7 @@
     </div>
     <div v-show="accountExists" class="overlay">
       <transition name="fade">
-        <div class="alert alert-danger py-4"
+        <div class="alert alert-danger m-auto py-4"
              role="alert">
           The email address is already in use by another account.
         </div>
@@ -272,7 +272,7 @@ export default {
 
 }
 
-.alert-message {
+.alert-register {
   color: red;
   font-size: 12px;
   width: 75%;
@@ -321,7 +321,15 @@ export default {
     width: 250px;
     font-size: 14px;
   }
-
+  .alert-register {
+    width: 130%;
+  }
+  .alert {
+    top:  25%;
+    left:  10%;
+    font-size: 14px;
+    width: 80%;
+  }
   .register-page {
     margin-bottom: 50px;
   }

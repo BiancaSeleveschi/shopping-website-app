@@ -11,10 +11,8 @@
         <p class="p-5" v-show="this.$store.getters.getCartItemCount === 0 && !this.isBagEmpty">YOUR BAG IS EMPTY</p>
       </div>
       <div class="subtotal p-3">Subtotal: $ {{ this.$store.getters.getCartTotalPrice }}</div>
-      <div @click="proceedToCheckout" class="checkout p-2 w-50 m-auto">
-        <router-link to="/cart/summary" class="text-decoration-none text-light">Proceed to checkout
-        </router-link>
-      </div>
+      <button @click="proceedToCheckout" class="checkout p-2 w-50 m-auto">Proceed to checkout
+      </button>
     </div>
   </div>
 </template>
@@ -41,6 +39,7 @@ export default {
           this.isBagEmpty = false;
         }, 5000);
       } else {
+        this.$router.push('/cart/summary')
         this.toggleCartButton()
       }
     }
@@ -132,18 +131,22 @@ export default {
   color: white;
   border: black 1px solid;
 }
+
 @media (max-width: 576px) {
   .cart {
     width: 90%;
     height: 450px;
     margin-top: 8%;
   }
+
   .checkout {
     font-size: 13px;
   }
+
   .subtotal {
     font-size: 14px;
   }
+
   .cart-header:before {
     border-color: transparent transparent transparent transparent;
   }
