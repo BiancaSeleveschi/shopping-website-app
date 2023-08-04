@@ -277,7 +277,7 @@ export default {
 
   .profile-div:before {
     top: 7%;
-    right: 142px;
+    right: 145px;
   }
 
   .navbar-nav {

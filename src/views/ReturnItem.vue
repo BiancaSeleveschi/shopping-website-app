@@ -26,11 +26,11 @@
         <button @click="sendProductToReturn" class="btn btn-dark w-25 m-auto p-2 mt-3 position-relative">SEND</button>
       </div>
     </div>
-    <div v-show="showSelectProductAlert " class="overlay">
+    <div v-show="!showSelectProductAlert " class="overlay">
       <transition name="fade">
-        <div class="alert alert-danger py-4"
+        <div class="alert alert-danger pt-4 pb-2"
              role="alert">
-          <h5> Please select the product you wish to return </h5>
+          <p> Please select the product you wish to return </p>
         </div>
       </transition>
     </div>
@@ -164,6 +164,7 @@ export default {
   top: 35%;
   left: 35%;
   width: 30%;
+  font-size: 16px;
   height: max-content;
   z-index: 2;
 }
@@ -264,6 +265,7 @@ export default {
   }
 
   .select {
+    width: 160px;
     transform: translateY(0%);
   }
 
@@ -275,6 +277,9 @@ export default {
   .price {
     justify-content: left;
     transform: translateY(-70%) translateX(0%);
+    font-size: 14px;
+    margin-top: -35px;
+    margin-right: -20px;
   }
 
   .btn {
@@ -310,10 +315,12 @@ export default {
     transform: translateY(-100%);
   }
 
-  .price {
+  .alert {
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    width: 80%;
     font-size: 14px;
-    margin-top: -55px;
-    margin-right: -20px;
   }
 
   .message {

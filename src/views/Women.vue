@@ -25,7 +25,7 @@ export default {
   letter-spacing: 0.2em;
   z-index: 1;
   left: 73%;
-  top: 30%;
+  top: 300px;
   font-size: 50px;
   text-transform: uppercase;
   position: absolute;
@@ -35,8 +35,8 @@ export default {
 
 @media (max-width: 576px) {
   .title {
-    left: 53%;
-    top: 11%;
+    left: 56%;
+    top: 120px;
     font-size: 30px;
   }
 }

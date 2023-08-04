@@ -58,11 +58,12 @@ export default {
     font-size: 30px;
     top: 17%;
     color: lightblue;
-    left: 8%;
+    left: 0%;
+    width: 100%;
   }
 
   .text {
-   display: none;
+    display: none;
   }
 }
 </style>

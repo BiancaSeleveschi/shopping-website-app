@@ -42,10 +42,11 @@ export default {
 @media (max-width: 576px) {
   .title {
     font-size: 28px;
+    top: 180px;
   }
 
   .card-item {
-    margin-top: 30px;
+    margin-top: -20px;
   }
 }
 </style>

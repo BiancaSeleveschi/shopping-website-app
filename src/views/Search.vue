@@ -82,15 +82,16 @@ export default {
 @media (max-width: 576px) {
   .title {
     font-size: 28px;
+    top: 150px;
   }
 
   .input-search {
     font-size: 16px;
-    top: 260px;
+    top: 210px;
   }
 
   .card-item {
-    margin-top: 20px;
+    margin-top: 0px;
   }
 }
 </style>
