@@ -26,7 +26,7 @@
         <button @click="sendProductToReturn" class="btn btn-dark w-25 m-auto p-2 mt-3 position-relative">SEND</button>
       </div>
     </div>
-    <div v-show="!showSelectProductAlert " class="overlay">
+    <div v-show="showSelectProductAlert " class="overlay">
       <transition name="fade">
         <div class="alert alert-danger pt-4 pb-2"
              role="alert">
